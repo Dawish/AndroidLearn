@@ -21,7 +21,7 @@ public class CircleImageViewActivity extends AppCompatActivity {
         Log.d("danxx" ,"CircleImageViewActivity");
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.vp1);
         SampleCircleImageView circleImageView = new SampleCircleImageView(CircleImageViewActivity.this, bitmap);
-        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
         params.setMargins(20,20,20,20);
         setContentView(circleImageView ,params);
     }

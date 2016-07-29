@@ -91,7 +91,7 @@ public class SampleCircleImageView extends View {
         /**
          * 测量宽度
          */
-        if(widthSpecMode == MeasureSpec.EXACTLY){  //宽为具体值或者是填满父控件就直接赋值
+        if(widthSpecMode == MeasureSpec.EXACTLY){  //宽为具体值或者是填满父控件就直接赋值 match_parent , accurate
             mWidth = widthSpecSize;
         }else{
             /**图片显示时原始大小**/
@@ -116,7 +116,7 @@ public class SampleCircleImageView extends View {
                 mHeight = Math.min(heightSpecSize , srcHeigth);
             }else{
                 //没有要求，可以随便大小
-                mWidth = srcHeigth;
+                mHeight = srcHeigth;
             }
         }
         setMeasuredDimension(mWidth ,mHeight);
@@ -157,7 +157,7 @@ public class SampleCircleImageView extends View {
      * 原理就是这样，很简单。
      */
     private Bitmap createRoundConerImage(Bitmap source){
-        Paint paint = new Paint();
+        final Paint paint = new Paint();
         /**开启抗锯齿**/
         paint.setAntiAlias(true);
         /****/
@@ -168,7 +168,11 @@ public class SampleCircleImageView extends View {
          */
         Canvas canvas = new Canvas(target);
         /**新建一个矩形绘制区域,并给出左上角和右下角的坐标**/
-        RectF rect = new RectF(0 , 0 ,source.getWidth() ,source.getHeight());
+        RectF rect = new RectF(0 , 0 ,mWidth ,mHeight);
+        /**
+         * 把图片缩放成我们想要的大小
+         */
+        source = Bitmap.createScaledBitmap(source,mWidth,mHeight,false);
         /**在绘制矩形区域绘制用画笔绘制一个圆角矩形**/
         canvas.drawRoundRect(rect ,mRadius ,mRadius ,paint);
         /**

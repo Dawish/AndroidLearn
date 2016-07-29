@@ -17,4 +17,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this,CustomViewPagerActivity.class);
         startActivity(intent);
     }
+
+    public void CircleImageViewActivity(View view){
+        Intent intent = new Intent(MainActivity.this,CircleImageViewActivity.class);
+        startActivity(intent);
+    }
 }

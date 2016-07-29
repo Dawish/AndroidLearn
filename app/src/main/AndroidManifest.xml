@@ -16,6 +16,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".CustomViewPagerActivity"></activity>
+        <activity android:name=".CircleImageViewActivity"></activity>
     </application>
 
 </manifest>

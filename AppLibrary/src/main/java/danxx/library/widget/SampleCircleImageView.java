@@ -72,6 +72,7 @@ public class SampleCircleImageView extends View {
             TypedArray typedArray = context.obtainStyledAttributes(attrs , R.styleable.SampleCircleImageView ,defStyleAttr ,0);
             mSrc = BitmapFactory.decodeResource(context.getResources() ,typedArray.getResourceId(R.styleable.SampleCircleImageView_src ,0));
             mRadius = (int) typedArray.getDimension(R.styleable.SampleCircleImageView_radius ,dp2px(DEFUALT_RADIUS));
+            typedArray.recycle();
         }
 
     }

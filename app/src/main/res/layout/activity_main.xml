@@ -15,14 +15,14 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:onClick="CustomViewPagerActivity"
-        android:text= "CustomViewPagerActivity" />
+        android:text= "自定义ViewPager" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_margin="8dp"
         android:layout_height="wrap_content"
         android:onClick="CircleImageViewActivity"
-        android:text="CircleImageViewActivity"/>
+        android:text="圆角图片最简单的实现"/>
 
 
 </LinearLayout>

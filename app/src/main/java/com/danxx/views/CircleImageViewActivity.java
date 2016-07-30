@@ -23,6 +23,7 @@ public class CircleImageViewActivity extends AppCompatActivity {
         SampleCircleImageView circleImageView = new SampleCircleImageView(CircleImageViewActivity.this, bitmap);
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
         params.setMargins(20,20,20,20);
-        setContentView(circleImageView ,params);
+//        setContentView(circleImageView ,params);
+        setContentView(R.layout.activity_sample_circle_imageview);
     }
 }

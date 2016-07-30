@@ -1,7 +1,9 @@
 package danxx.library.widget;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
@@ -11,11 +13,17 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
+import danxx.library.R;
+
 /**
  * Created by Danxx on 2016/7/29.
  * 最简单的方式实现圆角图片
  */
 public class SampleCircleImageView extends View {
+    /**
+     * 默认圆角大小
+     */
+    private static final int DEFUALT_RADIUS = 20;
     /**
      * 源图片
      */
@@ -23,7 +31,7 @@ public class SampleCircleImageView extends View {
     /**
      * 圆角大小，默认为20
      */
-    private int mRadius = 20;
+    private int mRadius = DEFUALT_RADIUS;
     /**
      * 控件的宽度
      */
@@ -32,31 +40,39 @@ public class SampleCircleImageView extends View {
      * 控件的高度
      */
     private int mHeight;
+    private Context mContext;
 
 
     public SampleCircleImageView(Context context) {
         super(context);
-        init(context);
+        init(context ,null ,0);
     }
 
     public SampleCircleImageView(Context context ,Bitmap bitmap) {
         super(context);
         Log.d("danxx" ,"create SampleCircleImageView");
         this.mSrc = bitmap;
-        init(context);
+        init(context ,null ,0);
     }
 
     public SampleCircleImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(context);
+        init(context ,attrs ,0);
     }
 
     public SampleCircleImageView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(context);
+        init(context ,attrs ,defStyleAttr);
     }
 
-    private void init(Context context){
+    private void init(Context context ,AttributeSet attrs ,int defStyleAttr){
+        mContext = context;
+        if(attrs != null){
+            /**Load the styled attributes and set their properties**/
+            TypedArray typedArray = context.obtainStyledAttributes(attrs , R.styleable.SampleCircleImageView ,defStyleAttr ,0);
+            mSrc = BitmapFactory.decodeResource(context.getResources() ,typedArray.getResourceId(R.styleable.SampleCircleImageView_src ,0));
+            mRadius = (int) typedArray.getDimension(R.styleable.SampleCircleImageView_radius ,dp2px(DEFUALT_RADIUS));
+        }
 
     }
 
@@ -184,4 +200,15 @@ public class SampleCircleImageView extends View {
         /****/
         return target;
     }
+
+    protected int sp2px(float spValue) {
+        final float fontScale = mContext.getResources().getDisplayMetrics().scaledDensity;
+        return (int) (spValue * fontScale + 0.5f);
+    }
+
+    protected int dp2px(float dp) {
+        final float scale = mContext.getResources().getDisplayMetrics().density;
+        return (int) (dp * scale + 0.5f);
+    }
+
 }

@@ -23,6 +23,11 @@
         android:layout_height="wrap_content"
         android:onClick="CircleImageViewActivity"
         android:text="圆角图片最简单的实现"/>
-
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_margin="8dp"
+        android:layout_height="wrap_content"
+        android:onClick="ActivityVerticalTabIndicator"
+        android:text="垂直指示器"/>
 
 </LinearLayout>

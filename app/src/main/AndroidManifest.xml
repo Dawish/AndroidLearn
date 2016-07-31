@@ -17,6 +17,7 @@
         </activity>
         <activity android:name=".CustomViewPagerActivity"></activity>
         <activity android:name=".CircleImageViewActivity"></activity>
+        <activity android:name=".ActivityVerticalTabIndicator"></activity>
     </application>
 
 </manifest>

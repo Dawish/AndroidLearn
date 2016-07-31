@@ -22,4 +22,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this,CircleImageViewActivity.class);
         startActivity(intent);
     }
+
+    public void ActivityVerticalTabIndicator(View view){
+        Intent intent = new Intent(MainActivity.this,ActivityVerticalTabIndicator.class);
+        startActivity(intent);
+    }
 }

@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.Gravity;
 import android.view.View;
@@ -39,14 +40,14 @@ public class VerticalTabIndicator extends ScrollView implements View.OnFocusChan
     private SparseArray<String> mData;
 
     /**tabItem选中后文字的颜色**/
-    private int tabTextSelectColor = Color.WHITE;
+    private int tabTextSelectColor = Color.YELLOW;
     /**tabItem非选中后文字的颜色**/
     private int tabTextUnselectColor = Color.BLACK;
 
     /**tabItem选中后文字的大小**/
-    private int tabTextSelectSize = 20;
+    private int tabTextSelectSize = DEFUALT_TEXT_SELECT_SIZE;
     /**tabItem非选中后文字的大小**/
-    private int tabTextUnselectSize = 18;
+    private int tabTextUnselectSize = DEFUALT_TEXT_UNSELECT_SIZE;
 
     /**tabItem选中后背景的颜色**/
     private int tabBackGroundSelectColor = Color.BLUE;
@@ -66,7 +67,7 @@ public class VerticalTabIndicator extends ScrollView implements View.OnFocusChan
      * tabItem点击监听器
      */
     private TabSelectListrner tabSelectListrner;
-    TypedArray typedArray;
+    private TypedArray typedArray;
 
     public VerticalTabIndicator(Context context) {
         super(context);
@@ -86,10 +87,11 @@ public class VerticalTabIndicator extends ScrollView implements View.OnFocusChan
     private void init( Context context ,AttributeSet attrs, int defStyleAttr){
         this.mContext = context;
         setVerticalScrollBarEnabled(false);
+        setSmoothScrollingEnabled(true);
         tabBox = new LinearLayout(context);
         tabBox.setOrientation(LinearLayout.VERTICAL);
         tabBox.setPadding(8, 8, 8, 8);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         addView(tabBox, params);
 //        if(attrs != null) {
 //            typedArray = context.obtainStyledAttributes(attrs, null, defStyleAttr, 0);
@@ -97,19 +99,20 @@ public class VerticalTabIndicator extends ScrollView implements View.OnFocusChan
 //        if(typedArray != null){
 //            typedArray.recycle();
 //        }
-
     }
-
     /**
-     * 设置当前哪一个tabitem被选中
-     * @param index
-     */
+         * 设置当前哪一个tabitem被选中
+         * @param index
+         */
     public void setCurrentTabItemSelect(int index){
         if(currentSelectIndex == index){
+            TextView setTab = (TextView) tabBox.getChildAt(index);
+            setTab.requestFocus();
             return;
         }else{
             TextView setTab = (TextView) tabBox.getChildAt(index);
-            onClick(setTab);
+            setTab.requestFocus();
+            onFocusChange(setTab, true);
         }
     }
 
@@ -163,23 +166,30 @@ public class VerticalTabIndicator extends ScrollView implements View.OnFocusChan
      */
     @Override
     public void onFocusChange(View view, boolean hasFocus) {
+        Log.d("danxx" ,"当前的position-->"+currentSelectIndex);
         if(hasFocus){
+            if(-1 != currentSelectIndex){
+                /**在焦点切换之前把当前选中的item切换状态**/
+                TextView currentItem = (TextView) tabBox.getChildAt(currentSelectIndex);
+                currentItem.setTextSize(tabTextUnselectSize);
+                currentItem.setTextColor(tabTextUnselectColor);
+                currentItem.setBackgroundColor(tabBackGroundUnselectColor);
+            }
             int position = Integer.parseInt(String.valueOf(view.getTag()));
             this.currentSelectIndex = position;
 
             if(tabSelectListrner!=null)
                 tabSelectListrner.onItemSelect(position);
-
+            /**把获得焦点的item切换状态**/
             ((TextView)view).setTextSize(tabTextSelectSize);
             ((TextView)view).setTextColor(tabTextSelectColor);
             ((TextView)view).setBackgroundColor(tabBackGroundSelectColor);
-    //                setCurrentTabItemSelect(position);
         }else{
-            ((TextView)view).setTextSize(tabTextUnselectSize);
-            ((TextView)view).setTextColor(tabTextUnselectColor);
             ((TextView)view).setBackgroundColor(tabBackGroundUnselectColor);
         }
+
     }
+
     /**
      *  tabItem点击监听
      * @param clickView

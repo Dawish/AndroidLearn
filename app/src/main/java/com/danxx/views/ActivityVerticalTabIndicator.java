@@ -5,6 +5,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.SparseArray;
+import android.view.View;
+import android.widget.Toast;
 
 import danxx.library.widget.VerticalTabIndicator;
 
@@ -33,8 +35,19 @@ public class ActivityVerticalTabIndicator extends AppCompatActivity {
             }
         });
 
+        tabIndicator.setTabClickListrner(new VerticalTabIndicator.TabClickListrner() {
+            @Override
+            public void onItemClick(int index) {
+                Toast.makeText(ActivityVerticalTabIndicator.this, "点击了第"+index+"项", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         tabIndicator.setData(mData);
 
+    }
+
+    public void setTwoSelected(View view){
+        tabIndicator.setCurrentTabItemSelect(1);
     }
 
 }

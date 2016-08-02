@@ -6,4 +6,23 @@
             <!-- 圆角大小 -->
             <attr name="radius" format="dimension"></attr>
         </declare-styleable>
+
+    <declare-styleable name="VerticalTabIndicator">
+
+        <attr name="tabTextSelectColor" format="color"></attr>
+
+        <attr name="tabTextUnselectColor" format="color"></attr>
+
+        <attr name="tabBackGroundSelectColor" format="color"></attr>
+
+        <attr name="tabBackGroundUnselectColor" format="color"></attr>
+
+        <attr name="tabTextSelectSize" format="dimension"></attr>
+
+        <attr name="tabTextUnselectSize" format="dimension"></attr>
+
+        <attr name="tabItemHeight" format="dimension"></attr>
+
+    </declare-styleable>
+
     </resources>

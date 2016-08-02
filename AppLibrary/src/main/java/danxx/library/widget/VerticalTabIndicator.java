@@ -14,6 +14,8 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import danxx.library.R;
+
 /**
  * Created by Danxingxi on 2016/7/31.
  * 垂直的指示器
@@ -33,6 +35,14 @@ public class VerticalTabIndicator extends ScrollView implements View.OnFocusChan
      */
     private static final int DEFUALT_TEXT_UNSELECT_SIZE = 18;
 
+    private int DEFUALT_SELECT_BG_COLOR = Color.YELLOW;
+
+    private int DEFUALT_UNSELECT_BG_COLOR = Color.TRANSPARENT;
+
+    private int DEFUALT_SELECT_TEXT_COLOR = Color.BLUE;
+
+    private int DEFUALT_UNSELECT_TEXT_COLOR = Color.WHITE;
+
     /**tab指示器容器**/
     private LinearLayout tabBox;
     private Context mContext;
@@ -40,19 +50,20 @@ public class VerticalTabIndicator extends ScrollView implements View.OnFocusChan
     private SparseArray<String> mData;
 
     /**tabItem选中后文字的颜色**/
-    private int tabTextSelectColor = Color.YELLOW;
+    private int tabTextSelectColor = DEFUALT_SELECT_TEXT_COLOR;
     /**tabItem非选中后文字的颜色**/
-    private int tabTextUnselectColor = Color.BLACK;
+    private int tabTextUnselectColor = DEFUALT_UNSELECT_TEXT_COLOR;
 
     /**tabItem选中后文字的大小**/
     private int tabTextSelectSize = DEFUALT_TEXT_SELECT_SIZE;
     /**tabItem非选中后文字的大小**/
     private int tabTextUnselectSize = DEFUALT_TEXT_UNSELECT_SIZE;
 
+
     /**tabItem选中后背景的颜色**/
-    private int tabBackGroundSelectColor = Color.BLUE;
+    private int tabBackGroundSelectColor = DEFUALT_SELECT_BG_COLOR;
     /**tabItem非选中后背景的颜色**/
-    private int tabBackGroundUnselectColor = Color.TRANSPARENT;
+    private int tabBackGroundUnselectColor = DEFUALT_UNSELECT_BG_COLOR;
 
     /**tabItem的默认高度**/
     private int tabItemHeight = DEFUALT_ITEM_HEIGHT;
@@ -88,17 +99,27 @@ public class VerticalTabIndicator extends ScrollView implements View.OnFocusChan
         this.mContext = context;
         setVerticalScrollBarEnabled(false);
         setSmoothScrollingEnabled(true);
+
+        if(attrs != null) {
+            typedArray = context.obtainStyledAttributes(attrs, R.styleable.VerticalTabIndicator, defStyleAttr, 0);
+        }
+        if(typedArray != null){
+            tabBackGroundSelectColor = typedArray.getColor(R.styleable.VerticalTabIndicator_tabBackGroundSelectColor, DEFUALT_SELECT_BG_COLOR);
+            tabBackGroundUnselectColor = typedArray.getColor(R.styleable.VerticalTabIndicator_tabBackGroundUnselectColor, DEFUALT_UNSELECT_BG_COLOR);
+            tabTextSelectColor = typedArray.getColor(R.styleable.VerticalTabIndicator_tabTextSelectColor, DEFUALT_SELECT_TEXT_COLOR);
+            tabTextUnselectColor = typedArray.getColor(R.styleable.VerticalTabIndicator_tabTextUnselectColor, DEFUALT_UNSELECT_TEXT_COLOR);
+            tabTextSelectSize = (int) typedArray.getDimension(R.styleable.VerticalTabIndicator_tabTextSelectSize, sp2px(DEFUALT_TEXT_SELECT_SIZE));
+            tabTextUnselectSize = (int) typedArray.getDimension(R.styleable.VerticalTabIndicator_tabTextUnselectSize, sp2px(DEFUALT_TEXT_UNSELECT_SIZE));
+            tabItemHeight = (int) typedArray.getDimension(R.styleable.VerticalTabIndicator_tabItemHeight, dp2px(DEFUALT_ITEM_HEIGHT));
+
+            typedArray.recycle();
+        }
+
         tabBox = new LinearLayout(context);
         tabBox.setOrientation(LinearLayout.VERTICAL);
-        tabBox.setPadding(8, 8, 8, 8);
+//        tabBox.setPadding(8, 8, 8, 8);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         addView(tabBox, params);
-//        if(attrs != null) {
-//            typedArray = context.obtainStyledAttributes(attrs, null, defStyleAttr, 0);
-//        }
-//        if(typedArray != null){
-//            typedArray.recycle();
-//        }
     }
     /**
          * 设置当前哪一个tabitem被选中
@@ -136,8 +157,7 @@ public class VerticalTabIndicator extends ScrollView implements View.OnFocusChan
         tabBox.removeAllViews();
         for(int i=0 ; i<mData.size() ; i++){
             final TextView tabItem = new TextView(mContext);
-            tabItem.setTextColor(tabTextUnselectColor);
-            tabItem.setBackgroundColor(tabBackGroundUnselectColor);
+            tabItem.setTextColor(DEFUALT_UNSELECT_TEXT_COLOR);
             tabItem.setTextSize(tabTextUnselectSize);
             tabItem.setFocusable(true);
             tabItem.setClickable(true);

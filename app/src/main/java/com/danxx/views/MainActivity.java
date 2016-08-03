@@ -27,4 +27,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this,ActivityVerticalTabIndicator.class);
         startActivity(intent);
     }
+
+    public void RefreshScrollActivity(View view){
+        Intent intent = new Intent(MainActivity.this,RefreshScrollActivity.class);
+        startActivity(intent);
+    }
 }

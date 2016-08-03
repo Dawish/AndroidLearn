@@ -18,6 +18,7 @@
         <activity android:name=".CustomViewPagerActivity"></activity>
         <activity android:name=".CircleImageViewActivity"></activity>
         <activity android:name=".ActivityVerticalTabIndicator"></activity>
+        <activity android:name=".RefreshScrollActivity"></activity>
     </application>
 
 </manifest>

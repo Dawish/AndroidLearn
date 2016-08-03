@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#2B2B2B"
+    android:orientation="vertical" >
+
+    <danxx.library.widget.DXPullRefreshView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/refresh_root"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <ScrollView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/scroll_view_root"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" >
+
+            <LinearLayout
+                android:id="@+id/linear_root"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="#FFFFFF"
+                android:gravity="center"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="80dp"
+                    android:background="@color/itemBg"
+                    android:gravity="center"
+                    android:text="第一行哈哈哈哈哈哈"
+                    android:textColor="@color/black"
+                    android:textSize="30sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="80dp"
+                    android:background="@color/itemBg"
+                    android:gravity="center"
+                    android:text="第二行哈哈哈哈哈哈"
+                    android:textColor="@color/black"
+                    android:textSize="30sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="80dp"
+                    android:background="@color/itemBg"
+                    android:gravity="center"
+                    android:text="第三行哈哈哈哈哈哈"
+                    android:textColor="@color/black"
+                    android:textSize="30sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="80dp"
+                    android:background="@color/itemBg"
+                    android:gravity="center"
+                    android:text="第四行哈哈哈哈哈哈"
+                    android:textColor="@color/black"
+                    android:textSize="30sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="80dp"
+                    android:background="@color/itemBg"
+                    android:gravity="center"
+                    android:text="第五行哈哈哈哈哈哈"
+                    android:textColor="@color/black"
+                    android:textSize="30sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="80dp"
+                    android:background="@color/itemBg"
+                    android:gravity="center"
+                    android:text="第六行哈哈哈哈哈哈"
+                    android:textColor="@color/black"
+                    android:textSize="30sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="80dp"
+                    android:background="@color/itemBg"
+                    android:gravity="center"
+                    android:text="第七行哈哈哈哈哈哈"
+                    android:textColor="@color/black"
+                    android:textSize="30sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="80dp"
+                    android:background="@color/itemBg"
+                    android:gravity="center"
+                    android:text="第八行哈哈哈哈哈哈"
+                    android:textColor="@color/black"
+                    android:textSize="30sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="80dp"
+                    android:background="@color/itemBg"
+                    android:gravity="center"
+                    android:text="第九行哈哈哈哈哈哈"
+                    android:textColor="@color/black"
+                    android:textSize="30sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="80dp"
+                    android:background="@color/itemBg"
+                    android:gravity="center"
+                    android:text="第十行哈哈哈哈哈哈"
+                    android:textColor="@color/black"
+                    android:textSize="30sp" />
+            </LinearLayout>
+        </ScrollView>
+    </danxx.library.widget.DXPullRefreshView>
+
+</LinearLayout>

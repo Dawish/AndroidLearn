@@ -283,7 +283,7 @@ public class DXPullRefreshView extends LinearLayout {
 		refreshIndicatorView.setVisibility(View.VISIBLE);
 
 		bar.setVisibility(View.GONE);
-		if (lp.topMargin > 0) {  //本来是-50  如果下拉距离有50的话就
+		if (lp.topMargin >= 0) {  //本来是-60  如果下拉距离有60的话就
 			downTextView.setText(releaseCanRefreshText);
 			refreshSuccessView.setVisibility(GONE);
 			refreshIndicatorView.setImageResource(R.drawable.refresh_arrow_up);
@@ -314,6 +314,7 @@ public class DXPullRefreshView extends LinearLayout {
 		bar.setVisibility(GONE);
 		downTextView.setText(REFRESH_SUCCESS_TEXT);
 		refreshSuccessView.setVisibility(VISIBLE);
+		getHandler().removeCallbacksAndMessages(null);
 		getHandler().postDelayed(new Runnable() {
 			@Override
 			public void run() {
@@ -379,6 +380,10 @@ public class DXPullRefreshView extends LinearLayout {
 	public interface RefreshListener {
 		public void onRefresh(DXPullRefreshView view);
 	}
-	
-	
+
+	@Override
+	protected void onDetachedFromWindow() {
+		super.onDetachedFromWindow();
+		getHandler().removeCallbacksAndMessages(null);
+	}
 }

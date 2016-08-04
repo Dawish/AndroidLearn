@@ -52,7 +52,7 @@ public class DXPullRefreshView extends LinearLayout {
 	private Scroller scroller;
 	private View refreshView;
 	private ImageView refreshIndicatorView;
-	private int refreshTargetTop = -68;
+	private int refreshTargetTop = -60;
 	private ProgressBar bar;
 	private TextView downTextView;
 	private TextView timeTextView;
@@ -286,7 +286,7 @@ public class DXPullRefreshView extends LinearLayout {
 		LayoutParams lp = (LayoutParams) refreshView
 				.getLayoutParams();
 		float f1 = lp.topMargin;
-		float f2 = moveY * 0.3F;// 以0.3比例拖动
+		float f2 = moveY * 0.5F;// 以0.3比例拖动
 		int newTopMargin = (int) (f1 + f2);
 		// 修改上边距
 		lp.topMargin = newTopMargin;
@@ -299,6 +299,7 @@ public class DXPullRefreshView extends LinearLayout {
 		timeTextView.setVisibility(View.VISIBLE);
 		downTextView.setVisibility(View.VISIBLE);
 		refreshIndicatorView.setVisibility(View.VISIBLE);
+
 		bar.setVisibility(View.GONE);
 		if (lp.topMargin > 0) {  //本来是-50  如果下拉距离有50的话就
 			downTextView.setText(releaseCanRefreshText);
@@ -347,17 +348,17 @@ public class DXPullRefreshView extends LinearLayout {
 	 */
 	public void finishRefresh() {
 		Log.i(TAG, "------->finishRefresh()");
+		status = Status.NORMAL;
 		LayoutParams lp = (LayoutParams) this.refreshView
 				.getLayoutParams();
 		int i = lp.topMargin;
-		refreshIndicatorView.setVisibility(View.VISIBLE);//下拉箭头显示
-		timeTextView.setVisibility(View.VISIBLE);//时间控件
-		downTextView.setVisibility(VISIBLE);//下拉提示语控件
+//		refreshIndicatorView.setVisibility(View.VISIBLE);//下拉箭头显示
+//		timeTextView.setVisibility(View.VISIBLE);//时间控件
+//		downTextView.setVisibility(VISIBLE);//下拉提示语控件
 		refreshTimeBySystem();//修改时间；
 		bar.setVisibility(GONE);
 		scroller.startScroll(0, i, 0, refreshTargetTop);
 		invalidate();
-		status = Status.NORMAL;
 	}
 
 	/**

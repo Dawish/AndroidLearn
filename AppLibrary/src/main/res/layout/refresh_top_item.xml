@@ -1,79 +1,59 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- android:layout_marginTop="-50.0dip"隐藏 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?><!-- android:layout_marginTop="-50.0dip"隐藏 -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="60.0dip"
-    android:layout_marginTop="-60.0dip"
     android:background="#2B2B2B"
-    android:orientation="vertical" >
+    android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="50.0dip"
+        android:gravity="center">
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="0.0dip"
-        android:layout_weight="1.0"
-        android:gravity="center"
-        android:orientation="horizontal" >
-
-        <LinearLayout
+        <ImageView
+            android:id="@+id/indicator"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="30.0dip"
-            android:gravity="center" >
+            android:layout_height="wrap_content"
+            android:contentDescription="指示器"
+            android:src="@drawable/refresh_arrow_down" />
+        <ProgressBar
+            android:id="@+id/progress"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminateBehavior="repeat"
+            android:max="10000"
+            android:visibility="visible" />
 
-            <ImageView
-                android:id="@+id/indicator"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="指示器"
-                android:src="@drawable/refresh_arrow_down" />
-        </LinearLayout>
+    </RelativeLayout>
 
-        <LinearLayout
-            android:layout_width="fill_parent"
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/refresh_success"
+            android:layout_width="12sp"
+            android:layout_height="12sp"
+            android:scaleType="fitXY"
+            android:layout_weight="1"
+            android:layout_centerInParent="true"
+            android:layout_alignParentLeft="true"
+            android:src="@drawable/refresh_success"/>
+        <TextView
+            android:id="@+id/refresh_hint"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
             android:layout_height="fill_parent"
-            android:gravity="center"
-            android:orientation="vertical" >
+            android:singleLine="false"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:text="下拉刷新"
+            android:textColor="@android:color/white"
+            android:layout_toRightOf="@+id/refresh_success"
+            android:textSize="14sp" />
+    </RelativeLayout>
 
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal" >
-
-                <ProgressBar
-                    android:id="@+id/progress"
-                    style="?android:attr/progressBarStyleSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:indeterminateBehavior="repeat"
-                    android:max="10000"
-                    android:visibility="gone" />
-
-                <TextView
-                    android:id="@+id/refresh_hint"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5.0dip"
-                    android:gravity="center_vertical"
-                    android:textColor="@android:color/white"
-                    android:text="下拉刷新"
-                    android:textSize="14.0sp" />
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/refresh_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:text="更新于好久前"
-                android:textColor="#D6D6D6"
-                android:textSize="12.0sp" />
-        </LinearLayout>
-    </LinearLayout>
-
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1.0dip"
-        android:background="#ffc8b67a" />
-
-</LinearLayout>
+</RelativeLayout>

@@ -16,7 +16,6 @@ import android.widget.Scroller;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import danxx.library.R;
 
@@ -44,18 +43,20 @@ public class DXPullRefreshView extends LinearLayout {
 
 	private Status status = Status.NORMAL;
 
-	private final static String REFRESH_RELEASE_TEXT = "释放后执行刷新";
-	private final static String REFRESH_DOWN_TEXT = "下拉可准备执行刷新";
+	private final static String REFRESH_RELEASE_TEXT = "松开刷新";
+	private final static String REFRESH_DOWN_TEXT = "下拉刷新";
+	private final static String REFRESH_SUCCESS_TEXT = "刷新成功";
+	private final static String REFRESH_ING_TEXT = "刷新中...";
 	/****/
 	private final static float MIN_MOVE_DISTANCE = 8.0f;// 最小移动距离，用于判断是否在下拉，设置为0则touch事件的判断会过于频繁。具体值可以根据自己来设定
 
 	private Scroller scroller;
 	private View refreshView;
-	private ImageView refreshIndicatorView;
+	private ImageView refreshIndicatorView, refreshSuccessView;
 	private int refreshTargetTop = -60;
 	private ProgressBar bar;
 	private TextView downTextView;
-	private TextView timeTextView;
+//	private TextView timeTextView;
 
 	private RefreshListener refreshListener;// 刷新监听器
 
@@ -63,7 +64,6 @@ public class DXPullRefreshView extends LinearLayout {
 	private String downCanRefreshText;
 	private String releaseCanRefreshText;
 
-	private String refreshTime ;
 	private int lastY;
 	private Context mContext;
 
@@ -96,12 +96,14 @@ public class DXPullRefreshView extends LinearLayout {
 		// 指示器view
 		refreshIndicatorView = (ImageView) refreshView
 				.findViewById(R.id.indicator);
+		refreshSuccessView = (ImageView) refreshView.findViewById(R.id.refresh_success);
+		refreshSuccessView.setVisibility(GONE);
 		// 刷新bar
 		bar = (ProgressBar) refreshView.findViewById(R.id.progress);
 		// 下拉显示text
 		downTextView = (TextView) refreshView.findViewById(R.id.refresh_hint);
 		// 下来显示时间
-		timeTextView = (TextView) refreshView.findViewById(R.id.refresh_time);
+//		timeTextView = (TextView) refreshView.findViewById(R.id.refresh_time);
 		LayoutParams lp = new LayoutParams(
 				LayoutParams.MATCH_PARENT, -refreshTargetTop);
 		lp.topMargin = refreshTargetTop;
@@ -110,23 +112,6 @@ public class DXPullRefreshView extends LinearLayout {
 		// //文字资源可以归档在资源集中，此处为了方便。
 		downCanRefreshText = REFRESH_DOWN_TEXT;
 		releaseCanRefreshText = REFRESH_RELEASE_TEXT;
-		refreshTime = "2016-12-24 12:12:12";//可以从保存文件中取得上次的更新时间
-		if (refreshTime != null) {
-			setRefreshTime(refreshTime);
-		}
-	}
-
-	/**
-	 * 设置刷新后的内容
-	 * 
-	 * @MethodDescription setRefreshText
-	 * @param time
-	 * @exception
-	 * @since 1.0.0
-	 */
-	private void setRefreshText(String time) {
-		Log.i(TAG, "------>setRefreshText");
-		timeTextView.setText(time);
 	}
 
 	/**
@@ -249,7 +234,8 @@ public class DXPullRefreshView extends LinearLayout {
 		int i = lp.topMargin;
 		refreshIndicatorView.setVisibility(View.GONE);
 		bar.setVisibility(View.VISIBLE);
-		downTextView.setVisibility(View.GONE);
+		downTextView.setText(REFRESH_ING_TEXT);
+//		downTextView.setVisibility(View.GONE);
 		scroller.startScroll(0, i, 0, 0 - i);
 		invalidate();
 		if (refreshListener != null) {
@@ -296,7 +282,6 @@ public class DXPullRefreshView extends LinearLayout {
 		refreshView.invalidate();
 		invalidate();
 
-		timeTextView.setVisibility(View.VISIBLE);
 		downTextView.setVisibility(View.VISIBLE);
 		refreshIndicatorView.setVisibility(View.VISIBLE);
 
@@ -312,17 +297,6 @@ public class DXPullRefreshView extends LinearLayout {
 	}
 
 	/**
-	 * 设置刷新时间
-	 * @MethodDescription setRefreshTime 
-	 * @param refreshTime 
-	 * @exception 
-	 * @since  1.0.0
-	 */
-	public void setRefreshTime(String refreshTime){
-		timeTextView.setText("更新于:"+refreshTime);
-	}
-
-	/**
 	 * 设置监听
 	 * @MethodDescription setRefreshListener 
 	 * @param listener 
@@ -334,31 +308,30 @@ public class DXPullRefreshView extends LinearLayout {
 	}
 
 	/**
-	 * 刷新时间
-	 * 
-	 */
-	private void refreshTimeBySystem() {
-		String dateStr = dateFormat.format(new Date());//可以将时间保存起来
-		this.setRefreshText("更新于:"+dateStr);
-		
-	}
-
-	/**
 	 * 结束刷新事件
 	 */
 	public void finishRefresh() {
 		Log.i(TAG, "------->finishRefresh()");
 		status = Status.NORMAL;
-		LayoutParams lp = (LayoutParams) this.refreshView
-				.getLayoutParams();
-		int i = lp.topMargin;
+
 //		refreshIndicatorView.setVisibility(View.VISIBLE);//下拉箭头显示
 //		timeTextView.setVisibility(View.VISIBLE);//时间控件
 //		downTextView.setVisibility(VISIBLE);//下拉提示语控件
-		refreshTimeBySystem();//修改时间；
+//		refreshTimeBySystem();//修改时间；
 		bar.setVisibility(GONE);
-		scroller.startScroll(0, i, 0, refreshTargetTop);
-		invalidate();
+		downTextView.setText(REFRESH_SUCCESS_TEXT);
+		refreshSuccessView.setVisibility(VISIBLE);
+		getHandler().postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				LayoutParams lp = (LayoutParams)refreshView
+						.getLayoutParams();
+				int i = lp.topMargin;
+				scroller.startScroll(0, i, 0, refreshTargetTop);
+				invalidate();
+				refreshSuccessView.setVisibility(GONE);
+			}
+		}, 1000);
 	}
 
 	/**

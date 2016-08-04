@@ -56,7 +56,6 @@ public class DXPullRefreshView extends LinearLayout {
 	private int refreshTargetTop = -60;
 	private ProgressBar bar;
 	private TextView downTextView;
-//	private TextView timeTextView;
 
 	private RefreshListener refreshListener;// 刷新监听器
 
@@ -102,8 +101,6 @@ public class DXPullRefreshView extends LinearLayout {
 		bar = (ProgressBar) refreshView.findViewById(R.id.progress);
 		// 下拉显示text
 		downTextView = (TextView) refreshView.findViewById(R.id.refresh_hint);
-		// 下来显示时间
-//		timeTextView = (TextView) refreshView.findViewById(R.id.refresh_time);
 		LayoutParams lp = new LayoutParams(
 				LayoutParams.MATCH_PARENT, -refreshTargetTop);
 		lp.topMargin = refreshTargetTop;
@@ -234,8 +231,8 @@ public class DXPullRefreshView extends LinearLayout {
 		int i = lp.topMargin;
 		refreshIndicatorView.setVisibility(View.GONE);
 		bar.setVisibility(View.VISIBLE);
+		refreshSuccessView.setVisibility(GONE);
 		downTextView.setText(REFRESH_ING_TEXT);
-//		downTextView.setVisibility(View.GONE);
 		scroller.startScroll(0, i, 0, 0 - i);
 		invalidate();
 		if (refreshListener != null) {
@@ -288,9 +285,11 @@ public class DXPullRefreshView extends LinearLayout {
 		bar.setVisibility(View.GONE);
 		if (lp.topMargin > 0) {  //本来是-50  如果下拉距离有50的话就
 			downTextView.setText(releaseCanRefreshText);
+			refreshSuccessView.setVisibility(GONE);
 			refreshIndicatorView.setImageResource(R.drawable.refresh_arrow_up);
 		} else {
 			downTextView.setText(downCanRefreshText);
+			refreshSuccessView.setVisibility(GONE);
 			refreshIndicatorView.setImageResource(R.drawable.refresh_arrow_down);
 		}
 
@@ -312,12 +311,6 @@ public class DXPullRefreshView extends LinearLayout {
 	 */
 	public void finishRefresh() {
 		Log.i(TAG, "------->finishRefresh()");
-		status = Status.NORMAL;
-
-//		refreshIndicatorView.setVisibility(View.VISIBLE);//下拉箭头显示
-//		timeTextView.setVisibility(View.VISIBLE);//时间控件
-//		downTextView.setVisibility(VISIBLE);//下拉提示语控件
-//		refreshTimeBySystem();//修改时间；
 		bar.setVisibility(GONE);
 		downTextView.setText(REFRESH_SUCCESS_TEXT);
 		refreshSuccessView.setVisibility(VISIBLE);
@@ -328,6 +321,7 @@ public class DXPullRefreshView extends LinearLayout {
 						.getLayoutParams();
 				int i = lp.topMargin;
 				scroller.startScroll(0, i, 0, refreshTargetTop);
+				status = Status.NORMAL;
 				invalidate();
 				refreshSuccessView.setVisibility(GONE);
 			}

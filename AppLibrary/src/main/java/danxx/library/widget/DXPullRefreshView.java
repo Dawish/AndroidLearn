@@ -124,13 +124,16 @@ public class DXPullRefreshView extends LinearLayout {
 		// layout截取touch事件
 		int action = e.getAction();
 		int y = (int) e.getRawY();
+		Log.d("danxx" ,"手指在操作，y--->"+y);
 		switch (action) {
 		case MotionEvent.ACTION_DOWN:
 			lastY = y;
+			Log.d("danxx" ,"手指按下，lastY--->"+lastY);
 			break;
 		case MotionEvent.ACTION_MOVE:
 			// y移动坐标
 			int m = y - lastY;
+			Log.d("danxx" ,"手指移动，m--->"+m);
 			// 记录下此刻y坐标
 			this.lastY = y;
 			/**如果下拉距离足够并且 当前 情况 可以下拉就返回true，这样事件会传递给当前控件的onTouchEvent()**/
@@ -171,10 +174,7 @@ public class DXPullRefreshView extends LinearLayout {
 				// 因为是向下滑动所以是减，要是向上滑动就是加了！
 				// 负负得正
 				// 手指向下滑动时 y坐标 = 屏幕左上角为坐标原点计算的Y轴坐标 - 手指滑动的Y轴坐标
-				Log.d("danxx" ,"y-->"+y);
-				Log.d("danxx" ,"lastY-->"+lastY);
 				int m = y - lastY;
-				Log.d("danxx" ,"m-->"+m);
 				doMovement(m);
 				// 记录下此刻y坐标
 				this.lastY = y;

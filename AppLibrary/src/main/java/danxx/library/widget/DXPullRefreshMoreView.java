@@ -23,7 +23,11 @@ import danxx.library.R;
  * @CreateDate: 2016/8/5 10:12
  */
 public class DXPullRefreshMoreView extends LinearLayout implements IPullToRefreshMore {
+
     private static final String TAG = DXPullRefreshMoreView.class.getSimpleName();
+
+    /**最小移动距离，用于判断是否在下拉或者上拉，设置为0则touch事件的判断会过于频繁**/
+    private final static float MIN_MOVE_DISTANCE = 8.0f;
 
     enum RefreshStatus{
         PULL_TO_REFRESH,    // 从没刷新拖动到刷新
@@ -72,11 +76,11 @@ public class DXPullRefreshMoreView extends LinearLayout implements IPullToRefres
     /*** 变为向上的箭头*/
     private RotateAnimation mReverseAnimation;
 
-    /**记录手指的Y坐标**/
-    private int lastY;
+    /**记录手指滑动之前按下时的Y坐标**/
+    private int downY;
 
     /**回调监听器**/
-    RefreshMoreLisenter refreshMoreLisenter;
+    private RefreshMoreLisenter refreshMoreLisenter;
 
     /**Constructor & Init Method.**/
     public DXPullRefreshMoreView(Context context) {
@@ -193,15 +197,47 @@ public class DXPullRefreshMoreView extends LinearLayout implements IPullToRefres
      * 返回值为true时事件会传递给当前控件的onTouchEvent()，而不在传递给子控件，这就是所谓的Intercept(截断)。
      * @param ev
      * @return
+     * -----------------------------示意图------------------------------------
+     *
+     *      ** -----------> rawY = M1， 手指按下ACTION_DOWN， downY = M1
+     *      * 下拉距离pullY = (rawY - downY) = (M1 - M1) = 0
+     *      *
+     *      *
+     *      *
+     *      *  rawY = M2， 向下滑动ACTION_MOVE, downY
+     *      **  （downY不变是因为只会在第一次按下的时候才会记录downY的值）
+     *      *  pullY = (rawY - downY） = (M2 - M1)
+     *      *
+     *      *
+     *      *
+     *      ** rawY = M3，向下滑动ACTION_MOVE, downY不变
+     *      * pullY = (rawY - downY） = (M3 - M1)
+     *      *
+     *      *
+     *      V * -----------> rawY = M4，停止滑动ACTION_MOVE, downY不变
+     *        pullY = (rawY - downY） = (M4 - M1)
      */
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
 //        return super.onInterceptTouchEvent(ev);
         /**每次手指按下时获取相对屏幕左上角的Y坐标值，一般都是负数**/
-        int y = (int) ev.getRawY();
+        int rawY = (int) ev.getRawY();
         switch (ev.getAction()){
             case MotionEvent.ACTION_DOWN:
+                /**记录手指按下的时候相对于屏幕左上角的Y轴坐标**/
+                downY = rawY;
                 break;
+            case MotionEvent.ACTION_MOVE:
+                int pullY = rawY - downY;
+                /**滑动的距离满足下拉条件就返回true，就回去调用当前控件的onTouchEvent方法来处理事件**/
+                if (pullY>MIN_MOVE_DISTANCE && canScroll()){
+                    return true;
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
+                break;
+
         }
         return false;
     }

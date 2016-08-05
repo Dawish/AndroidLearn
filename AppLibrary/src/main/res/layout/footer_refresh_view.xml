@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?><!-- android:layout_marginTop="-50.0dip"隐藏 -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="60.0dip"
+    android:background="#2B2B2B"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="50.0dip"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/mFooterImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="指示器"
+            android:src="@drawable/refresh_arrow_up" />
+        <ProgressBar
+            android:id="@+id/mFooterProgressBar"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminateBehavior="repeat"
+            android:max="10000"
+            android:visibility="visible" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="12sp"
+            android:layout_height="12sp"
+            android:scaleType="fitXY"
+            android:layout_weight="1"
+            android:visibility="gone"
+            android:layout_centerInParent="true"
+            android:layout_alignParentLeft="true"
+            android:src="@drawable/refresh_success"/>
+        <TextView
+            android:id="@+id/mFooterTextView"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:layout_height="fill_parent"
+            android:singleLine="false"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:text="上拉刷新"
+            android:textColor="@android:color/white"
+            android:layout_toRightOf="@+id/refresh_success"
+            android:textSize="14sp" />
+    </RelativeLayout>
+
+</RelativeLayout>

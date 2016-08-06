@@ -26,7 +26,7 @@ public interface IPullToRefreshMore {
     void measureView(View child);
 
     /**是否可以下拉或者上拉**/
-    boolean canScroll();
+    boolean canScroll(int pullY);
 
 //    /**获取当然的刷新情况**/
 //    void getRefreshStatus();
@@ -35,13 +35,13 @@ public interface IPullToRefreshMore {
 //    void getPullStatus();
 
     /**下拉手指还在移动没有抬起来,此过程中需要改变箭头的方向**/
-    void pullHeaderToRefresh();
+    void pullHeaderToRefresh(int pullY);
 
     /**上拉手指还在移动没有抬起来，此过程中需要改变箭头的方向**/
-    void pullFooterToRefresh();
+    void pullFooterToRefresh(int pullY);
 
     /**在pullHeaderToRefresh动态改变HeaderView的TopMargin值**/
-    void changeHeaderViewTopMargin(int margin);
+    int changeHeaderViewTopMargin(int pullY);
 
     /**
      * 在刷新中或者刷新完成后设置HeaderView的TopMargin值，

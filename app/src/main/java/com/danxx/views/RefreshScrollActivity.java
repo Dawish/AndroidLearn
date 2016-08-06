@@ -7,7 +7,9 @@ import android.os.Handler;
 import android.os.Message;
 import android.widget.Toast;
 
+import danxx.library.widget.DXPullRefreshMoreView;
 import danxx.library.widget.DXPullRefreshView;
+import danxx.library.widget.RefreshMoreLisenter;
 
 
 /**
@@ -15,16 +17,17 @@ import danxx.library.widget.DXPullRefreshView;
  * @author Nono
  *
  */
-public class RefreshScrollActivity extends Activity implements DXPullRefreshView.RefreshListener {
+public class RefreshScrollActivity extends Activity implements RefreshMoreLisenter {
     /** Called when the activity is first created. */
-	private DXPullRefreshView mRefreshableView;
+	private DXPullRefreshMoreView mRefreshableView;
 	private Context mContext;
 	
 	
 	Handler handler = new Handler() {
 		public void handleMessage(Message message) {
 			super.handleMessage(message);
-			mRefreshableView.finishRefresh();
+			mRefreshableView.onHeaderRefreshFinish();
+			mRefreshableView.onFootrRefreshFinish();
 			Toast.makeText(mContext, "刷新完成", Toast.LENGTH_SHORT).show();
 		};
 	};
@@ -42,18 +45,21 @@ public class RefreshScrollActivity extends Activity implements DXPullRefreshView
 	}
 	private void initView() {
 		// TODO Auto-generated method stub
-		mRefreshableView = (DXPullRefreshView) findViewById(R.id.refresh_root);
+		mRefreshableView = (DXPullRefreshMoreView) findViewById(R.id.refresh_root);
 		initData();
 	}
 	private void initData() {
 		mRefreshableView.setRefreshListener(this);
 		
 	}
-	
-	//实现刷新RefreshListener 中方法
-	public void onRefresh(DXPullRefreshView view) {
-		//伪处理
+
+	@Override
+	public void onRefresh() {
 		handler.sendEmptyMessageDelayed(1, 2000);
-		
+	}
+
+	@Override
+	public void onLoadMore() {
+		handler.sendEmptyMessageDelayed(1, 2000);
 	}
 }

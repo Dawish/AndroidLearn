@@ -1,7 +1,9 @@
 package danxx.library.widget;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -10,7 +12,9 @@ import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import danxx.library.R;
@@ -40,8 +44,10 @@ public class DXPullRefreshMoreView extends LinearLayout implements IPullToRefres
         PULL_DOWN_STATE,   //上拉加载更多
     }
 
-    /**刷新情况的初始状态**/
-    private RefreshStatus refreshStatus = RefreshStatus.NORMAL;
+    /**header刷新情况的初始状态**/
+    private RefreshStatus headerRefreshStatus = RefreshStatus.NORMAL;
+    /**footer刷新情况的初始状态**/
+    private RefreshStatus footerRefreshStatus = RefreshStatus.NORMAL;
     /**拖动方向的初始状态**/
     private PullStatus pullStatus = PullStatus.PULL_DOWN_STATE;
     private Context mContext;
@@ -102,6 +108,7 @@ public class DXPullRefreshMoreView extends LinearLayout implements IPullToRefres
     @Override
     public void init(Context context, AttributeSet attrs, int defStyleAttr) {
         this.mContext = context;
+        setOrientation(LinearLayout.VERTICAL);
         mAnimation = new RotateAnimation(0, -180,
                 RotateAnimation.RELATIVE_TO_SELF, 0.5f,
                 RotateAnimation.RELATIVE_TO_SELF, 0.5f);
@@ -195,42 +202,44 @@ public class DXPullRefreshMoreView extends LinearLayout implements IPullToRefres
      * onInterceptTouchEvent()用于处理事件并改变事件的传递方向。
      * 返回值为false时事件会传递给子控件的onInterceptTouchEvent()；
      * 返回值为true时事件会传递给当前控件的onTouchEvent()，而不在传递给子控件，这就是所谓的Intercept(截断)。
-     * @param ev
-     * @return
-     * -----------------------------示意图------------------------------------
      *
-     *      ** -----------> rawY = M1， 手指按下ACTION_DOWN， downY = M1
-     *      * 下拉距离pullY = (rawY - downY) = (M1 - M1) = 0
-     *      *
-     *      *
-     *      *
-     *      *  rawY = M2， 向下滑动ACTION_MOVE, downY
-     *      **  （downY不变是因为只会在第一次按下的时候才会记录downY的值）
-     *      *  pullY = (rawY - downY） = (M2 - M1)
-     *      *
-     *      *
-     *      *
-     *      ** rawY = M3，向下滑动ACTION_MOVE, downY不变
-     *      * pullY = (rawY - downY） = (M3 - M1)
-     *      *
-     *      *
-     *      V * -----------> rawY = M4，停止滑动ACTION_MOVE, downY不变
-     *        pullY = (rawY - downY） = (M4 - M1)
+     * @param ev
+     * @return -----------------------------示意图------------------------------------
+     * <p/>
+     * ** -----------> rawY = M1， 手指按下ACTION_DOWN， downY = M1
+     * * 下拉距离pullY = (rawY - downY) = (M1 - M1) = 0
+     * *
+     * *
+     * *
+     * *  rawY = M2， 向下滑动ACTION_MOVE, downY
+     * **  （downY不变是因为只会在第一次按下的时候才会记录downY的值）
+     * *  pullY = (rawY - downY） = (M2 - M1)
+     * *
+     * *
+     * *
+     * ** rawY = M3，向下滑动ACTION_MOVE, downY不变
+     * * pullY = (rawY - downY） = (M3 - M1)
+     * *
+     * *
+     * V * -----------> rawY = M4，停止滑动ACTION_MOVE, downY不变
+     * pullY = (rawY - downY） = (M4 - M1)
      */
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
+        Log.d("danxx" ,"onInterceptTouchEvent");
 //        return super.onInterceptTouchEvent(ev);
         /**每次手指按下时获取相对屏幕左上角的Y坐标值，一般都是负数**/
         int rawY = (int) ev.getRawY();
-        switch (ev.getAction()){
+        switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 /**记录手指按下的时候相对于屏幕左上角的Y轴坐标**/
                 downY = rawY;
                 break;
             case MotionEvent.ACTION_MOVE:
+                /**pullY>0说明是下拉，pullY<0说明是上拉 */
                 int pullY = rawY - downY;
                 /**滑动的距离满足下拉条件就返回true，就回去调用当前控件的onTouchEvent方法来处理事件**/
-                if (pullY>MIN_MOVE_DISTANCE && canScroll()){
+                if ( canScroll(pullY) ) {
                     return true;
                 }
                 break;
@@ -245,21 +254,115 @@ public class DXPullRefreshMoreView extends LinearLayout implements IPullToRefres
     /**
      * 处理手势事件
      * onTouchEvent() 用于处理事件，返回值决定当前控件是否消费（consume）了这个事件
-     * @param event
+     * @param ev
      * @return
      */
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        return super.onTouchEvent(event);
+    public boolean onTouchEvent(MotionEvent ev) {
+//        return super.onTouchEvent(event);
+        /**每次手指按下时获取相对屏幕左上角的Y坐标值，一般都是负数**/
+        Log.d("danxx" ,"onTouchEvent");
+        int rawY = (int) ev.getRawY();
+        switch (ev.getAction()){
+            case MotionEvent.ACTION_DOWN:
+                /**记录手指按下的时候相对于屏幕左上角的Y轴坐标**/
+                downY = rawY;
+                break;
+            case MotionEvent.ACTION_MOVE:
+                /**pullY>0说明是下拉，pullY<0说明是上拉 */
+                int pullY = rawY - downY;
+                if(pullStatus == PullStatus.PULL_DOWN_STATE){
+                    pullHeaderToRefresh(pullY);
+                }else if(pullStatus == PullStatus.PULL_UP_STATE){
+                    pullFooterToRefresh(pullY);
+                }
+                downY = rawY;
+                break;
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
+                /**手指滑动松开后判断是否符合刷新条件**/
+                int topMargin = getHeaderTopMargin();
+                if(pullStatus == PullStatus.PULL_DOWN_STATE){
+                   if(topMargin > 0 ){
+                       setHeaderRefreshing();
+                   }else{
+                       /**不满足刷新条件，隐藏header**/
+                       setHeaderViewTopMargin(-mHeaderViewHeight);
+                   }
+                }else if(pullStatus == PullStatus.PULL_UP_STATE){
+                    if(Math.abs(topMargin) >= mHeaderViewHeight + mFooterViewHeight){
+                        setFooterRefreshing();
+                    }else{
+                        setHeaderViewTopMargin(-mHeaderViewHeight);
+                    }
+                }
+                break;
+
+        }
+        return false;
     }
 
     /**
      * 是否可以下拉或者上拉
+     * @param pullY  下拉的距离值，
+     * pullY > 0 说明是下拉
+     * pullY < 0 说明是上拉
      **/
     @Override
-    public boolean canScroll() {
+    public boolean canScroll(int pullY) {
+        Log.d("danxx" ,"canScroll");
+        if(headerRefreshStatus == RefreshStatus.REFRESHING || footerRefreshStatus == RefreshStatus.REFRESHING){
+            return false;
+        }
+        int childCount = getChildCount();
+        if(childCount>1){
+            View contentView = getChildAt(1);
+           if(pullY > 0){  //下拉
+               if(contentView instanceof ScrollView){
+                   Log.d("danxx" ,"ScrollView");
+                   if(((ScrollView)contentView).getScrollY() == 0){  //scrollView滚动到顶部才可以下拉
+                       pullStatus = PullStatus.PULL_DOWN_STATE;
+                       return true;
+                   }else{
+                       return false;
+                   }
+               }else if(contentView instanceof ListView){
+                   int top = ((ListView) contentView).getChildAt(0).getTop();
+                   int pad = ((ListView) contentView).getListPaddingTop();
+                   if ((Math.abs(top - pad)) < 3
+                           && ((ListView) contentView).getFirstVisiblePosition() == 0) {
+                       pullStatus = PullStatus.PULL_DOWN_STATE;
+                       return true;
+                   } else {
+                       return false;
+                   }
 
+               }else if(contentView instanceof RecyclerView){
 
+               }
+           }else {  //上拉
+               if(contentView instanceof ScrollView){
+                   View child = ((ScrollView)contentView).getChildAt(0);
+                   if(child.getMeasuredHeight() <= getHeight() + ((ScrollView)contentView).getScrollY()){
+                        pullStatus = PullStatus.PULL_UP_STATE;
+                       return true;
+                   }else{
+                       return false;
+                   }
+               }else if(contentView instanceof ListView){
+                    View lastChild = ((ListView)contentView).getChildAt(((ListView)contentView).getChildCount() - 1);
+                    if(lastChild.getBottom() <= getHeight() &&
+                            ((ListView)contentView).getLastVisiblePosition() == ((ListView)contentView).getCount() - 1){
+                        pullStatus = PullStatus.PULL_UP_STATE;
+                        return true;
+                    }else{
+                        return false;
+                    }
+               }else if(contentView instanceof RecyclerView){
+
+               }
+           }
+        }
 
         return canScroll(this);
     }
@@ -277,26 +380,73 @@ public class DXPullRefreshMoreView extends LinearLayout implements IPullToRefres
      * 下拉手指还在移动没有抬起来,此过程中需要改变箭头的方向
      **/
     @Override
-    public void pullHeaderToRefresh() {
+    public void pullHeaderToRefresh(int pullY) {
+        Log.d("danxx" ,"pullHeaderToRefresh");
+        int newTopMargin = changeHeaderViewTopMargin(pullY);
+        // 当header view的topMargin>=0时，说明已经完全显示出来了,修改header view 的提示状态
+        if(newTopMargin >= 0 && headerRefreshStatus != RefreshStatus.RELEASE_TO_REFRESH){
+            mHeaderTextView.setText(R.string.pull_to_refresh_release_label);
+            mHeaderImageView.clearAnimation();
+            mHeaderImageView.startAnimation(mAnimation);
+            headerRefreshStatus = RefreshStatus.RELEASE_TO_REFRESH;
+        } else if(newTopMargin < 0 && newTopMargin > - mHeaderViewHeight){ // 拖动时没有释放
+            mHeaderImageView.clearAnimation();
+            mHeaderImageView.startAnimation(mAnimation);
+            mHeaderTextView.setText(R.string.pull_to_refresh_pull_label);
+            headerRefreshStatus = RefreshStatus.PULL_TO_REFRESH;
+        }
+
 
     }
 
     /**
      * 上拉手指还在移动没有抬起来，此过程中需要改变箭头的方向
+     * ooter 准备刷新,手指移动过程,还没有释放 移动footer view高度同样和移动header view
+     * 高度是一样，都是通过修改header view的topmargin的值来达到
      **/
     @Override
-    public void pullFooterToRefresh() {
-
+    public void pullFooterToRefresh(int pullY) {
+        int newTopMargin = changeHeaderViewTopMargin(pullY);
+        // 如果header view topMargin 的绝对值大于或等于header + footer 的高度
+        // 说明footer view 完全显示出来了，修改footer view 的提示状态
+        if (Math.abs(newTopMargin) >= (mHeaderViewHeight + mFooterViewHeight)
+                && footerRefreshStatus != RefreshStatus.RELEASE_TO_REFRESH) {
+            mFooterTextView
+                    .setText(R.string.pull_to_refresh_footer_release_label);
+            mFooterImageView.clearAnimation();
+            mFooterImageView.startAnimation(mAnimation);
+            footerRefreshStatus = RefreshStatus.RELEASE_TO_REFRESH;
+        } else if (Math.abs(newTopMargin) < (mHeaderViewHeight + mFooterViewHeight)) {
+            mFooterImageView.clearAnimation();
+            mFooterImageView.startAnimation(mAnimation);
+            mFooterTextView.setText(R.string.pull_to_refresh_footer_pull_label);
+            footerRefreshStatus = RefreshStatus.PULL_TO_REFRESH;
+        }
     }
 
     /**
      * 在pullHeaderToRefresh动态改变HeaderView的TopMargin值
      *
-     * @param margin
+     * @param pullY
      **/
     @Override
-    public void changeHeaderViewTopMargin(int margin) {
+    public int changeHeaderViewTopMargin(int pullY) {
+        LayoutParams params = (LayoutParams) headerView.getLayoutParams();
+        /**对margin改变只是拉动距离的0.5倍，这样给人一种用力拉得感觉*/
+        float newTopMargin = params.topMargin +  pullY*0.3f;
 
+        /**对于在手指按下先下拉后又上拉的情况，避免在下拉刷新时触发上拉刷新**/
+        if(pullStatus == PullStatus.PULL_DOWN_STATE && pullY<0 && Math.abs(params.topMargin)>=mHeaderViewHeight){
+            return params.topMargin;
+        }
+        /**上拉又下拉屏蔽**/
+        if(pullStatus == PullStatus.PULL_UP_STATE && pullY>0 && Math.abs(params.topMargin)<=mHeaderViewHeight){
+            return params.topMargin;
+        }
+        params.topMargin = (int) newTopMargin;
+        headerView.setLayoutParams(params);
+        invalidate();
+        return params.topMargin;
     }
 
     /**
@@ -308,7 +458,10 @@ public class DXPullRefreshMoreView extends LinearLayout implements IPullToRefres
      */
     @Override
     public void setHeaderViewTopMargin(int margin) {
-
+        LayoutParams params = (LayoutParams) headerView.getLayoutParams();
+        params.topMargin = margin;
+        headerView.setLayoutParams(params);
+        invalidate();
     }
 
     /**
@@ -316,7 +469,15 @@ public class DXPullRefreshMoreView extends LinearLayout implements IPullToRefres
      **/
     @Override
     public void setHeaderRefreshing() {
-
+        headerRefreshStatus = RefreshStatus.REFRESHING;
+        setHeaderViewTopMargin(0);
+        mHeaderImageView.setVisibility(View.GONE);
+        mHeaderImageView.clearAnimation();
+        mHeaderProgressBar.setVisibility(View.VISIBLE);
+        mHeaderTextView.setText(R.string.pull_to_refresh_refreshing_label);
+        if (refreshMoreLisenter != null) {
+            refreshMoreLisenter.onRefresh();
+        }
     }
 
     /**
@@ -324,7 +485,12 @@ public class DXPullRefreshMoreView extends LinearLayout implements IPullToRefres
      **/
     @Override
     public void onHeaderRefreshFinish() {
-
+        setHeaderViewTopMargin(-mHeaderViewHeight);
+        mHeaderImageView.setVisibility(View.VISIBLE);
+        mHeaderTextView.setText(R.string.pull_to_refresh_pull_label);
+        mHeaderProgressBar.setVisibility(View.GONE);
+        // mHeaderUpdateTextView.setText("");
+        headerRefreshStatus = RefreshStatus.NORMAL;
     }
 
     /**
@@ -332,7 +498,19 @@ public class DXPullRefreshMoreView extends LinearLayout implements IPullToRefres
      **/
     @Override
     public void setFooterRefreshing() {
-
+        Log.d("danxx" ,"setFooterRefreshing");
+        footerRefreshStatus = RefreshStatus.REFRESHING;
+        int top = mHeaderViewHeight + mFooterViewHeight;
+        setHeaderViewTopMargin(-top);
+        mFooterImageView.setVisibility(View.GONE);
+        mFooterImageView.clearAnimation();
+        mFooterImageView.setImageDrawable(null);
+        if(mFooterProgressBar!=null)
+        mFooterProgressBar.setVisibility(View.VISIBLE);
+        mFooterTextView.setText(R.string.pull_to_refresh_footer_refreshing_label);
+        if (refreshMoreLisenter != null) {
+            refreshMoreLisenter.onLoadMore();
+        }
     }
 
     /**
@@ -340,7 +518,13 @@ public class DXPullRefreshMoreView extends LinearLayout implements IPullToRefres
      **/
     @Override
     public void onFootrRefreshFinish() {
-
+        setHeaderViewTopMargin(-mHeaderViewHeight);
+        mFooterImageView.setVisibility(View.VISIBLE);
+        mFooterTextView.setText(R.string.pull_to_refresh_footer_pull_label);
+        if(mFooterProgressBar != null)
+        mFooterProgressBar.setVisibility(View.GONE);
+        // mHeaderUpdateTextView.setText("");
+        footerRefreshStatus = RefreshStatus.NORMAL;
     }
 
     /**
@@ -348,7 +532,8 @@ public class DXPullRefreshMoreView extends LinearLayout implements IPullToRefres
      **/
     @Override
     public int getHeaderTopMargin() {
-        return 0;
+        LayoutParams params = (LayoutParams) headerView.getLayoutParams();
+        return params.topMargin;
     }
 
     /**
@@ -358,7 +543,7 @@ public class DXPullRefreshMoreView extends LinearLayout implements IPullToRefres
      **/
     @Override
     public void setRefreshListener(RefreshMoreLisenter refreshListener) {
-
+        this.refreshMoreLisenter = refreshListener;
     }
 
     @Override

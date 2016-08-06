@@ -348,6 +348,7 @@ public class DXPullRefreshView extends LinearLayout {
 				int pad = ((ListView) childView).getListPaddingTop();
 				if ((Math.abs(top - pad)) < 3
 						&& ((ListView) childView).getFirstVisiblePosition() == 0) {
+					
 					return true;
 				} else {
 					return false;

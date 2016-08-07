@@ -34,7 +34,7 @@ public class DXPullRefreshView extends LinearLayout {
 	private static final String TAG = "DXPullRefreshView";
 
 	private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	
+
 	enum Status {
 		NORMAL,     // 正常无操作
 		DRAGGING,   // 拖动中

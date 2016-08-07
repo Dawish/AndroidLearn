@@ -26,8 +26,13 @@ public class RefreshScrollActivity extends Activity implements RefreshMoreLisent
 	Handler handler = new Handler() {
 		public void handleMessage(Message message) {
 			super.handleMessage(message);
-			mRefreshableView.onHeaderRefreshFinish();
-			mRefreshableView.onFootrRefreshFinish();
+			if(message.what == 1){
+				mRefreshableView.onHeaderRefreshFinish();
+			}else if(message.what == 2){
+				mRefreshableView.onFootrRefreshFinish();
+			}
+
+
 			Toast.makeText(mContext, "刷新完成", Toast.LENGTH_SHORT).show();
 		};
 	};
@@ -60,6 +65,6 @@ public class RefreshScrollActivity extends Activity implements RefreshMoreLisent
 
 	@Override
 	public void onLoadMore() {
-		handler.sendEmptyMessageDelayed(1, 2000);
+		handler.sendEmptyMessageDelayed(2, 2000);
 	}
 }

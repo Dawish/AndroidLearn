@@ -33,6 +33,7 @@ public class DXPullRefreshMoreView extends LinearLayout implements IPullToRefres
 
     /**最小移动距离，用于判断是否在下拉或者上拉，设置为0则touch事件的判断会过于频繁**/
     private final static float MIN_MOVE_DISTANCE = 8.0f;
+    private final static int SCROLL_DURATION = 600;
 
     enum RefreshStatus{
         PULL_TO_REFRESH,    // 从没刷新拖动到刷新
@@ -113,6 +114,7 @@ public class DXPullRefreshMoreView extends LinearLayout implements IPullToRefres
     public void init(Context context, AttributeSet attrs, int defStyleAttr) {
         this.mContext = context;
         setOrientation(LinearLayout.VERTICAL);
+        mScroller = new Scroller(mContext);
         mAnimation = new RotateAnimation(0, -180,
                 RotateAnimation.RELATIVE_TO_SELF, 0.5f,
                 RotateAnimation.RELATIVE_TO_SELF, 0.5f);
@@ -435,6 +437,7 @@ public class DXPullRefreshMoreView extends LinearLayout implements IPullToRefres
      **/
     @Override
     public int changeHeaderViewTopMargin(int pullY) {
+        Log.d("danxx", "changeHeaderViewTopMargin---pullY-->"+pullY);
         LayoutParams params = (LayoutParams) headerView.getLayoutParams();
         /**对margin改变只是拉动距离的0.5倍，这样给人一种用力拉得感觉*/
         float newTopMargin = params.topMargin +  pullY*0.3f;
@@ -480,7 +483,9 @@ public class DXPullRefreshMoreView extends LinearLayout implements IPullToRefres
     @Override
     public void setHeaderRefreshing() {
         headerRefreshStatus = RefreshStatus.REFRESHING;
-        setHeaderViewTopMargin(0);
+//        setHeaderViewTopMargin(0);
+        mScroller.startScroll(0, mScroller.getStartY(), 0, 0, SCROLL_DURATION);
+        invalidate();
         mHeaderImageView.setVisibility(View.GONE);
         mHeaderImageView.clearAnimation();
         mHeaderProgressBar.setVisibility(View.VISIBLE);
@@ -495,7 +500,9 @@ public class DXPullRefreshMoreView extends LinearLayout implements IPullToRefres
      **/
     @Override
     public void onHeaderRefreshFinish() {
-        setHeaderViewTopMargin(-mHeaderViewHeight);
+//        setHeaderViewTopMargin(-mHeaderViewHeight);
+        mScroller.startScroll(0, getHeaderTopMargin(), 0, -mHeaderViewHeight, SCROLL_DURATION);
+        invalidate();
         mHeaderImageView.setVisibility(View.VISIBLE);
         mHeaderTextView.setText(R.string.pull_to_refresh_pull_label);
         mHeaderProgressBar.setVisibility(View.GONE);
@@ -512,6 +519,8 @@ public class DXPullRefreshMoreView extends LinearLayout implements IPullToRefres
         footerRefreshStatus = RefreshStatus.REFRESHING;
         int top = mHeaderViewHeight + mFooterViewHeight;
         setHeaderViewTopMargin(-top);
+//        mScroller.startScroll(0, getHeaderTopMargin(), 0, -top, SCROLL_DURATION);
+//        invalidate();
         mFooterImageView.setVisibility(View.GONE);
         mFooterImageView.clearAnimation();
         mFooterImageView.setImageDrawable(null);
@@ -529,6 +538,8 @@ public class DXPullRefreshMoreView extends LinearLayout implements IPullToRefres
     @Override
     public void onFootrRefreshFinish() {
         setHeaderViewTopMargin(-mHeaderViewHeight);
+//        mScroller.startScroll(0, getHeaderTopMargin(), 0, -mHeaderViewHeight, SCROLL_DURATION);
+//        invalidate();
         mFooterImageView.setVisibility(View.VISIBLE);
         mFooterTextView.setText(R.string.pull_to_refresh_footer_pull_label);
         if(mFooterProgressBar != null)
@@ -558,6 +569,21 @@ public class DXPullRefreshMoreView extends LinearLayout implements IPullToRefres
 
     @Override
     public void computeScroll() {
+        if (mScroller.computeScrollOffset()) {//scroll 动作还未结束
+            Log.i(TAG, "----->computeScroll()");
+            int i = this.mScroller.getCurrY();
+            LayoutParams lp = (LayoutParams) this.headerView
+                    .getLayoutParams();
+            int k = Math.max(i, -mHeaderViewHeight);
+//            if(footerRefreshStatus == RefreshStatus.REFRESHING){
+//                lp.topMargin = -(mHeaderViewHeight+mFooterViewHeight);
+//            }else{
+                lp.topMargin = k;
+//            }
+            this.headerView.setLayoutParams(lp);
+            postInvalidate();
+        }
+
         super.computeScroll();
     }
 

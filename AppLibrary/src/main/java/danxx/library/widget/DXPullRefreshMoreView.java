@@ -239,7 +239,7 @@ public class DXPullRefreshMoreView extends LinearLayout implements IPullToRefres
                 /**pullY>0说明是下拉，pullY<0说明是上拉 */
                 int pullY = rawY - downY;
                 /**滑动的距离满足下拉条件就返回true，就回去调用当前控件的onTouchEvent方法来处理事件**/
-                if ( canScroll(pullY) ) {
+                if ( Math.abs(pullY) > dp2px(MIN_MOVE_DISTANCE)  && canScroll(pullY) ) {
                     return true;
                 }
                 break;
@@ -435,14 +435,20 @@ public class DXPullRefreshMoreView extends LinearLayout implements IPullToRefres
         /**对margin改变只是拉动距离的0.5倍，这样给人一种用力拉得感觉*/
         float newTopMargin = params.topMargin +  pullY*0.3f;
 
-        /**对于在手指按下先下拉后又上拉的情况，避免在下拉刷新时触发上拉刷新**/
-        if(pullStatus == PullStatus.PULL_DOWN_STATE && pullY<0 && Math.abs(params.topMargin)>=mHeaderViewHeight){
-            return params.topMargin;
+        /**对于在手指按下先下拉后又上拉的情况，避免在下拉刷新时出现footerView**/
+        if(pullStatus == PullStatus.PULL_DOWN_STATE && pullY<0 ){
+            if(newTopMargin < -mHeaderViewHeight){
+                newTopMargin = -mHeaderViewHeight;
+            }
         }
-        /**上拉又下拉屏蔽**/
-        if(pullStatus == PullStatus.PULL_UP_STATE && pullY>0 && Math.abs(params.topMargin)<=mHeaderViewHeight){
-            return params.topMargin;
+
+        /**上拉又下拉屏蔽出现headerView**/
+        if(pullStatus == PullStatus.PULL_UP_STATE && pullY>0 ){
+            if(params.topMargin >= -mHeaderViewHeight - dp2px(4)){
+                return params.topMargin;
+            }
         }
+
         params.topMargin = (int) newTopMargin;
         headerView.setLayoutParams(params);
         invalidate();
@@ -559,5 +565,10 @@ public class DXPullRefreshMoreView extends LinearLayout implements IPullToRefres
     protected int dp2px(float dp) {
         final float scale = mContext.getResources().getDisplayMetrics().density;
         return (int) (dp * scale + 0.5f);
+    }
+
+    protected float dp2pxf(float dp) {
+        final float scale = mContext.getResources().getDisplayMetrics().density;
+        return (dp * scale + 0.5f);
     }
 }

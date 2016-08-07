@@ -7,7 +7,7 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginLeft="50.0dip"
+        android:layout_marginLeft="60.0dip"
         android:gravity="center">
 
         <ImageView
@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:indeterminateBehavior="repeat"
             android:max="10000"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
     </RelativeLayout>
 

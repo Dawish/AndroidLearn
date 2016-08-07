@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
+import android.widget.Scroller;
 import android.widget.TextView;
 
 import danxx.library.R;
@@ -88,6 +89,9 @@ public class DXPullRefreshMoreView extends LinearLayout implements IPullToRefres
     /**回调监听器**/
     private RefreshMoreLisenter refreshMoreLisenter;
 
+    /**辅助滚动的scroller**/
+    private Scroller mScroller;
+
     /**Constructor & Init Method.**/
     public DXPullRefreshMoreView(Context context) {
         this(context, null);
@@ -159,7 +163,7 @@ public class DXPullRefreshMoreView extends LinearLayout implements IPullToRefres
     public void addFooterRefreshView() {
         footerView = LayoutInflater.from(mContext).inflate(R.layout.footer_refresh_view, this, false);
         mFooterImageView = (ImageView) footerView.findViewById(R.id.mFooterImageView);
-        mFooterProgressBar = (ProgressBar) footerView.findViewById(R.id.mHeaderProgressBar);
+        mFooterProgressBar = (ProgressBar) footerView.findViewById(R.id.mFooterProgressBar);
         mFooterTextView = (TextView) footerView.findViewById(R.id.mFooterTextView);
         measureView(footerView);
         mFooterViewHeight = footerView.getMeasuredHeight();

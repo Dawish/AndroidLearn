@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
@@ -33,7 +34,7 @@ public class DXPullRefreshMoreView extends LinearLayout implements IPullToRefres
 
     /**最小移动距离，用于判断是否在下拉或者上拉，设置为0则touch事件的判断会过于频繁**/
     private final static float MIN_MOVE_DISTANCE = 8.0f;
-    private final static int SCROLL_DURATION = 600;
+    private final static int SCROLL_DURATION = 400;
 
     enum RefreshStatus{
         PULL_TO_REFRESH,    // 从没刷新拖动到刷新
@@ -114,7 +115,7 @@ public class DXPullRefreshMoreView extends LinearLayout implements IPullToRefres
     public void init(Context context, AttributeSet attrs, int defStyleAttr) {
         this.mContext = context;
         setOrientation(LinearLayout.VERTICAL);
-        mScroller = new Scroller(mContext);
+        mScroller = new Scroller(mContext, new DecelerateInterpolator());
         mAnimation = new RotateAnimation(0, -180,
                 RotateAnimation.RELATIVE_TO_SELF, 0.5f,
                 RotateAnimation.RELATIVE_TO_SELF, 0.5f);
@@ -412,6 +413,7 @@ public class DXPullRefreshMoreView extends LinearLayout implements IPullToRefres
      **/
     @Override
     public void pullFooterToRefresh(int pullY) {
+        mFooterImageView.setVisibility(VISIBLE);
         int newTopMargin = changeHeaderViewTopMargin(pullY);
         // 如果header view topMargin 的绝对值大于或等于header + footer 的高度
         // 说明footer view 完全显示出来了，修改footer view 的提示状态
@@ -540,7 +542,7 @@ public class DXPullRefreshMoreView extends LinearLayout implements IPullToRefres
         setHeaderViewTopMargin(-mHeaderViewHeight);
 //        mScroller.startScroll(0, getHeaderTopMargin(), 0, -mHeaderViewHeight, SCROLL_DURATION);
 //        invalidate();
-        mFooterImageView.setVisibility(View.VISIBLE);
+        mFooterImageView.setVisibility(View.GONE);
         mFooterTextView.setText(R.string.pull_to_refresh_footer_pull_label);
         if(mFooterProgressBar != null)
         mFooterProgressBar.setVisibility(View.GONE);

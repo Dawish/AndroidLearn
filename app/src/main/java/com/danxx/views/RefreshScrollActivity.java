@@ -2,6 +2,7 @@ package com.danxx.views;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -66,5 +67,12 @@ public class RefreshScrollActivity extends Activity implements RefreshMoreLisent
 	@Override
 	public void onLoadMore() {
 		handler.sendEmptyMessageDelayed(2, 2000);
+	}
+
+	@Override
+	public void onLongPullUp() {
+		Intent intent = new Intent(RefreshScrollActivity.this,CircleImageViewActivity.class);
+		startActivity(intent);
+		mRefreshableView.onFootrRefreshFinish();
 	}
 }

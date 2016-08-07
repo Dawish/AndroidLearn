@@ -540,9 +540,8 @@ public class DXPullRefreshMoreView extends LinearLayout implements IPullToRefres
     @Override
     public void onFootrRefreshFinish() {
         setHeaderViewTopMargin(-mHeaderViewHeight);
-//        mScroller.startScroll(0, getHeaderTopMargin(), 0, -mHeaderViewHeight, SCROLL_DURATION);
+//        mScroller.startScroll(0, mScroller.getCurrY(), 0, -mHeaderViewHeight, SCROLL_DURATION);
 //        invalidate();
-        mFooterImageView.setVisibility(View.GONE);
         mFooterTextView.setText(R.string.pull_to_refresh_footer_pull_label);
         if(mFooterProgressBar != null)
         mFooterProgressBar.setVisibility(View.GONE);

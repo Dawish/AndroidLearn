@@ -32,4 +32,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this,RefreshScrollActivity.class);
         startActivity(intent);
     }
+
+    public void RefreshListViewActivity(View view){
+        Intent intent = new Intent(MainActivity.this,RefreshListViewActivity.class);
+        startActivity(intent);
+    }
 }

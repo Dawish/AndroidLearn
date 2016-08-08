@@ -15,10 +15,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CustomViewPagerActivity"></activity>
-        <activity android:name=".CircleImageViewActivity"></activity>
-        <activity android:name=".ActivityVerticalTabIndicator"></activity>
-        <activity android:name=".RefreshScrollActivity"></activity>
+        <activity android:name=".CustomViewPagerActivity" />
+        <activity android:name=".CircleImageViewActivity" />
+        <activity android:name=".ActivityVerticalTabIndicator" />
+        <activity android:name=".RefreshScrollActivity" />
+        <activity android:name=".RefreshListViewActivity"></activity>
     </application>
 
 </manifest>

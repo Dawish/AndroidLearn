@@ -328,6 +328,7 @@ public class DXPullRefreshMoreView extends LinearLayout implements IPullToRefres
                if(contentView instanceof ScrollView){
                    Log.d("danxx" ,"ScrollView");
                    if(((ScrollView)contentView).getScrollY() == 0){  //scrollView滚动到顶部才可以下拉
+                       mHeaderImageView.setVisibility(VISIBLE);
                        pullStatus = PullStatus.PULL_DOWN_STATE;
                        return true;
                    }else{
@@ -338,6 +339,7 @@ public class DXPullRefreshMoreView extends LinearLayout implements IPullToRefres
                    int pad = ((ListView) contentView).getListPaddingTop();
                    if ((Math.abs(top - pad)) < 3
                            && ((ListView) contentView).getFirstVisiblePosition() == 0) {
+                       mHeaderImageView.setVisibility(VISIBLE);
                        pullStatus = PullStatus.PULL_DOWN_STATE;
                        return true;
                    } else {
@@ -351,6 +353,7 @@ public class DXPullRefreshMoreView extends LinearLayout implements IPullToRefres
                if(contentView instanceof ScrollView){
                    View child = ((ScrollView)contentView).getChildAt(0);
                    if(child.getMeasuredHeight() <= getHeight() + ((ScrollView)contentView).getScrollY()){
+                        mFooterImageView.setVisibility(VISIBLE);
                         pullStatus = PullStatus.PULL_UP_STATE;
                        return true;
                    }else{
@@ -360,6 +363,7 @@ public class DXPullRefreshMoreView extends LinearLayout implements IPullToRefres
                     View lastChild = ((ListView)contentView).getChildAt(((ListView)contentView).getChildCount() - 1);
                     if(lastChild.getBottom() <= getHeight() &&
                             ((ListView)contentView).getLastVisiblePosition() == ((ListView)contentView).getCount() - 1){
+                        mFooterImageView.setVisibility(VISIBLE);
                         pullStatus = PullStatus.PULL_UP_STATE;
                         return true;
                     }else{
@@ -505,7 +509,7 @@ public class DXPullRefreshMoreView extends LinearLayout implements IPullToRefres
 //        setHeaderViewTopMargin(-mHeaderViewHeight);
         mScroller.startScroll(0, getHeaderTopMargin(), 0, -mHeaderViewHeight, SCROLL_DURATION);
         invalidate();
-        mHeaderImageView.setVisibility(View.VISIBLE);
+        mHeaderImageView.setVisibility(View.GONE);
         mHeaderTextView.setText(R.string.pull_to_refresh_pull_label);
         mHeaderProgressBar.setVisibility(View.GONE);
         // mHeaderUpdateTextView.setText("");
@@ -525,7 +529,6 @@ public class DXPullRefreshMoreView extends LinearLayout implements IPullToRefres
 //        invalidate();
         mFooterImageView.setVisibility(View.GONE);
         mFooterImageView.clearAnimation();
-        mFooterImageView.setImageDrawable(null);
         if(mFooterProgressBar!=null)
         mFooterProgressBar.setVisibility(View.VISIBLE);
         mFooterTextView.setText(R.string.pull_to_refresh_footer_refreshing_label);

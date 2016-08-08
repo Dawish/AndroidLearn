@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
@@ -115,7 +114,7 @@ public class DXPullRefreshMoreView extends LinearLayout implements IPullToRefres
     public void init(Context context, AttributeSet attrs, int defStyleAttr) {
         this.mContext = context;
         setOrientation(LinearLayout.VERTICAL);
-        mScroller = new Scroller(mContext, new DecelerateInterpolator());
+        mScroller = new Scroller(mContext);
         mAnimation = new RotateAnimation(0, -180,
                 RotateAnimation.RELATIVE_TO_SELF, 0.5f,
                 RotateAnimation.RELATIVE_TO_SELF, 0.5f);
@@ -329,6 +328,7 @@ public class DXPullRefreshMoreView extends LinearLayout implements IPullToRefres
                    Log.d("danxx" ,"ScrollView");
                    if(((ScrollView)contentView).getScrollY() == 0){  //scrollView滚动到顶部才可以下拉
                        mHeaderImageView.setVisibility(VISIBLE);
+                       mHeaderTextView.setVisibility(VISIBLE);
                        pullStatus = PullStatus.PULL_DOWN_STATE;
                        return true;
                    }else{
@@ -340,6 +340,7 @@ public class DXPullRefreshMoreView extends LinearLayout implements IPullToRefres
                    if ((Math.abs(top - pad)) < 3
                            && ((ListView) contentView).getFirstVisiblePosition() == 0) {
                        mHeaderImageView.setVisibility(VISIBLE);
+                       mHeaderTextView.setVisibility(VISIBLE);
                        pullStatus = PullStatus.PULL_DOWN_STATE;
                        return true;
                    } else {
@@ -354,6 +355,7 @@ public class DXPullRefreshMoreView extends LinearLayout implements IPullToRefres
                    View child = ((ScrollView)contentView).getChildAt(0);
                    if(child.getMeasuredHeight() <= getHeight() + ((ScrollView)contentView).getScrollY()){
                         mFooterImageView.setVisibility(VISIBLE);
+                        mFooterTextView.setVisibility(VISIBLE);
                         pullStatus = PullStatus.PULL_UP_STATE;
                        return true;
                    }else{
@@ -364,6 +366,7 @@ public class DXPullRefreshMoreView extends LinearLayout implements IPullToRefres
                     if(lastChild.getBottom() <= getHeight() &&
                             ((ListView)contentView).getLastVisiblePosition() == ((ListView)contentView).getCount() - 1){
                         mFooterImageView.setVisibility(VISIBLE);
+                        mFooterTextView.setVisibility(VISIBLE);
                         pullStatus = PullStatus.PULL_UP_STATE;
                         return true;
                     }else{
@@ -507,11 +510,11 @@ public class DXPullRefreshMoreView extends LinearLayout implements IPullToRefres
     @Override
     public void onHeaderRefreshFinish() {
 //        setHeaderViewTopMargin(-mHeaderViewHeight);
+
+        mHeaderImageView.setVisibility(View.GONE);
+        mHeaderProgressBar.setVisibility(View.GONE);
         mScroller.startScroll(0, getHeaderTopMargin(), 0, -mHeaderViewHeight, SCROLL_DURATION);
         invalidate();
-        mHeaderImageView.setVisibility(View.GONE);
-        mHeaderTextView.setText(R.string.pull_to_refresh_pull_label);
-        mHeaderProgressBar.setVisibility(View.GONE);
         // mHeaderUpdateTextView.setText("");
         headerRefreshStatus = RefreshStatus.NORMAL;
     }

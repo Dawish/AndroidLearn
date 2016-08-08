@@ -267,7 +267,7 @@ public class DXPullRefreshMoreView extends LinearLayout implements IPullToRefres
     public boolean onTouchEvent(MotionEvent ev) {
 //        return super.onTouchEvent(event);
         /**每次手指按下时获取相对屏幕左上角的Y坐标值，一般都是负数**/
-        Log.d("danxx" ,"onTouchEvent");
+        Log.d("danxx" ,"onTouchEvent22222");
         int rawY = (int) ev.getRawY();
         switch (ev.getAction()){
             case MotionEvent.ACTION_DOWN:
@@ -275,6 +275,7 @@ public class DXPullRefreshMoreView extends LinearLayout implements IPullToRefres
                 downY = rawY;
                 break;
             case MotionEvent.ACTION_MOVE:
+                Log.d("danxx" ,"ACTION_MOVE");
                 /**pullY>0说明是下拉，pullY<0说明是上拉 */
                 int pullY = rawY - downY;
                 if(pullStatus == PullStatus.PULL_DOWN_STATE){
@@ -302,6 +303,7 @@ public class DXPullRefreshMoreView extends LinearLayout implements IPullToRefres
                         setHeaderViewTopMargin(-mHeaderViewHeight);
                     }
                 }
+                Log.d("danxx" ,"ACTION_UP_CANCEL");
                 break;
 
         }
@@ -349,6 +351,11 @@ public class DXPullRefreshMoreView extends LinearLayout implements IPullToRefres
 
                }else if(contentView instanceof RecyclerView){
 
+               }else if(contentView instanceof LinearLayout){
+                   mHeaderImageView.setVisibility(VISIBLE);
+                   mHeaderTextView.setVisibility(VISIBLE);
+                   pullStatus = PullStatus.PULL_DOWN_STATE;
+                   return true;
                }
            }else {  //上拉
                if(contentView instanceof ScrollView){
@@ -374,6 +381,11 @@ public class DXPullRefreshMoreView extends LinearLayout implements IPullToRefres
                     }
                }else if(contentView instanceof RecyclerView){
 
+               }else if(contentView instanceof LinearLayout){
+                   mFooterImageView.setVisibility(VISIBLE);
+                   mFooterTextView.setVisibility(VISIBLE);
+                   pullStatus = PullStatus.PULL_UP_STATE;
+                   return true;
                }
            }
         }
@@ -480,6 +492,7 @@ public class DXPullRefreshMoreView extends LinearLayout implements IPullToRefres
      */
     @Override
     public void setHeaderViewTopMargin(int margin) {
+        Log.d("danxx" ,"setHeaderViewTopMargin-->"+margin);
         LayoutParams params = (LayoutParams) headerView.getLayoutParams();
         params.topMargin = margin;
         headerView.setLayoutParams(params);

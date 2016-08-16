@@ -53,7 +53,7 @@ public class DrawFocus {
 
 	/**
 	 * 设置画焦点的id， 不设置说明是整个view
-	 * 
+	 *
 	 * @param id
 	 */
 	public void setDrawFoucsId(int id) {
@@ -71,7 +71,7 @@ public class DrawFocus {
 
 	/**
 	 * 焦点设置
-	 * 
+	 *
 	 * @param resId
 	 */
 	public void setFocusHightlightDrawable(int resId) {
@@ -80,7 +80,7 @@ public class DrawFocus {
 
 	/**
 	 * 阴影设置
-	 * 
+	 *
 	 * @param resId
 	 */
 	public void setFocusShadowDrawable(int resId) {
@@ -256,8 +256,8 @@ public class DrawFocus {
 			return;
 		}
 
-		cancleScaleAnimation();
-		// 最后校准焦点框
+//		cancleScaleAnimation();
+//		// 最后校准焦点框
 		toFocusedViewRect = UIUtil.createViewRect(parent, focusItem, mFocusRealId, mFocusEdgeOffset);
 		UIUtil.drawDrawableAt(canvas, toFocusedViewRect, mFocusShadowDrawable, true);
 
@@ -297,7 +297,7 @@ public class DrawFocus {
 			AccelerateInterpolator mAnimInterpolator = new AccelerateInterpolator();
 			progress = mAnimInterpolator.getInterpolation(progress);
 		}
-		
+
 		Rect movingFocusRect = new Rect();
 		if (fromFocusedView != null) {
 			// fromFocusedViewRect = UIUtil.createViewRect(parent,

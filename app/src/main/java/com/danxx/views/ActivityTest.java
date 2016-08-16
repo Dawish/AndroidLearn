@@ -22,6 +22,12 @@ public class ActivityTest extends Activity {
 //		focusLinearLayout.setFocusHighlightDrawable(R.drawable.default_focus);
 //		focusLinearLayout.setFocusScale(1.4f,1.4f);
 
+//		View view = LayoutInflater.from(this).inflate(R.layout.focus_item_view,null);
+//
+//		focusLinearLayout.addChildView(view, 10, 30, 0, 0);
+//
+//		View view1 = LayoutInflater.from(this).inflate(R.layout.focus_item_view,null);
+//		focusLinearLayout.addChildView(view1, 10, 0, 0, 0);
 	}
 
 }

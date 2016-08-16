@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import danxx.library.R;
@@ -14,8 +15,9 @@ public class FocusLinearLayout extends LinearLayout {
     private int focusedItemIndex = -1;
     private View focusItem = null;
     private View fromFocusedView = null;
-    private int focusMoveAnim=200;
-    private int scaleAnim=0;
+    private int focusMoveAnim = 0;
+    private int scaleAnim = 0;
+    private int childCount = -1;
 
     // 画焦点动画
     private DrawFocus mDrawFocus;
@@ -41,17 +43,18 @@ public class FocusLinearLayout extends LinearLayout {
         setClipToPadding(false);
         mDrawFocus = new DrawFocus(this);
         mDrawFocus.setFocusHightlightDrawable(R.drawable.home_select_focus);
-//        mDrawFocus.setFocusShadowDrawable(R.drawable.focus_shadow);
-//		mDrawFocus.setFocusMovingDuration(focusMoveAnim);
-//		mDrawFocus.setScaleDuration(scaleAnim);
+        mDrawFocus.setFocusShadowDrawable(R.drawable.focus_shadow);
+		mDrawFocus.setFocusMovingDuration(focusMoveAnim);
+		mDrawFocus.setScaleDuration(scaleAnim);
         mDrawFocus.isCanScale(true);
-        mDrawFocus.setScaleValue(1.2f, 1.2f);
+        mDrawFocus.setScaleValue(1.1f, 1.1f);
     }
 
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        int childCount = getChildCount();
+        /**对子控件做焦点监听**/
+        childCount = getChildCount();
         for(int i=0;i<childCount;i++){
             View childView = getChildAt(i);
             final int finalI = i;
@@ -132,7 +135,7 @@ public class FocusLinearLayout extends LinearLayout {
 
 
     public void setFocusedItemIndex(View toItem, int focusedItemIndex, boolean hasFocus) {
-        mDrawFocus.setFocusMovingDuration(focusMoveAnim);
+//        mDrawFocus.setFocusMovingDuration(focusMoveAnim);
         if (hasFocus) {
             if (isFromVideoView) {//如果是来自视频小窗口的
                 mDrawFocus.setFocusMovingDuration(0);
@@ -152,9 +155,29 @@ public class FocusLinearLayout extends LinearLayout {
             }
 
             this.fromFocusedView = null;
-            postInvalidate();
+//            postInvalidate();
 
         }
 
+    }
+
+    public void addChildView(View childView, int leftMargin, int topMargin, int rightMargin, int bottomMargin){
+        if(childView!=null && childView.isFocusable()){
+            LinearLayout.LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            lp.leftMargin = leftMargin;
+            lp.topMargin = topMargin;
+            lp.rightMargin = rightMargin;
+            lp.bottomMargin = bottomMargin;
+            childView.setOnFocusChangeListener(new OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    setFocusedItemIndex(v, ++childCount, hasFocus);
+                }
+            });
+            addView(childView, lp);
+            invalidate();
+        }else{
+            Log.d("danxx", "添加的ChildView错误");
+        }
     }
 }

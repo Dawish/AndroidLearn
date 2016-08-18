@@ -43,7 +43,7 @@ public class FocusLinearLayout extends LinearLayout {
         setClipChildren(false);
         setClipToPadding(false);
         mDrawFocus = new DrawFocus(this);
-        mDrawFocus.setFocusHightlightDrawable(R.drawable.focus_bg_test);
+        mDrawFocus.setFocusHightlightDrawable(R.drawable.default_focus);
         mDrawFocus.setFocusShadowDrawable(R.drawable.focus_shadow);
 		mDrawFocus.setFocusMovingDuration(focusMoveAnim);
 		mDrawFocus.setScaleDuration(scaleAnim);
@@ -58,13 +58,34 @@ public class FocusLinearLayout extends LinearLayout {
         childCount = getChildCount();
         for(int i=0;i<childCount;i++){
             View childView = getChildAt(i);
-            final int finalI = i;
-            childView.setOnFocusChangeListener(new OnFocusChangeListener() {
-                @Override
-                public void onFocusChange(View v, boolean hasFocus) {
-                    setFocusedItemIndex(v, finalI, hasFocus);
+//            final int finalI = i;
+            if(childView instanceof View){
+                Log.d("danxx", "注册1");
+                childView.setOnFocusChangeListener(new OnFocusChangeListener() {
+                    @Override
+                    public void onFocusChange(View v, boolean hasFocus) {
+                        setFocusedItemIndex(v, hasFocus);
+                    }
+                });
+            }
+            if(childView instanceof ViewGroup){
+                Log.d("danxx", "注册2------");
+//                ((ViewGroup) childView).setChildrenDrawingOrderEnabled(true);
+                ((ViewGroup) childView).setClipChildren(false);
+                ((ViewGroup) childView).setClipToPadding(false);
+                int childChildViewConut = ((ViewGroup) childView).getChildCount();
+                for(int j=0;j<childChildViewConut;j++){
+                    View childChildView  = ((ViewGroup) childView).getChildAt(j);
+                    if(childChildView instanceof View){
+                        childChildView.setOnFocusChangeListener(new OnFocusChangeListener() {
+                            @Override
+                            public void onFocusChange(View v, boolean hasFocus) {
+                                setFocusedItemIndex(v, hasFocus);
+                            }
+                        });
+                    }
                 }
-            });
+            }
         }
     }
 
@@ -134,7 +155,7 @@ public class FocusLinearLayout extends LinearLayout {
 
 
 
-    public void setFocusedItemIndex(View toItem, int focusedItemIndex, boolean hasFocus) {
+    public void setFocusedItemIndex(View toItem,  boolean hasFocus) {
         Log.d("danxx", "setFocusedItemIndex--->");
         mDrawFocus.setFocusMovingDuration(focusMoveAnim);
         if (hasFocus) {
@@ -172,7 +193,7 @@ public class FocusLinearLayout extends LinearLayout {
             childView.setOnFocusChangeListener(new OnFocusChangeListener() {
                 @Override
                 public void onFocusChange(View v, boolean hasFocus) {
-                    setFocusedItemIndex(v, ++childCount, hasFocus);
+//                    setFocusedItemIndex(v, ++childCount, hasFocus);
                 }
             });
             addView(childView, lp);

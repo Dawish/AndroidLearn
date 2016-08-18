@@ -135,7 +135,7 @@ public class FocusLinearLayout extends LinearLayout {
 
 
     public void setFocusedItemIndex(View toItem, int focusedItemIndex, boolean hasFocus) {
-//        mDrawFocus.setFocusMovingDuration(focusMoveAnim);
+        mDrawFocus.setFocusMovingDuration(focusMoveAnim);
         if (hasFocus) {
             if (isFromVideoView) {//如果是来自视频小窗口的
                 mDrawFocus.setFocusMovingDuration(0);
@@ -146,11 +146,11 @@ public class FocusLinearLayout extends LinearLayout {
             isFromVideoView=false;
         } else {
             isFromVideoView=false;
-            mDrawFocus.endFocusAnimation();
+//            mDrawFocus.endFocusAnimation();
             mDrawFocus.startResetAnimation(toItem);
             if (hasFocus()) {
                 this.fromFocusedView = toItem;
-                postInvalidate();
+//                postInvalidate();
                 return;
             }
 
@@ -175,7 +175,7 @@ public class FocusLinearLayout extends LinearLayout {
                 }
             });
             addView(childView, lp);
-            invalidate();
+//            invalidate();
         }else{
             Log.d("danxx", "添加的ChildView错误");
         }

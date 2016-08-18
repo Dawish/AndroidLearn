@@ -6,6 +6,8 @@ import android.annotation.SuppressLint;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
@@ -36,6 +38,9 @@ public class DrawFocus {
 	private long focusMovingDuration = 200;
 	private long scaleDuration = 200;
 	private long focusAnimationStartTime = 0;
+	private static final int DrawFocusMSG = 1;
+
+	private Canvas focusCanvas;
 
 	private ViewGroup parent;
 
@@ -113,17 +118,20 @@ public class DrawFocus {
 		fromFocusedView = fromView;
 		focusItem = toView;
 		toFocusedViewRect = UIUtil.createViewRect(parent, focusItem, mFocusRealId, mFocusEdgeOffset);
+//		parent.offsetDescendantRectToMyCoords(focusItem, toFocusedViewRect);
 		if (canScale) {
-			toFocusedViewRect.left = (int) (toFocusedViewRect.left - (toFocusedViewRect.width() * (scaleRatioX - 1)) / 2);
-			toFocusedViewRect.right = (int) (toFocusedViewRect.right + (toFocusedViewRect.width() * (scaleRatioX - 1)) / 2);
-			toFocusedViewRect.top = (int) (toFocusedViewRect.top - (toFocusedViewRect.height() * (scaleRatioY - 1)) / 2);
-			toFocusedViewRect.bottom = (int) (toFocusedViewRect.bottom + (toFocusedViewRect.height() * (scaleRatioY - 1)) / 2);
+//			toFocusedViewRect.left = (int) (toFocusedViewRect.left - (toFocusedViewRect.width() * (scaleRatioX - 1)) / 2);
+//			toFocusedViewRect.right = (int) (toFocusedViewRect.right + (toFocusedViewRect.width() * (scaleRatioX - 1)) / 2);
+//			toFocusedViewRect.top = (int) (toFocusedViewRect.top - (toFocusedViewRect.height() * (scaleRatioY - 1)) / 2);
+//			toFocusedViewRect.bottom = (int) (toFocusedViewRect.bottom + (toFocusedViewRect.height() * (scaleRatioY - 1)) / 2);
+//			UIUtil.scaleRect(toFocusedViewRect, scaleRatioX, scaleRatioY);
 		}
 
 		if (fromFocusedView != null) {
-			fromFocusedViewRect = UIUtil.createViewRect(parent, fromFocusedView, mFocusRealId, mFocusEdgeOffset);
+//			fromFocusedViewRect = UIUtil.createViewRect(parent, fromFocusedView, mFocusRealId, mFocusEdgeOffset);
 			// UIUtil.getViewRect(fromFocusedView, mFocusRealId,
 			// fromFocusedViewRect);
+			parent.offsetRectIntoDescendantCoords(fromFocusedView, fromFocusedViewRect);
 		}
 
 		long duration = System.currentTimeMillis() - focusAnimationStartTime;
@@ -131,7 +139,7 @@ public class DrawFocus {
 			duration = focusMovingDuration;
 		}
 		focusMovingDuration = duration;
-		endFocusAnimation();
+//		endFocusAnimation();
 
 		// 开启缩放动画
 		startScaleAnimation();
@@ -225,7 +233,6 @@ public class DrawFocus {
 		}
 
 	}
-
 	public void cancleResetAnimation() {
 		if (!canScale) {
 			return;
@@ -250,18 +257,51 @@ public class DrawFocus {
 		isAnimating = false;
 	}
 
+
+	//用于防止用户快速点击
+	private long mLastKeyDownTime = 0;
+
 	public void drawFocusStatic(Canvas canvas) {
 		// / is it animating or have no selected view?
+		focusCanvas = null;
+		focusCanvas = canvas;
 		if (isAnimating || focusItem == null || !focusItem.hasFocus()) {
 			return;
 		}
 
 //		cancleScaleAnimation();
 //		// 最后校准焦点框
-		toFocusedViewRect = UIUtil.createViewRect(parent, focusItem, mFocusRealId, mFocusEdgeOffset);
-		UIUtil.drawDrawableAt(canvas, toFocusedViewRect, mFocusShadowDrawable, true);
 
+//		UIUtil.drawDrawableAt(canvas, toFocusedViewRect, mFocusShadowDrawable, true);
+		//防止快速点击
+//		long curentTimeMs = System.currentTimeMillis();
+//		long judgeTime = 300;
+//		if ((curentTimeMs - mLastKeyDownTime) < judgeTime){
+//			return;
+//		}
+//		mLastKeyDownTime = curentTimeMs;
+
+		toFocusedViewRect = UIUtil.createViewRect(parent, focusItem, mFocusRealId, mFocusEdgeOffset);
 		UIUtil.drawDrawableAt(canvas, toFocusedViewRect, mFocusHightlightDrawable, true);
+
+
+	}
+
+	private final Handler drawFocusHandler = new Handler(new Handler.Callback() {
+
+		@Override
+		public boolean handleMessage(Message msg) {
+
+
+			return false;
+		}
+	});
+
+	/**
+	 * 焦点跳转停止后确定焦点位置
+	 * @param canvas
+     */
+	private void lastDrawFocus(Canvas canvas){
 
 	}
 

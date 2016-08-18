@@ -210,7 +210,7 @@ public class DrawFocus {
 		if (resetView == null) {
 			return;
 		}
-		resetView = UIUtil.getDrawFoucsView(resetView, mFocusRealId);
+//		resetView = UIUtil.getDrawFoucsView(resetView, mFocusRealId);
 		if (scaleDuration == 0) {
 			resetView.setScaleX(1.0f);
 			resetView.setScaleY(1.0f);

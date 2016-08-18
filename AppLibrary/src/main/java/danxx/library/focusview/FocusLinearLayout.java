@@ -150,12 +150,12 @@ public class FocusLinearLayout extends LinearLayout {
             mDrawFocus.startResetAnimation(toItem);
             if (hasFocus()) {
                 this.fromFocusedView = toItem;
-//                postInvalidate();
+                postInvalidate();
                 return;
             }
 
             this.fromFocusedView = null;
-//            postInvalidate();
+            postInvalidate();
 
         }
 

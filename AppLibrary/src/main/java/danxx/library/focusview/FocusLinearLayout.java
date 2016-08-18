@@ -18,7 +18,8 @@ public class FocusLinearLayout extends LinearLayout {
     private int focusMoveAnim = 0;
     private int scaleAnim = 0;
     private int childCount = -1;
-
+    //用于防止用户快速点击
+    private long mLastKeyDownTime = 0;
     // 画焦点动画
     private DrawFocus mDrawFocus;
 
@@ -42,7 +43,7 @@ public class FocusLinearLayout extends LinearLayout {
         setClipChildren(false);
         setClipToPadding(false);
         mDrawFocus = new DrawFocus(this);
-        mDrawFocus.setFocusHightlightDrawable(R.drawable.home_select_focus);
+        mDrawFocus.setFocusHightlightDrawable(R.drawable.focus_bg_test);
         mDrawFocus.setFocusShadowDrawable(R.drawable.focus_shadow);
 		mDrawFocus.setFocusMovingDuration(focusMoveAnim);
 		mDrawFocus.setScaleDuration(scaleAnim);
@@ -78,7 +79,6 @@ public class FocusLinearLayout extends LinearLayout {
         if (focusItem != null) {
             mDrawFocus.drawFocusDynamic(canvas);
             mDrawFocus.drawFocusStatic(canvas);
-
         }
 
     }
@@ -135,6 +135,7 @@ public class FocusLinearLayout extends LinearLayout {
 
 
     public void setFocusedItemIndex(View toItem, int focusedItemIndex, boolean hasFocus) {
+        Log.d("danxx", "setFocusedItemIndex--->");
         mDrawFocus.setFocusMovingDuration(focusMoveAnim);
         if (hasFocus) {
             if (isFromVideoView) {//如果是来自视频小窗口的
@@ -175,7 +176,7 @@ public class FocusLinearLayout extends LinearLayout {
                 }
             });
             addView(childView, lp);
-//            invalidate();
+            invalidate();
         }else{
             Log.d("danxx", "添加的ChildView错误");
         }

@@ -34,6 +34,7 @@ public class ActivityTest extends Activity {
 		}
 
 
+
 //		focusLinearLayout.setFocusMovingDuration(0);
 //		focusLinearLayout.setFocusHighlightDrawable(R.drawable.default_focus);
 //		focusLinearLayout.setFocusScale(1.4f,1.4f);
@@ -85,7 +86,5 @@ public class ActivityTest extends Activity {
 		}
 
 	}
-
-
 
 }

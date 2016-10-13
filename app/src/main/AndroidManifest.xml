@@ -9,11 +9,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
-            <intent-filter>
+            <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
         </activity>
         <activity android:name=".CustomViewPagerActivity" />
         <activity android:name=".CircleImageViewActivity" />
@@ -28,6 +28,13 @@
                  <category android:name="android.intent.category.LAUNCHER" />
              </intent-filter>-->
 
+        </activity>
+        <activity android:name="com.java.ui.ActivityDecorator">
+             <intent-filter>
+                 <action android:name="android.intent.action.MAIN" />
+
+                 <category android:name="android.intent.category.LAUNCHER" />
+             </intent-filter>
         </activity>
     </application>
 

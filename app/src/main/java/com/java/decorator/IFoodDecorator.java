@@ -7,4 +7,7 @@ package com.java.decorator;
  * @CreateDate: 2016/10/13 9:31
  */
 public interface IFoodDecorator extends IFood {
+
+    //这里也可以为食材添加别的功能，比如食材的功效之类的
+
 }

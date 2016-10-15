@@ -13,6 +13,9 @@ import com.java.decorator.IFood;
 import com.java.decorator.RoseDecorator;
 
 /**
+ *
+ *  顾客点单
+ *
  * @Description: 装饰者设计模式测试
  * @Author: Danxingxi
  * @CreateDate: 2016/10/13 10:00

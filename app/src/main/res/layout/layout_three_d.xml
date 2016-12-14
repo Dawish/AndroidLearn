@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<danxx.library.widget.ThreeDViewContainer xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="#000000"
+    android:id="@+id/threeDViewContainer"
+    android:layout_width="300dp"
+    android:layout_height="360dp">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#a3aa32"></View>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#2aa232"></View>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#231aa2"></View>
+
+</danxx.library.widget.ThreeDViewContainer>

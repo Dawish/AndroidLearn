@@ -21,12 +21,16 @@
         <activity android:name=".RefreshScrollActivity" />
         <activity android:name=".RefreshListViewActivity"></activity>
         <activity android:name="com.java.ui.ActivityDecorator">
-             <intent-filter>
-                 <action android:name="android.intent.action.MAIN" />
-
-                 <category android:name="android.intent.category.LAUNCHER" />
-             </intent-filter>
         </activity>
+        <activity android:name=".ActivityCustomImgContainer">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+
     </application>
 
 </manifest>

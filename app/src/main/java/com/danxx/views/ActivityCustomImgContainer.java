@@ -3,7 +3,7 @@ package com.danxx.views;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import danxx.library.widget.ThreeDViewContainer;
+import danxx.library.widget.StackCardContainer;
 
 /**
  * @Description:
@@ -17,7 +17,7 @@ public class ActivityCustomImgContainer extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_three_d);
 
-        ThreeDViewContainer threeDViewContainer = (ThreeDViewContainer) findViewById(R.id.threeDViewContainer);
+        StackCardContainer threeDViewContainer = (StackCardContainer) findViewById(R.id.threeDViewContainer);
         threeDViewContainer.requestLayout();
     }
 

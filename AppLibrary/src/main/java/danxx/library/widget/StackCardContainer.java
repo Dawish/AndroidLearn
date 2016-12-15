@@ -18,7 +18,7 @@ import danxx.library.tools.FocusAnimUtils;
  * @Author: Danxingxi
  * @CreateDate: 2016/12/14 19:56
  */
-public class ThreeDViewContainer extends ViewGroup{
+public class StackCardContainer extends ViewGroup{
     private static final String TAG = "ThreeDViewContainer";
     /**当前绘制的View，中间的默认显示在最上层**/
     private int currentItemIndex = 1;
@@ -36,17 +36,17 @@ public class ThreeDViewContainer extends ViewGroup{
     private final static int MSG_UP = 1;
     private final static int MSG_DOWN = 2;
 
-    public ThreeDViewContainer(Context context) {
+    public StackCardContainer(Context context) {
         super(context);
         init(context);
     }
 
-    public ThreeDViewContainer(Context context, AttributeSet attrs) {
+    public StackCardContainer(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context);
     }
 
-    public ThreeDViewContainer(Context context, AttributeSet attrs, int defStyleAttr) {
+    public StackCardContainer(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context);
     }
@@ -81,7 +81,10 @@ public class ThreeDViewContainer extends ViewGroup{
          */
         setMeasuredDimension(sizeWidth, sizeHeight);
 
+        /**卡片的间距为控件实际高度的1/8**/
         edge = sizeHeight/8;
+        /**pading值为控件实际高度的1/12**/
+        padding = sizeHeight/16;
 
         int childCount = getChildCount();
 

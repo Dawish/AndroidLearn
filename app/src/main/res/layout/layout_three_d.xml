@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<danxx.library.widget.ThreeDViewContainer xmlns:android="http://schemas.android.com/apk/res/android"
+<danxx.library.widget.StackCardContainer xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/threeDViewContainer"
     android:layout_width="300dp"
@@ -16,6 +16,17 @@
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
             android:src="@mipmap/card_view_bg0"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:text="血战钢锯岭"
+            android:padding="6dp"
+            android:textSize="22sp"
+            android:lines="1"
+            android:gravity="center"
+            android:layout_gravity="bottom"
+            android:background="#CAC26F"/>
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
@@ -29,6 +40,17 @@
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
             android:src="@mipmap/card_view_bg1"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:text="你的名字"
+            android:padding="6dp"
+            android:textSize="22sp"
+            android:gravity="center"
+            android:lines="1"
+            android:layout_gravity="bottom"
+            android:background="#0085BA"/>
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
@@ -42,6 +64,17 @@
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
             android:src="@mipmap/card_view_bg2"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:text="从你的全世界路过"
+            android:lines="1"
+            android:padding="6dp"
+            android:textSize="22sp"
+            android:gravity="center"
+            android:layout_gravity="bottom"
+            android:background="#4EC9AD"/>
     </android.support.v7.widget.CardView>
 
-</danxx.library.widget.ThreeDViewContainer>
+</danxx.library.widget.StackCardContainer>

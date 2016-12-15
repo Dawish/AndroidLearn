@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/threeDViewContainer"
     android:layout_width="300dp"
-    android:layout_height="360dp">
+    android:layout_height="480dp">
 
     <android.support.v7.widget.CardView
         android:id="@+id/view1"
@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:src="@drawable/vp1"/>
+            android:src="@mipmap/card_view_bg0"/>
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
@@ -28,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:src="@drawable/default_pic_loading"/>
+            android:src="@mipmap/card_view_bg1"/>
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.CardView
@@ -41,7 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:src="@drawable/vp2"/>
+            android:src="@mipmap/card_view_bg2"/>
     </android.support.v7.widget.CardView>
 
 </danxx.library.widget.ThreeDViewContainer>

@@ -2,6 +2,9 @@ package danxx.library.widget;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.os.Handler;
+import android.os.Message;
+import android.provider.Settings;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -17,16 +20,21 @@ import danxx.library.tools.FocusAnimUtils;
  */
 public class ThreeDViewContainer extends ViewGroup{
     private static final String TAG = "ThreeDViewContainer";
-    /**当前绘制的View**/
+    /**当前绘制的View，中间的默认显示在最上层**/
     private int currentItemIndex = 1;
     /**控件四周的padding**/
-    private int padding = 40;
+    private int padding = 46;
     /**子View顶边个底边的距离**/
-    private int edge = 48;
+    private int edge = 60;
     /**最小移动距离，用于判断是否在下拉，设置为0则touch事件的判断会过于频繁。具体值可以根据自己来设定**/
     private final static float MIN_MOVE_DISTANCE = 8.0f;
     /**滑动距离大于这个值才翻页**/
-    private int MIN_CHANGE_DISTANCE = 120;
+    private int MIN_CHANGE_DISTANCE = 40;
+    /**View放大的动画时间，在此动画期间无法翻页**/
+    private long animDuration = 300;
+
+    private final static int MSG_UP = 1;
+    private final static int MSG_DOWN = 2;
 
     public ThreeDViewContainer(Context context) {
         super(context);
@@ -51,6 +59,13 @@ public class ThreeDViewContainer extends ViewGroup{
     }
 
     @Override
+    protected void onFinishInflate() {
+        super.onFinishInflate();
+        /**首次进来的时候放大中间的View**/
+        FocusAnimUtils.animItem(getChildAt(currentItemIndex), true, 1.06f, animDuration);
+    }
+
+    @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 //        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         /**
@@ -65,6 +80,8 @@ public class ThreeDViewContainer extends ViewGroup{
          * 先测量整个Viewgroup的大小
          */
         setMeasuredDimension(sizeWidth, sizeHeight);
+
+        edge = sizeHeight/8;
 
         int childCount = getChildCount();
 
@@ -193,15 +210,15 @@ public class ThreeDViewContainer extends ViewGroup{
                 Log.i(TAG, "MotionEvent.ACTION_MOVE");
                 // 手指向下滑动时 y坐标 = 屏幕左上角为坐标原点计算的Y轴坐标 - 手指滑动的Y轴坐标
                 int m = y - lastY;
-                Log.d("danxx", "m---->"+m);
                 if(m>0 && m>MIN_CHANGE_DISTANCE){  //手指向下滑动
-                    if(upPage()){
-                        return true;
-                    }
+                    changeHandler.removeMessages(MSG_UP);
+                    changeHandler.sendEmptyMessageDelayed(MSG_UP, animDuration);
+//                    upPage();
+
                 }else if(m< 0&& Math.abs(m)>MIN_CHANGE_DISTANCE){ //手指向上滑动
-                    if(downPage()){
-                        return true;
-                    }
+                    changeHandler.removeMessages(MSG_DOWN);
+                    changeHandler.sendEmptyMessageDelayed(MSG_DOWN, animDuration);
+//                    downPage();
                 }
 
                 // 记录下此刻y坐标
@@ -214,25 +231,40 @@ public class ThreeDViewContainer extends ViewGroup{
         return true;
     }
 
+    final Handler changeHandler = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+            int what = msg.what;
+            if(MSG_DOWN == what){
+                downPage();
+                return true;
+            }else if(MSG_UP == what){
+                upPage();
+                return true;
+            }
+
+            return false;
+        }
+    });
+
     /**
      * 显示下面的一页
      * 翻页成功返回true，否则false
      */
     private boolean downPage(){
-        Log.d("danxx", "downPage-->");
         if(1 == currentItemIndex){
-            FocusAnimUtils.animItem(getChildAt(currentItemIndex), false, 1.0f);
+            FocusAnimUtils.animItem(getChildAt(currentItemIndex), false, 1.0f, animDuration);
             // 重绘，改变堆叠顺序
             currentItemIndex = 2;
             postInvalidate();
-            FocusAnimUtils.animItem(getChildAt(currentItemIndex), true, 1.06f);
+            FocusAnimUtils.animItem(getChildAt(currentItemIndex), true, 1.06f, animDuration);
             return true;
         }else if(0 == currentItemIndex){
-            FocusAnimUtils.animItem(getChildAt(currentItemIndex), false, 1.0f);
+            FocusAnimUtils.animItem(getChildAt(currentItemIndex), false, 1.0f, animDuration);
             // 重绘，改变堆叠顺序
             currentItemIndex = 1;
             postInvalidate();
-            FocusAnimUtils.animItem(getChildAt(currentItemIndex), true, 1.06f);
+            FocusAnimUtils.animItem(getChildAt(currentItemIndex), true, 1.06f, animDuration);
             return true;
         }else if(2 == currentItemIndex){
             return false;
@@ -245,21 +277,20 @@ public class ThreeDViewContainer extends ViewGroup{
      * 翻页成功返回true，否则false
      */
     private boolean upPage(){
-        Log.d("danxx", "upPage-->");
         if(1 == currentItemIndex){
-            FocusAnimUtils.animItem(getChildAt(currentItemIndex), false, 1.0f);
+            FocusAnimUtils.animItem(getChildAt(currentItemIndex), false, 1.0f, animDuration);
             // 重绘，改变堆叠顺序
             currentItemIndex = 0;
             postInvalidate();
-            FocusAnimUtils.animItem(getChildAt(currentItemIndex), true, 1.06f);
+            FocusAnimUtils.animItem(getChildAt(currentItemIndex), true, 1.06f, animDuration);
             return true;
         }else if(0 == currentItemIndex){
             return false;
         }else if(2 == currentItemIndex){
-            FocusAnimUtils.animItem(getChildAt(currentItemIndex), false, 1.0f);
+            FocusAnimUtils.animItem(getChildAt(currentItemIndex), false, 1.0f, animDuration);
             currentItemIndex = 1;
             postInvalidate();
-            FocusAnimUtils.animItem(getChildAt(currentItemIndex), true, 1.06f);
+            FocusAnimUtils.animItem(getChildAt(currentItemIndex), true, 1.06f, animDuration);
             return true;
         }
         return false;

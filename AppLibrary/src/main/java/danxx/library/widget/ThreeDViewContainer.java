@@ -3,8 +3,12 @@ package danxx.library.widget;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+
+import danxx.library.tools.FocusAnimUtils;
 
 /**
  * @Description:
@@ -12,13 +16,17 @@ import android.view.ViewGroup;
  * @CreateDate: 2016/12/14 19:56
  */
 public class ThreeDViewContainer extends ViewGroup{
-
+    private static final String TAG = "ThreeDViewContainer";
     /**当前绘制的View**/
     private int currentItemIndex = 1;
     /**控件四周的padding**/
     private int padding = 40;
     /**子View顶边个底边的距离**/
     private int edge = 48;
+    /**最小移动距离，用于判断是否在下拉，设置为0则touch事件的判断会过于频繁。具体值可以根据自己来设定**/
+    private final static float MIN_MOVE_DISTANCE = 8.0f;
+    /**滑动距离大于这个值才翻页**/
+    private int MIN_CHANGE_DISTANCE = 120;
 
     public ThreeDViewContainer(Context context) {
         super(context);
@@ -118,7 +126,143 @@ public class ThreeDViewContainer extends ViewGroup{
 
     @Override
     protected void onDraw(Canvas canvas) {
+
         super.onDraw(canvas);
+    }
+
+    private int lastY;
+
+    /**
+     * 事件分发拦截
+     * onInterceptTouchEvent()用于处理事件并改变事件的传递方向。
+     * 返回值为false时事件会传递给子控件的onInterceptTouchEvent()；
+     * 返回值为true时事件会传递给当前控件的onTouchEvent()，而不在传递给子控件，这就是所谓的Intercept(截断)。
+     * @param e
+     * @return
+     */
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent e) {
+//        return super.onInterceptTouchEvent(ev);
+        // layout截取touch事件
+        int action = e.getAction();
+        int y = (int) e.getRawY();
+        Log.d("danxx" ,"手指在操作，y--->"+y);
+        switch (action) {
+            case MotionEvent.ACTION_DOWN:
+                lastY = y;
+                Log.d("danxx" ,"手指按下，lastY--->"+lastY);
+                break;
+            case MotionEvent.ACTION_MOVE:
+                // y移动坐标
+                int m = y - lastY;
+                Log.d("danxx" ,"手指移动，m--->"+m);
+                // 记录下此刻y坐标
+                this.lastY = y;
+                /**如果下拉距离足够并且 当前 情况 可以下拉就返回true，这样事件会传递给当前控件的onTouchEvent()**/
+                if (m > MIN_MOVE_DISTANCE) {
+                    Log.i("danxx", "to onTouchEvent");
+                    return true;
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+                break;
+            case MotionEvent.ACTION_CANCEL:
+                break;
+        }
+        return false;
+    }
+
+    /**
+     * 事件分发
+     * onTouchEvent() 用于处理事件，返回值决定当前控件是否消费（consume）了这个事件
+     * @param event
+     * @return
+     */
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+//        return super.onTouchEvent(event);
+        /**以屏幕左上角为坐标原点计算的Y轴坐标**/
+        int y = (int) event.getRawY();
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                Log.i(TAG, "MotionEvent.ACTION_DOWN");
+                // 手指按下时记录下y坐标
+                lastY = y;
+                break;
+            case MotionEvent.ACTION_MOVE:
+                Log.i(TAG, "MotionEvent.ACTION_MOVE");
+                // 手指向下滑动时 y坐标 = 屏幕左上角为坐标原点计算的Y轴坐标 - 手指滑动的Y轴坐标
+                int m = y - lastY;
+                Log.d("danxx", "m---->"+m);
+                if(m>0 && m>MIN_CHANGE_DISTANCE){  //手指向下滑动
+                    if(upPage()){
+                        return true;
+                    }
+                }else if(m< 0&& Math.abs(m)>MIN_CHANGE_DISTANCE){ //手指向上滑动
+                    if(downPage()){
+                        return true;
+                    }
+                }
+
+                // 记录下此刻y坐标
+                this.lastY = y;
+                break;
+            case MotionEvent.ACTION_UP:
+                Log.i(TAG, "MotionEvent.ACTION_UP");
+                break;
+        }
+        return true;
+    }
+
+    /**
+     * 显示下面的一页
+     * 翻页成功返回true，否则false
+     */
+    private boolean downPage(){
+        Log.d("danxx", "downPage-->");
+        if(1 == currentItemIndex){
+            FocusAnimUtils.animItem(getChildAt(currentItemIndex), false, 1.0f);
+            // 重绘，改变堆叠顺序
+            currentItemIndex = 2;
+            postInvalidate();
+            FocusAnimUtils.animItem(getChildAt(currentItemIndex), true, 1.06f);
+            return true;
+        }else if(0 == currentItemIndex){
+            FocusAnimUtils.animItem(getChildAt(currentItemIndex), false, 1.0f);
+            // 重绘，改变堆叠顺序
+            currentItemIndex = 1;
+            postInvalidate();
+            FocusAnimUtils.animItem(getChildAt(currentItemIndex), true, 1.06f);
+            return true;
+        }else if(2 == currentItemIndex){
+            return false;
+        }
+        return false;
+    }
+
+    /**
+     * 显示上面的一页
+     * 翻页成功返回true，否则false
+     */
+    private boolean upPage(){
+        Log.d("danxx", "upPage-->");
+        if(1 == currentItemIndex){
+            FocusAnimUtils.animItem(getChildAt(currentItemIndex), false, 1.0f);
+            // 重绘，改变堆叠顺序
+            currentItemIndex = 0;
+            postInvalidate();
+            FocusAnimUtils.animItem(getChildAt(currentItemIndex), true, 1.06f);
+            return true;
+        }else if(0 == currentItemIndex){
+            return false;
+        }else if(2 == currentItemIndex){
+            FocusAnimUtils.animItem(getChildAt(currentItemIndex), false, 1.0f);
+            currentItemIndex = 1;
+            postInvalidate();
+            FocusAnimUtils.animItem(getChildAt(currentItemIndex), true, 1.06f);
+            return true;
+        }
+        return false;
     }
 
     /**

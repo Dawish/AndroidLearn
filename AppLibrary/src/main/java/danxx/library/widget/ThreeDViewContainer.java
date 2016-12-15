@@ -16,9 +16,9 @@ public class ThreeDViewContainer extends ViewGroup{
     /**当前绘制的View**/
     private int currentItemIndex = 1;
     /**控件四周的padding**/
-    private int padding = 30;
+    private int padding = 40;
     /**子View顶边个底边的距离**/
-    private int edge = 28;
+    private int edge = 48;
 
     public ThreeDViewContainer(Context context) {
         super(context);
@@ -138,19 +138,4 @@ public class ThreeDViewContainer extends ViewGroup{
         }
         return i;
     }
-
-//    protected int sp2px(float spValue) {
-//        final float fontScale = mContext.getResources().getDisplayMetrics().scaledDensity;
-//        return (int) (spValue * fontScale + 0.5f);
-//    }
-//
-//    protected int dp2px(float dp) {
-//        final float scale = mContext.getResources().getDisplayMetrics().density;
-//        return (int) (dp * scale + 0.5f);
-//    }
-//
-//    protected float dp2pxf(float dp) {
-//        final float scale = mContext.getResources().getDisplayMetrics().density;
-//        return (dp * scale + 0.5f);
-//    }
 }

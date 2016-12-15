@@ -374,4 +374,19 @@ public class DeviceUtils {
 
 		return res;
 	}
+	public static int sp2px(Context mContext, float spValue) {
+        final float fontScale = mContext.getResources().getDisplayMetrics().scaledDensity;
+        return (int) (spValue * fontScale + 0.5f);
+    }
+
+	public static int dp2px(Context mContext, float dp) {
+        final float scale = mContext.getResources().getDisplayMetrics().density;
+        return (int) (dp * scale + 0.5f);
+    }
+
+	public static int dp2pxf(Context mContext, float dp) {
+        final float scale = mContext.getResources().getDisplayMetrics().density;
+        return (int) (dp * scale + 0.5f);
+    }
+
 }

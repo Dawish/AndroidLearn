@@ -1,23 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <danxx.library.widget.ThreeDViewContainer xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="#000000"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/threeDViewContainer"
     android:layout_width="300dp"
     android:layout_height="360dp">
 
-    <View
+    <android.support.v7.widget.CardView
+        android:id="@+id/view1"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="10dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#a3aa32"></View>
+        android:layout_height="match_parent">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/vp1"/>
+    </android.support.v7.widget.CardView>
 
-    <View
+    <android.support.v7.widget.CardView
+        android:id="@+id/view2"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="10dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#2aa232"></View>
+        android:layout_height="match_parent">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/default_pic_loading"/>
+    </android.support.v7.widget.CardView>
 
-    <View
+    <android.support.v7.widget.CardView
+        android:id="@+id/view3"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="10dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#231aa2"></View>
+        android:layout_height="match_parent">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/vp2"/>
+    </android.support.v7.widget.CardView>
 
 </danxx.library.widget.ThreeDViewContainer>

@@ -1,6 +1,7 @@
 package danxx.library.widget;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.os.Handler;
 import android.os.Message;
@@ -10,10 +11,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import danxx.library.R;
 import danxx.library.tools.FocusAnimUtils;
 
 /**
- * @Description:
+ * @Description: 自定义堆叠卡片容器
  * @Author: Danxingxi
  * @CreateDate: 2016/12/14 19:56
  */
@@ -25,7 +27,14 @@ public class StackCardContainer extends ViewGroup{
     private static final int DEFAULT_EDGE = 60;
     /**最小移动距离，用于判断是否在滑动，设置为0则touch事件的判断会过于频繁。具体值可以根据自己来设定**/
     private final static int DEFAULT_MIN_CHANGE_DISTANCE = 40;
-    private final static int DEFAULT_ANIM_DURATION = 40;
+    private final static long DEFAULT_ANIM_DURATION = 300;
+    /**默认竖直方向**/
+    private static final int DEFAULT_SHAPE_TYPE = ShapeType.VERTICAL.ordinal();
+    /**是横向还是竖向**/
+    public enum ShapeType {
+        VERTICAL,
+        HORIZONTAL
+    }
 
     /**当前绘制的View，中间的默认显示在最上层**/
     private int currentItemIndex = 1;
@@ -44,25 +53,32 @@ public class StackCardContainer extends ViewGroup{
     private final static int MSG_DOWN = 2;
 
     public StackCardContainer(Context context) {
-        super(context);
-        init(context);
+        this(context, null);
     }
 
     public StackCardContainer(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init(context);
+        this(context, attrs, 0);
     }
 
     public StackCardContainer(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(context);
+        init(context, attrs, defStyleAttr);
     }
 
-    private void init(Context context){
+    private void init(Context context, AttributeSet attrs, int defStyleAttr){
         //可以改变子view的绘制顺序
         setChildrenDrawingOrderEnabled(true);
         setClipChildren(false);
         setClipToPadding(false);
+
+        // Load the styled attributes and set their properties
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.StackCardContainer, defStyleAttr, 0);
+
+        //取值
+
+
+        typedArray.recycle();
+
     }
 
     @Override

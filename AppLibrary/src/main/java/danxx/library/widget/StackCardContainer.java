@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.Settings;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -19,7 +18,7 @@ import danxx.library.tools.FocusAnimUtils;
  * @CreateDate: 2016/12/14 19:56
  */
 public class StackCardContainer extends ViewGroup{
-    private static final String TAG = "ThreeDViewContainer";
+    private static final String TAG = "StackCardContainer";
     /**当前绘制的View，中间的默认显示在最上层**/
     private int currentItemIndex = 1;
     /**控件四周的padding**/

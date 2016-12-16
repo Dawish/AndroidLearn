@@ -19,13 +19,21 @@ import danxx.library.tools.FocusAnimUtils;
  */
 public class StackCardContainer extends ViewGroup{
     private static final String TAG = "StackCardContainer";
+
+    /**一些默认值**/
+    private static final int DEFAULT_PADDING = 46;
+    private static final int DEFAULT_EDGE = 60;
+    /**最小移动距离，用于判断是否在滑动，设置为0则touch事件的判断会过于频繁。具体值可以根据自己来设定**/
+    private final static int DEFAULT_MIN_CHANGE_DISTANCE = 40;
+    private final static int DEFAULT_ANIM_DURATION = 40;
+
     /**当前绘制的View，中间的默认显示在最上层**/
     private int currentItemIndex = 1;
     /**控件四周的padding**/
     private int padding = 46;
     /**子View顶边个底边的距离**/
     private int edge = 60;
-    /**最小移动距离，用于判断是否在下拉，设置为0则touch事件的判断会过于频繁。具体值可以根据自己来设定**/
+    /**最小移动距离，用于判断是否在滑动，设置为0则touch事件的判断会过于频繁。具体值可以根据自己来设定**/
     private final static float MIN_MOVE_DISTANCE = 8.0f;
     /**滑动距离大于这个值才翻页**/
     private int MIN_CHANGE_DISTANCE = 40;

@@ -22,8 +22,8 @@
     </declare-styleable>
 
     <declare-styleable name="StackCardContainer">
-        <attr name="scc_padding" format="dimension" />
-        <attr name="scc_edge" format="dimension" />
+        <attr name="scc_padding" format="integer" />
+        <attr name="scc_edge" format="integer" />
         <attr name="scc_min_change_distance" format="integer" />
         <attr name="scc_anim_duration" format="integer" />
         <attr name="scc_type" format="enum">

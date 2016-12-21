@@ -26,10 +26,12 @@ public class StackCardContainer extends ViewGroup{
     private static final int DEFAULT_PADDING = 46;
     private static final int DEFAULT_EDGE = 60;
     /**最小移动距离，用于判断是否在滑动，设置为0则touch事件的判断会过于频繁。具体值可以根据自己来设定**/
-    private final static int DEFAULT_MIN_CHANGE_DISTANCE = 40;
-    private final static long DEFAULT_ANIM_DURATION = 300;
+    private final static int DEFAULT_MIN_CHANGE_DISTANCE = 30;
+    private final static int DEFAULT_ANIM_DURATION = 300;
     /**默认竖直方向**/
     private static final int DEFAULT_SHAPE_TYPE = ShapeType.VERTICAL.ordinal();
+    /**最小移动距离，用于判断是否在滑动，设置为0则touch事件的判断会过于频繁。具体值可以根据自己来设定**/
+    private final static float MIN_MOVE_DISTANCE = 8.0f;
     /**是横向还是竖向**/
     public enum ShapeType {
         VERTICAL,
@@ -39,18 +41,19 @@ public class StackCardContainer extends ViewGroup{
     /**当前绘制的View，中间的默认显示在最上层**/
     private int currentItemIndex = 1;
     /**控件四周的padding**/
-    private int padding = 46;
+    private int padding ;
     /**子View顶边个底边的距离**/
-    private int edge = 60;
-    /**最小移动距离，用于判断是否在滑动，设置为0则touch事件的判断会过于频繁。具体值可以根据自己来设定**/
-    private final static float MIN_MOVE_DISTANCE = 8.0f;
+    private int edge;
     /**滑动距离大于这个值才翻页**/
-    private int MIN_CHANGE_DISTANCE = 40;
+    private int changeDistance;
     /**View放大的动画时间，在此动画期间无法翻页**/
-    private long animDuration = 300;
-
+    private long animDuration;
+    private int mShapeType;
     private final static int MSG_UP = 1;
     private final static int MSG_DOWN = 2;
+
+    private Context mContext;
+    private OnItemViewClickListener onItemViewClickListener;
 
     public StackCardContainer(Context context) {
         this(context, null);
@@ -66,6 +69,7 @@ public class StackCardContainer extends ViewGroup{
     }
 
     private void init(Context context, AttributeSet attrs, int defStyleAttr){
+        mContext = context;
         //可以改变子view的绘制顺序
         setChildrenDrawingOrderEnabled(true);
         setClipChildren(false);
@@ -73,9 +77,12 @@ public class StackCardContainer extends ViewGroup{
 
         // Load the styled attributes and set their properties
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.StackCardContainer, defStyleAttr, 0);
-
         //取值
-
+        padding = typedArray.getInteger(R.styleable.StackCardContainer_scc_padding, dp2px(DEFAULT_PADDING));
+        edge = typedArray.getInteger(R.styleable.StackCardContainer_scc_edge, dp2px(DEFAULT_EDGE));
+        changeDistance = typedArray.getInteger(R.styleable.StackCardContainer_scc_min_change_distance, DEFAULT_MIN_CHANGE_DISTANCE);
+        animDuration = typedArray.getInteger(R.styleable.StackCardContainer_scc_anim_duration, DEFAULT_ANIM_DURATION);
+        mShapeType = typedArray.getInteger(R.styleable.StackCardContainer_scc_type, DEFAULT_SHAPE_TYPE);
 
         typedArray.recycle();
 
@@ -86,6 +93,20 @@ public class StackCardContainer extends ViewGroup{
         super.onFinishInflate();
         /**首次进来的时候放大中间的View**/
         FocusAnimUtils.animItem(getChildAt(currentItemIndex), true, 1.06f, animDuration);
+        int itemCount = getChildCount();
+        if(itemCount>0){
+            for(int i=0;i<itemCount;i++){
+                final int finalI = i;
+                getChildAt(i).setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(onItemViewClickListener!=null){
+                            onItemViewClickListener.onItemViewOnClickListener(v, finalI);
+                        }
+                    }
+                });
+            }
+        }
     }
 
     @Override
@@ -236,12 +257,12 @@ public class StackCardContainer extends ViewGroup{
                 Log.i(TAG, "MotionEvent.ACTION_MOVE");
                 // 手指向下滑动时 y坐标 = 屏幕左上角为坐标原点计算的Y轴坐标 - 手指滑动的Y轴坐标
                 int m = y - lastY;
-                if(m>0 && m>MIN_CHANGE_DISTANCE){  //手指向下滑动
+                if(m>0 && m>changeDistance){  //手指向下滑动
                     changeHandler.removeMessages(MSG_UP);
                     changeHandler.sendEmptyMessageDelayed(MSG_UP, animDuration);
 //                    upPage();
 
-                }else if(m< 0&& Math.abs(m)>MIN_CHANGE_DISTANCE){ //手指向上滑动
+                }else if(m< 0&& Math.abs(m)>changeDistance){ //手指向上滑动
                     changeHandler.removeMessages(MSG_DOWN);
                     changeHandler.sendEmptyMessageDelayed(MSG_DOWN, animDuration);
 //                    downPage();
@@ -338,5 +359,27 @@ public class StackCardContainer extends ViewGroup{
                 i = currentItemIndex;
         }
         return i;
+    }
+
+    public interface OnItemViewClickListener{
+        void onItemViewOnClickListener(View itemView, int position);
+    }
+    public void setOnItemViewClickListener(OnItemViewClickListener itemViewClickListener){
+        this.onItemViewClickListener = itemViewClickListener;
+    }
+    /**
+     * Paint.setTextSize(float textSize) default unit is px.
+     *
+     * @param spValue The real size of text
+     * @return int - A transplanted sp
+     */
+    public int sp2px(float spValue) {
+        final float fontScale = mContext.getResources().getDisplayMetrics().scaledDensity;
+        return (int) (spValue * fontScale + 0.5f);
+    }
+
+    protected int dp2px(float dp) {
+        final float scale = mContext.getResources().getDisplayMetrics().density;
+        return (int) (dp * scale + 0.5f);
     }
 }

@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,19 +20,20 @@ import danxx.library.tools.FocusAnimUtils;
  * @Author: Danxingxi
  * @CreateDate: 2016/12/14 19:56
  */
-public class StackCardContainer extends ViewGroup{
+public class StackCardContainer extends ViewGroup implements View.OnTouchListener {
     private static final String TAG = "StackCardContainer";
 
     /**一些默认值**/
     private static final int DEFAULT_PADDING = 46;
     private static final int DEFAULT_EDGE = 60;
     /**最小移动距离，用于判断是否在滑动，设置为0则touch事件的判断会过于频繁。具体值可以根据自己来设定**/
-    private final static int DEFAULT_MIN_CHANGE_DISTANCE = 30;
+    private final static int DEFAULT_MIN_CHANGE_DISTANCE = 20;
     private final static int DEFAULT_ANIM_DURATION = 300;
     /**默认竖直方向**/
     private static final int DEFAULT_SHAPE_TYPE = ShapeType.VERTICAL.ordinal();
     /**最小移动距离，用于判断是否在滑动，设置为0则touch事件的判断会过于频繁。具体值可以根据自己来设定**/
     private final static float MIN_MOVE_DISTANCE = 8.0f;
+
     /**是横向还是竖向**/
     public enum ShapeType {
         VERTICAL,
@@ -100,6 +102,7 @@ public class StackCardContainer extends ViewGroup{
                 getChildAt(i).setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        Log.d("danxx", "test1");
                         if(onItemViewClickListener!=null){
                             onItemViewClickListener.onItemViewOnClickListener(v, finalI);
                         }
@@ -107,6 +110,7 @@ public class StackCardContainer extends ViewGroup{
                 });
             }
         }
+//        setOnTouchListener(this);
     }
 
     @Override
@@ -187,15 +191,18 @@ public class StackCardContainer extends ViewGroup{
             }
         }
     }
-
     @Override
     protected void onDraw(Canvas canvas) {
-
         super.onDraw(canvas);
     }
 
     private int lastY;
-
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        if(v!=null)
+        Log.d("danxx", "onTouch---->"+v.getId());
+        return false;
+    }
     /**
      * 事件分发拦截
      * onInterceptTouchEvent()用于处理事件并改变事件的传递方向。
@@ -206,25 +213,24 @@ public class StackCardContainer extends ViewGroup{
      */
     @Override
     public boolean onInterceptTouchEvent(MotionEvent e) {
-//        return super.onInterceptTouchEvent(ev);
+        Log.d("danxx", "onInterceptTouchEvent");
+//        return super.onInterceptTouchEvent(e);
         // layout截取touch事件
         int action = e.getAction();
         int y = (int) e.getRawY();
-        Log.d("danxx" ,"手指在操作，y--->"+y);
         switch (action) {
             case MotionEvent.ACTION_DOWN:
                 lastY = y;
-                Log.d("danxx" ,"手指按下，lastY--->"+lastY);
                 break;
             case MotionEvent.ACTION_MOVE:
                 // y移动坐标
                 int m = y - lastY;
-                Log.d("danxx" ,"手指移动，m--->"+m);
+                Log.d("danxx" ,"手指按下，currY--->"+y);
+                Log.d("danxx" ,"手指按下，lastY--->"+lastY);
                 // 记录下此刻y坐标
                 this.lastY = y;
                 /**如果下拉距离足够并且 当前 情况 可以下拉就返回true，这样事件会传递给当前控件的onTouchEvent()**/
-                if (m > MIN_MOVE_DISTANCE) {
-                    Log.i("danxx", "to onTouchEvent");
+                if (Math.abs(m) > MIN_MOVE_DISTANCE) {
                     return true;
                 }
                 break;
@@ -244,6 +250,7 @@ public class StackCardContainer extends ViewGroup{
      */
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        Log.d("danxx", "onTouchEvent");
 //        return super.onTouchEvent(event);
         /**以屏幕左上角为坐标原点计算的Y轴坐标**/
         int y = (int) event.getRawY();
@@ -293,6 +300,18 @@ public class StackCardContainer extends ViewGroup{
             return false;
         }
     });
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        Log.d("danxx", "dispatchKeyEvent");
+        return super.dispatchKeyEvent(event);
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        Log.d("danxx", "dispatchTouchEvent");
+        return super.dispatchTouchEvent(ev);
+    }
 
     /**
      * 显示下面的一页

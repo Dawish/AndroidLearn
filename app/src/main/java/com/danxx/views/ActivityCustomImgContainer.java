@@ -2,6 +2,8 @@ package com.danxx.views;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Toast;
 
 import danxx.library.widget.StackCardContainer;
 
@@ -18,7 +20,13 @@ public class ActivityCustomImgContainer extends AppCompatActivity {
         setContentView(R.layout.layout_three_d);
 
         StackCardContainer threeDViewContainer = (StackCardContainer) findViewById(R.id.threeDViewContainer);
-        threeDViewContainer.requestLayout();
+        threeDViewContainer.setOnItemViewClickListener(new StackCardContainer.OnItemViewClickListener() {
+            @Override
+            public void onItemViewOnClickListener(View itemView, int position) {
+                Toast.makeText(ActivityCustomImgContainer.this, "Position->"+position, Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
 

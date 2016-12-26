@@ -102,9 +102,11 @@ public class StackCardContainer extends ViewGroup implements View.OnTouchListene
                 getChildAt(i).setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Log.d("danxx", "test1");
                         if(onItemViewClickListener!=null){
                             onItemViewClickListener.onItemViewOnClickListener(v, finalI);
+                            if(currentItemIndex != finalI){
+                                setCurrentPage(finalI);
+                            }
                         }
                     }
                 });
@@ -128,11 +130,6 @@ public class StackCardContainer extends ViewGroup implements View.OnTouchListene
          * 先测量整个Viewgroup的大小
          */
         setMeasuredDimension(sizeWidth, sizeHeight);
-
-        /**卡片的间距为控件实际高度的1/8**/
-        edge = sizeHeight/8;
-        /**pading值为控件实际高度的1/12**/
-        padding = sizeHeight/16;
 
         int childCount = getChildCount();
 
@@ -360,6 +357,14 @@ public class StackCardContainer extends ViewGroup implements View.OnTouchListene
             return true;
         }
         return false;
+    }
+
+    private void setCurrentPage(int index){
+        if(currentItemIndex != index)
+        FocusAnimUtils.animItem(getChildAt(currentItemIndex), false, 1.0f, animDuration);
+        currentItemIndex = index;
+        postInvalidate();
+        FocusAnimUtils.animItem(getChildAt(currentItemIndex), true, 1.06f, animDuration);
     }
 
     /**

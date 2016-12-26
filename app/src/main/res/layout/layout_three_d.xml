@@ -2,6 +2,11 @@
 <danxx.library.widget.StackCardContainer xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/threeDViewContainer"
+    app:scc_anim_duration="300"
+    app:scc_edge="80"
+    app:scc_padding="60"
+    app:scc_type="horizontal"
+    app:scc_min_change_distance="20"
     android:layout_width="300dp"
     android:layout_height="480dp">
 

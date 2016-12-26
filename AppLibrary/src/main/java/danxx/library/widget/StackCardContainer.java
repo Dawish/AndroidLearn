@@ -82,7 +82,7 @@ public class StackCardContainer extends ViewGroup implements View.OnTouchListene
         //取值
         padding = typedArray.getInteger(R.styleable.StackCardContainer_scc_padding, dp2px(DEFAULT_PADDING));
         edge = typedArray.getInteger(R.styleable.StackCardContainer_scc_edge, dp2px(DEFAULT_EDGE));
-        changeDistance = typedArray.getInteger(R.styleable.StackCardContainer_scc_min_change_distance, DEFAULT_MIN_CHANGE_DISTANCE);
+        changeDistance = typedArray.getInteger(R.styleable.StackCardContainer_scc_min_change_distance,dp2px(DEFAULT_MIN_CHANGE_DISTANCE));
         animDuration = typedArray.getInteger(R.styleable.StackCardContainer_scc_anim_duration, DEFAULT_ANIM_DURATION);
         mShapeType = typedArray.getInteger(R.styleable.StackCardContainer_scc_type, DEFAULT_SHAPE_TYPE);
 
@@ -132,10 +132,15 @@ public class StackCardContainer extends ViewGroup implements View.OnTouchListene
         setMeasuredDimension(sizeWidth, sizeHeight);
 
         int childCount = getChildCount();
-
+        int childWidth, childHeight;
         /**由于每一个子View的宽高都是一样的所以就一起计算每一个View的宽高*/
-        int childWidth = getMeasuredWidth() - padding*2;
-        int childHeight = getMeasuredHeight() - padding*2 - edge*2;
+        if(ShapeType.VERTICAL.ordinal() == mShapeType){  //竖向模式
+            childWidth = getMeasuredWidth() - padding*2;
+            childHeight = getMeasuredHeight() - padding*2 - edge*2;
+        }else{   //横向模式
+            childWidth = getMeasuredWidth() - padding*2 - edge*2;
+            childHeight = getMeasuredHeight() - padding*2;
+        }
 
         int childWidthMeasureSpec = 0;
         int childHeightMeasureSpec = 0;
@@ -163,29 +168,58 @@ public class StackCardContainer extends ViewGroup implements View.OnTouchListene
             View childView = getChildAt(i);
             //四个方向的margin值
             int measureL = 0, measurelT = 0, measurelR = 0, measurelB = 0;
-            switch (i){
-                case 0:
-                    measureL = padding;
-                    measurelT = padding;
-                    measurelB = childView.getMeasuredHeight() + padding;
-                    measurelR = childView.getMeasuredWidth() + padding;
-                    childView.layout(measureL, measurelT, measurelR, measurelB);
-                    break;
-                case 1:
-                    measureL = padding;
-                    measurelT = padding + edge;
-                    measurelB = childView.getMeasuredHeight() + padding + edge;
-                    measurelR = childView.getMeasuredWidth() + padding;
-                    childView.layout(measureL, measurelT, measurelR, measurelB);
-                    break;
-                case 2:
-                    measureL = padding;
-                    measurelT = padding + edge*2;
-                    measurelB = childView.getMeasuredHeight() + padding + edge*2;
-                    measurelR = childView.getMeasuredWidth() + padding;
-                    childView.layout(measureL, measurelT, measurelR, measurelB);
-                    break;
+
+            if(ShapeType.VERTICAL.ordinal() == mShapeType){  //竖向模式
+                switch (i){
+                    case 0:
+                        measureL = padding;
+                        measurelT = padding;
+                        measurelB = childView.getMeasuredHeight() + padding;
+                        measurelR = childView.getMeasuredWidth() + padding;
+                        childView.layout(measureL, measurelT, measurelR, measurelB);
+                        break;
+                    case 1:
+                        measureL = padding;
+                        measurelT = padding + edge;
+                        measurelB = childView.getMeasuredHeight() + padding + edge;
+                        measurelR = childView.getMeasuredWidth() + padding;
+                        childView.layout(measureL, measurelT, measurelR, measurelB);
+                        break;
+                    case 2:
+                        measureL = padding;
+                        measurelT = padding + edge*2;
+                        measurelB = childView.getMeasuredHeight() + padding + edge*2;
+                        measurelR = childView.getMeasuredWidth() + padding;
+                        childView.layout(measureL, measurelT, measurelR, measurelB);
+                        break;
+                }
+            }else{   //横向模式
+                switch (i){
+                    case 0:
+                        measureL = padding;
+                        measurelT = padding;
+                        measurelB = childView.getMeasuredHeight() + padding;
+                        measurelR = childView.getMeasuredWidth() + padding;
+                        childView.layout(measureL, measurelT, measurelR, measurelB);
+                        break;
+                    case 1:
+                        measureL = padding + edge;
+                        measurelT = padding;
+                        measurelB = childView.getMeasuredHeight() + padding;
+                        measurelR = childView.getMeasuredWidth() + padding + edge;
+                        childView.layout(measureL, measurelT, measurelR, measurelB);
+                        break;
+                    case 2:
+                        measureL = padding + edge*2;
+                        measurelT = padding;
+                        measurelB = childView.getMeasuredHeight() + padding;
+                        measurelR = childView.getMeasuredWidth() + padding + edge*2;
+                        childView.layout(measureL, measurelT, measurelR, measurelB);
+                        break;
+                }
             }
+
+
         }
     }
     @Override
@@ -214,7 +248,12 @@ public class StackCardContainer extends ViewGroup implements View.OnTouchListene
 //        return super.onInterceptTouchEvent(e);
         // layout截取touch事件
         int action = e.getAction();
-        int y = (int) e.getRawY();
+        int y;
+        if(ShapeType.VERTICAL.ordinal() ==  mShapeType){
+            y = (int) e.getRawY();
+        }else{
+            y = (int) e.getRawX();
+        }
         switch (action) {
             case MotionEvent.ACTION_DOWN:
                 lastY = y;
@@ -250,7 +289,12 @@ public class StackCardContainer extends ViewGroup implements View.OnTouchListene
         Log.d("danxx", "onTouchEvent");
 //        return super.onTouchEvent(event);
         /**以屏幕左上角为坐标原点计算的Y轴坐标**/
-        int y = (int) event.getRawY();
+        int y;
+        if(ShapeType.VERTICAL.ordinal() ==  mShapeType){
+            y = (int) event.getRawY();
+        }else{
+            y = (int) event.getRawX();
+        }
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 Log.i(TAG, "MotionEvent.ACTION_DOWN");

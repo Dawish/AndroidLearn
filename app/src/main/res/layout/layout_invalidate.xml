@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/contentl"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+
+    <danxx.library.widget.InvalidateTest
+        android:id="@+id/invalidateTest"
+        android:layout_width="300dp"
+        android:layout_height="340dp">
+    </danxx.library.widget.InvalidateTest>
+
+
+    <danxx.library.widget.InvalidateTest
+        android:id="@+id/invalidateTest2"
+        android:layout_width="300dp"
+        android:layout_height="340dp">
+    </danxx.library.widget.InvalidateTest>
+
+</LinearLayout>

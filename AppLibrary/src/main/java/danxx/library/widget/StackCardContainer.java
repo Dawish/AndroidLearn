@@ -112,7 +112,6 @@ public class StackCardContainer extends ViewGroup implements View.OnTouchListene
                 });
             }
         }
-//        setOnTouchListener(this);
     }
 
     @Override

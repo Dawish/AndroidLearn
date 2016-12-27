@@ -3,12 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/threeDViewContainer"
     app:scc_anim_duration="300"
-    app:scc_edge="80"
-    app:scc_padding="60"
+    app:scc_edge="90"
+    app:scc_padding="70"
     app:scc_type="horizontal"
     app:scc_min_change_distance="20"
-    android:layout_width="300dp"
-    android:layout_height="480dp">
+    android:layout_margin="10dp"
+    android:layout_width="match_parent"
+    android:layout_height="420dp">
 
     <android.support.v7.widget.CardView
         android:id="@+id/view1"

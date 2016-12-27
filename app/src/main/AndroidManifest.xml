@@ -30,6 +30,7 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".ActivityTest"></activity>
 
     </application>
 

@@ -1,5 +1,6 @@
 package com.danxx.views;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -24,6 +25,10 @@ public class ActivityCustomImgContainer extends AppCompatActivity {
             @Override
             public void onItemViewOnClickListener(View itemView, int position) {
                 Toast.makeText(ActivityCustomImgContainer.this, "Position->"+position, Toast.LENGTH_SHORT).show();
+                if(2 == position){
+                    Intent intent = new Intent(ActivityCustomImgContainer.this, ActivityTest.class);
+                    startActivity(intent);
+                }
             }
         });
 

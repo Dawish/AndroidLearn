@@ -59,4 +59,10 @@ public class InvalidateTest extends View {
         canvas.drawCircle(280, 380, 180, paint);
         canvas.drawCircle(280, 480, 180, paint);
     }
+
+    @Override
+    public void draw(Canvas canvas) {
+        Log.d("danxx", "draw---->");
+        super.draw(canvas);
+    }
 }

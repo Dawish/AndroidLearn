@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<danxx.library.widget.InvalidateTestViewGroup xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/contentl"
     android:layout_width="match_parent"
     android:orientation="vertical"
+    android:background="#213254"
     android:layout_height="match_parent">
 
     <danxx.library.widget.InvalidateTest
@@ -18,4 +19,4 @@
         android:layout_height="340dp">
     </danxx.library.widget.InvalidateTest>
 
-</LinearLayout>
+</danxx.library.widget.InvalidateTestViewGroup>

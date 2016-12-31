@@ -20,29 +20,17 @@ public class ActivityTest extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_invalidate);
 
-         final InvalidateTest invalidateTest = (InvalidateTest) findViewById(R.id.invalidateTest);
+//         final InvalidateTest invalidateTest = (InvalidateTest) findViewById(R.id.invalidateTest);
 
-         final LinearLayout linearLayout = (LinearLayout) findViewById(R.id.contentl);
-
-        linearLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                linearLayout.postInvalidate(invalidateTest.getLeft(),invalidateTest.getTop(),
-                        invalidateTest.getRight(),invalidateTest.getBottom());
-            }
-        });
-
-
-//        linearLayout.postDelayed(new Runnable() {
+//         final LinearLayout linearLayout = (LinearLayout) findViewById(R.id.contentl);
+//
+//        linearLayout.setOnClickListener(new View.OnClickListener() {
 //            @Override
-//            public void run() {
-//                linearLayout.requestLayout();
-//                Log.d("danxx", "linearLayout-------->");
-////                invalidateTest.postInvalidate(280,280,100,300);
+//            public void onClick(View v) {
+//                linearLayout.postInvalidate(invalidateTest.getLeft(),invalidateTest.getTop(),
+//                        invalidateTest.getRight(),invalidateTest.getBottom());
 //            }
-//        },2000);
-
-
+//        });
 
     }
 }

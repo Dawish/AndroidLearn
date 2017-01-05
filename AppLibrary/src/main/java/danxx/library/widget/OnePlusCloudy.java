@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -163,5 +164,66 @@ public class OnePlusCloudy extends View {
         path5.quadTo(controlPoint5.x, controlPoint5.y, endPoint5.x, endPoint5.y);
         canvas.drawPath(path5, paint);
 
+    }
+
+    public void anim(){
+        controlPoint1.y += 2;
+        controlPoint2.y -= 2;
+        controlPoint3.y += 2;
+        controlPoint4.y -= 2;
+        controlPoint5.y += 2;
+        postInvalidate();
+    }
+    public void resetAnim(){
+        controlPoint1.y -= 2;
+        controlPoint2.y += 2;
+        controlPoint3.y -= 2;
+        controlPoint4.y += 2;
+        controlPoint5.y -= 2;
+        postInvalidate();
+    }
+
+    int animCount = 0;
+
+    int resetAnimCount = 0;
+
+    Handler handler = new Handler();
+
+    private boolean isStop = false;
+
+    Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            if(isStop){
+                return;
+            }
+            if(animCount < 40){
+                anim();
+                animCount++;
+                if(animCount == 40){
+                    resetAnimCount = 0;
+                }
+            }else{
+                resetAnim();
+                resetAnimCount++;
+                if(resetAnimCount == 40){
+                    animCount = 0;
+                }
+            }
+            handler.postDelayed(this, 100);
+        }
+    };
+
+    public void start(){
+        if(!isStop){
+            return;
+        }
+        isStop = false;
+        handler.post(runnable);
+    }
+
+    public void stop(){
+        isStop = true;
+        handler.removeCallbacksAndMessages(null);
     }
 }

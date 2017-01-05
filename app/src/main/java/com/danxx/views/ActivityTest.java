@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import danxx.library.widget.InvalidateTest;
+import danxx.library.widget.OnePlusCloudy;
 import danxx.library.widget.StackCardContainer;
 
 /**
@@ -15,10 +16,14 @@ import danxx.library.widget.StackCardContainer;
  */
 
 public class ActivityTest extends AppCompatActivity {
+    OnePlusCloudy onePlusCloudy;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_invalidate);
+        onePlusCloudy = (OnePlusCloudy) findViewById(R.id.onePlusCloudy);
+
+
 
 //         final InvalidateTest invalidateTest = (InvalidateTest) findViewById(R.id.invalidateTest);
 
@@ -33,4 +38,12 @@ public class ActivityTest extends AppCompatActivity {
 //        });
 
     }
+    public void start(View view){
+        onePlusCloudy.start();
+    }
+    public void stop(View view){
+        onePlusCloudy.stop();
+    }
+
+
 }

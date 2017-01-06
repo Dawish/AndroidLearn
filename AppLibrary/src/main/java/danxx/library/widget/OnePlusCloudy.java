@@ -12,7 +12,7 @@ import android.view.View;
 
 /**
  * Created by Dawish on 2016/12/31.
- * 用四个二阶贝塞尔曲线实现一加天气的多云云朵
+ * 用五个二阶贝塞尔曲线实现一加天气的多云云朵
  */
 
 public class OnePlusCloudy extends View {
@@ -166,7 +166,10 @@ public class OnePlusCloudy extends View {
 
     }
 
-    public void anim(){
+    /**
+     * 部分控制点的Y坐标是加部分控制点的是减
+     */
+    private void anim(){
         controlPoint1.y += 2;
         controlPoint2.y -= 2;
         controlPoint3.y += 2;
@@ -174,7 +177,7 @@ public class OnePlusCloudy extends View {
         controlPoint5.y += 2;
         postInvalidate();
     }
-    public void resetAnim(){
+    private void resetAnim(){
         controlPoint1.y -= 2;
         controlPoint2.y += 2;
         controlPoint3.y -= 2;
@@ -190,7 +193,10 @@ public class OnePlusCloudy extends View {
     Handler handler = new Handler();
 
     private boolean isStop = false;
-
+    /**
+     * 不断刷新界面
+     * 不断来回改变控制点的Y坐标不断重绘界面。
+     */
     Runnable runnable = new Runnable() {
         @Override
         public void run() {

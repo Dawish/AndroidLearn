@@ -22,21 +22,6 @@ public class ActivityTest extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_invalidate);
         onePlusCloudy = (OnePlusCloudy) findViewById(R.id.onePlusCloudy);
-
-
-
-//         final InvalidateTest invalidateTest = (InvalidateTest) findViewById(R.id.invalidateTest);
-
-//         final LinearLayout linearLayout = (LinearLayout) findViewById(R.id.contentl);
-//
-//        linearLayout.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                linearLayout.postInvalidate(invalidateTest.getLeft(),invalidateTest.getTop(),
-//                        invalidateTest.getRight(),invalidateTest.getBottom());
-//            }
-//        });
-
     }
     public void start(View view){
         onePlusCloudy.start();

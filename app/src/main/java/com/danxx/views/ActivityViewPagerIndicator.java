@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import danxx.library.widget.OnePlusCloudy;
+import danxx.library.widget.TabStrip;
 
 /**
  * Created by Dawish on 2017/1/7.
@@ -21,8 +22,10 @@ import danxx.library.widget.OnePlusCloudy;
 
 public class ActivityViewPagerIndicator  extends AppCompatActivity {
 
-    private View vline;
-
+    private ViewPager viewPager;
+    private TabStrip tabStrip;
+    private String[] titles = new String[] { "大桥", " 波多", "未久", "小乔", "阿萨", "撒旦", "递归",
+            "搞死", "大防" };
     /**
      * 指示器偏移宽度
      */
@@ -39,72 +42,29 @@ public class ActivityViewPagerIndicator  extends AppCompatActivity {
      */
     private int screeHeight = 0;
 
-    private int[] drawableResIds = {R.mipmap.mm1,R.mipmap.mm2};
+    private int[] drawableResIds = {R.mipmap.mm1,R.mipmap.mm2,R.mipmap.mm1,R.mipmap.mm2,R.mipmap.mm1,
+            R.mipmap.mm1,R.mipmap.mm2,R.mipmap.mm1,R.mipmap.mm2};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.anim_layout);
 
-        vline = findViewById(R.id.line);
-        mViewPager = (ViewPager) findViewById(R.id.anim_view_pager);
+
+
+        mViewPager = (ViewPager) findViewById(R.id.viewpager);
+
+        tabStrip = (TabStrip) findViewById(R.id.tabstrip);
+
 
         screenWith = getWindow().getWindowManager().getDefaultDisplay().getWidth();
         screeHeight = getWindow().getWindowManager().getDefaultDisplay().getHeight()-dip2px(this, 45);
         //这里之所以是45，请查看布局文件，其中ViewPager以上的节点的高度总和为45
 
-        ViewGroup.LayoutParams lp = vline.getLayoutParams();
-        offsetWidth = lp.width = screenWith / 2;
-        vline.setLayoutParams(lp);
-        vline.setTag("0");
-
-        mViewPager.setOnPageChangeListener(pageChangedListener);
         mViewPager.setAdapter(new ViewPagerAdapter());
-
+        tabStrip.setViewPager(mViewPager);
 
     }
-    private ViewPager.OnPageChangeListener pageChangedListener = new ViewPager.OnPageChangeListener() {
-
-        private boolean isAnim = false;
-        private int pos = 0;
-
-        @Override
-        public void onPageSelected(int position)
-        {
-            Log.e("ViewPager", "position===>"+position);
-            vline.setTranslationX(position*offsetWidth);
-            pos = position;
-        }
-
-        @Override
-        public void onPageScrolled(int arg0, float arg1, int arg2) {
-            Log.d("ViewPager", "arg0="+arg0+"  arg1="+arg1+"   arg2="+arg2);
-            if(isAnim && arg1!=0)
-            {
-                vline.setTranslationX(offsetWidth*arg1);
-            }
-        }
-
-        @Override
-        public void onPageScrollStateChanged(int arg0)
-        {
-            Log.i("ViewPager", "=====>arg0="+arg0);
-            if(arg0==1) //开始状态
-            {
-                isAnim  = true;
-            }
-            else if(arg0==2) //分界状态
-            {
-                isAnim = false;
-                vline.setTranslationX(pos*offsetWidth);
-            }
-            else if(arg0==0) //结束状态
-            {
-                vline.setTranslationX(pos*offsetWidth);
-            }
-        }
-
-    };
     private class ViewPagerAdapter extends PagerAdapter
     {
 
@@ -136,6 +96,11 @@ public class ActivityViewPagerIndicator  extends AppCompatActivity {
             return arg0==arg1;
         }
 
+        @Override
+        public CharSequence getPageTitle(int position) {
+//            return super.getPageTitle(position);
+            return titles[position];
+        }
     }
 
 
@@ -164,22 +129,6 @@ public class ActivityViewPagerIndicator  extends AppCompatActivity {
         return BitmapFactory.decodeResource(getResources(),resId, opts);
     }
 
-    public void doSwicth(View v) {
-        switch (v.getId())
-        {
-            case R.id.fade_anim_left:
-            {
-                mViewPager.setCurrentItem(0,true);
-            }
-            break;
-            case R.id.fade_anim_right:
-                mViewPager.setCurrentItem(1,true);
-                break;
-
-            default:
-                break;
-        }
-    }
 
     /**
      * 根据手机的分辨率从 dp 的单位 转成为 px(像素)

@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
@@ -377,4 +378,47 @@ public class AppUtils {
 		diff = (diff != 0) ? diff : versionArray1.length - versionArray2.length;
 		return diff;
 	}
+
+	/**
+	 * 调整压缩采样率
+	 * @param resId
+	 * @return
+	 */
+	private Bitmap adjustBitmapSimpleSize(int resId, Context context, int height, int with)
+	{
+		BitmapFactory.Options opts = new BitmapFactory.Options();
+		opts.inJustDecodeBounds = true;
+		Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),resId, opts);
+		int visibleHeight = height;
+		int visibleWidth = with;
+		if(opts.outWidth>visibleWidth ||opts.outHeight>visibleHeight)
+		{
+			float wRatio =  opts.outWidth/visibleWidth;
+			float hRatio =  opts.outHeight/visibleHeight;
+			opts.inSampleSize = (int) Math.max(wRatio, hRatio);
+		}
+		opts.inJustDecodeBounds = false;
+		if(bitmap!=null){
+			bitmap.recycle();
+		}
+		return BitmapFactory.decodeResource(context.getResources(),resId, opts);
+	}
+
+
+	/**
+	 * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
+	 */
+	public static int dip2px(Context context, float dpValue) {
+		final float scale = context.getResources().getDisplayMetrics().density;
+		return (int) (dpValue * scale + 0.5f);
+	}
+
+	/**
+	 * 根据手机的分辨率从 px(像素) 的单位 转成为 dp
+	 */
+	public static int px2dip(Context context, float pxValue) {
+		final float scale = context.getResources().getDisplayMetrics().density;
+		return (int) (pxValue / scale + 0.5f);
+	}
+
 }

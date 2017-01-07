@@ -1,58 +1,24 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
-    <LinearLayout
+    <danxx.library.widget.TabStrip
+        android:id="@+id/tabstrip"
+        custom:indicatorHeight="2dp"
+        custom:indicatorColor="@android:color/holo_red_light"
+        custom:indicatorMargin="20dp"
+        custom:indicatorTextSize="15sp"
+        custom:selectedIndicatorTextSize="18sp"
+        custom:indicatorTextColor="@android:color/black"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
-        <Button
-            android:id="@+id/fade_anim_left"
-            android:layout_width="match_parent"
-            android:layout_height="40dip"
-            android:layout_weight="1"
-            android:text="Left"
-            android:onClick="doSwicth"
-            />
-        <View
-            android:layout_width="1dip"
-            android:layout_height="30dip"
-            android:background="@color/red"
-            />
-        <Button
-
-            android:id="@+id/fade_anim_right"
-            android:layout_width="match_parent"
-            android:layout_height="40dip"
-            android:text="Right"
-            android:layout_weight="1"
-            android:onClick="doSwicth"
-            />
-    </LinearLayout>
-
-    <View
-        android:id="@+id/line"
-        android:layout_width="160dip"
-        android:layout_height="5dip"
-        android:background="@color/red"
-        />
-
+        android:layout_height="40dp" />
 
     <android.support.v4.view.ViewPager
-        android:id="@+id/anim_view_pager"
+        android:id="@+id/viewpager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="vertical"
-        android:keepScreenOn="true"
-        >
-        <!-- <android.support.v4.view.PagerTabStrip
-          android:id="@+id/anim_view_pager_tabsctrip"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_gravity="top"/>    -->
-    </android.support.v4.view.ViewPager>
+        android:layout_height="match_parent"/>
 
 </LinearLayout>

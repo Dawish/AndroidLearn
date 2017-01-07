@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="TabStrip">
+        <attr name="indicatorHeight" format="dimension" />
+        <attr name="indicatorColor" format="color" />
+        <attr name="indicatorMargin" format="dimension" />
+        <attr name="indicatorTextColor" format="color" />
+        <attr name="indicatorTextSize" format="dimension" />
+        <attr name="selectedIndicatorTextSize" format="dimension" />
+    </declare-styleable>
+
+</resources>

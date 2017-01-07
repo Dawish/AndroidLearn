@@ -26,7 +26,7 @@ public class ActivityCustomImgContainer extends AppCompatActivity {
             public void onItemViewOnClickListener(View itemView, int position) {
                 Toast.makeText(ActivityCustomImgContainer.this, "Position->"+position, Toast.LENGTH_SHORT).show();
                 if(2 == position){
-                    Intent intent = new Intent(ActivityCustomImgContainer.this, ActivityTest.class);
+                    Intent intent = new Intent(ActivityCustomImgContainer.this, ActivityViewPagerIndicator.class);
                     startActivity(intent);
                 }
             }

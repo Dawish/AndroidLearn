@@ -24,7 +24,7 @@ public class ActivityViewPagerIndicator  extends AppCompatActivity {
 
     private ViewPager viewPager;
     private TabStrip tabStrip;
-    private String[] titles = new String[] { "大桥", " 波多", "未久", "小乔", "阿萨", "撒旦", "递归",
+    private String[] titles = new String[] { "大小桥", " 波多", "未久久", "小乔", "阿萨", "撒旦", "递归",
             "搞死", "大防" };
     /**
      * 指示器偏移宽度
@@ -49,8 +49,6 @@ public class ActivityViewPagerIndicator  extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.anim_layout);
-
-
 
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
 

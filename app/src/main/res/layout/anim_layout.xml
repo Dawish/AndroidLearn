@@ -7,7 +7,7 @@
 
     <danxx.library.widget.TabStrip
         android:id="@+id/tabstrip"
-        custom:indicatorHeight="2dp"
+        custom:indicatorHeight="3dp"
         custom:indicatorColor="@android:color/holo_red_light"
         custom:indicatorMargin="20dp"
         custom:indicatorTextSize="15sp"

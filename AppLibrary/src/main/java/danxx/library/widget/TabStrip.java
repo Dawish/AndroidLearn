@@ -1,16 +1,19 @@
 package danxx.library.widget;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Build;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -25,8 +28,8 @@ import danxx.library.R;
  * ViewPager指示器
  *
  */
-@SuppressLint("NewApi")
 public class TabStrip extends HorizontalScrollView {
+	private static final String TAG = "TabStrip";
 	/**
 	 * 指示器容器
 	 */
@@ -98,8 +101,8 @@ public class TabStrip extends HorizontalScrollView {
 	private Paint paint;
 	private Context context;
 
-	public TabStrip(Context context, AttributeSet attrs, int defStyleAttr,
-					int defStyleRes) {
+	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
+	public TabStrip(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
 		super(context, attrs, defStyleAttr, defStyleRes);
 		init(context, attrs, defStyleAttr, defStyleRes);
 	}
@@ -127,8 +130,8 @@ public class TabStrip extends HorizontalScrollView {
 	 * @param defStyleAttr
 	 * @param defStyleRes
 	 */
-	private void init(Context context, AttributeSet attrs, int defStyleAttr,
-					  int defStyleRes) {
+	private void init(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+		Log.i(TAG,"init----->");
 		this.context = context;
 		// 取消横向的滚动条
 		setHorizontalScrollBarEnabled(false);
@@ -189,6 +192,7 @@ public class TabStrip extends HorizontalScrollView {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
+		Log.i(TAG,"onDraw----->");
 		// 如果指示器个数为0，直接结束绘画
 		if (tabCount == 0) {
 			return;
@@ -206,19 +210,18 @@ public class TabStrip extends HorizontalScrollView {
 		float leftPadding = currentTab.getLeft();
 		// 当前tab的右边相对于父容器左边距
 		float rightPadding = currentTab.getRight();
+		float tempPadding = 0;
 		// 如果出现位移
 		if (currentPositionOffset > 0f && currentPosition < tabCount - 1) {
 			View nextTab = container.getChildAt(currentPosition + 1);
 			final float nextTabLeft = nextTab.getLeft();
 			final float nextTabRight = nextTab.getRight();
-			leftPadding = (currentPositionOffset * nextTabLeft
-					+ (1f - currentPositionOffset) * leftPadding);
-			rightPadding = (currentPositionOffset * nextTabRight
-					+ (1f - currentPositionOffset) * rightPadding);
+			leftPadding = (currentPositionOffset * nextTabLeft + (1f - currentPositionOffset) * leftPadding);
+			rightPadding = (currentPositionOffset * nextTabRight + (1f - currentPositionOffset) * rightPadding);
 		}
+		tempPadding = currentTab.getMeasuredWidth()/3;
 		// 绘制
-		canvas.drawRect(leftPadding, height - indicatorHeight, rightPadding,
-				height, paint);
+		canvas.drawRect(leftPadding + tempPadding, height - indicatorHeight, rightPadding - tempPadding, height, paint);
 
 	}
 
@@ -253,17 +256,14 @@ public class TabStrip extends HorizontalScrollView {
 		}
 		// 更新Tab样式
 		updateTabStyle();
-		getViewTreeObserver()
-				.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
-
-					@Override
-					public void onGlobalLayout() {
-						getViewTreeObserver()
-								.removeOnGlobalLayoutListener(this);
-						currentPosition = viewPager.getCurrentItem();
-						scrollToChild(currentPosition, 0);
-					}
-				});
+		getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+			@Override
+			public void onGlobalLayout() {
+				getViewTreeObserver().removeOnGlobalLayoutListener(this);
+				currentPosition = viewPager.getCurrentItem();
+				scrollToChild(currentPosition, 0);
+			}
+		});
 	}
 
 	/**
@@ -273,6 +273,7 @@ public class TabStrip extends HorizontalScrollView {
 	 * @param offset
 	 */
 	private void scrollToChild(int position, int offset) {
+		Log.i(TAG,"scrollToChild---->");
 		if (tabCount == 0) {
 			return;
 		}
@@ -328,36 +329,43 @@ public class TabStrip extends HorizontalScrollView {
 	/**
 	 * viewPager状态改变监听
 	 *
-	 * @author fxx
-	 *
 	 */
 	private class PagerStateChangeListener implements OnPageChangeListener {
 
+		/**
+		 * viewpager状态监听
+		 * @param state
+         */
 		@Override
 		public void onPageScrollStateChanged(int state) {
-			// 滑动状态为停止时
-			if (state == ViewPager.SCROLL_STATE_IDLE) {
+			if (state == ViewPager.SCROLL_STATE_IDLE) {  // 0 空闲状态  pager处于空闲状态
 				scrollToChild(viewPager.getCurrentItem(), 0);
+			}else if(state == ViewPager.SCROLL_STATE_SETTLING){ // 2 正在自动沉降，相当于松手后，pager恢复到一个完整pager的过程
+
+			}else if(state == ViewPager.SCROLL_STATE_DRAGGING){  // 1 viewpager正在被滑动,处于正在拖拽中
+
 			}
 		}
 
 		/**
+		 * viewpager正在滑动，会回调一些偏移量
 		 * 滚动时，只要处理指示器下方横线的滚动
+		 * @param position 当前页面
+		 * @param positionOffset  当前页面偏移的百分比
+		 * @param positionOffsetPixels 当前页面偏移的百分比
 		 */
 		@Override
-		public void onPageScrolled(int position, float positionOffset,
-								   int positionOffsetPixels) {
+		public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 			currentPosition = position;
 			currentPositionOffset = positionOffset;
-			// 处理指示器下方横线的滚动
-			scrollToChild(position, (int) (positionOffset
-					* container.getChildAt(position).getWidth()));
-
+			// 处理指示器下方横线的滚动,scrollToChild会不断调用ondraw方法，绘制在重绘下划线，这就是移动动画效果
+			scrollToChild(position, (int) (positionOffset * container.getChildAt(position).getWidth()));
 			invalidate();
 		}
 
 		/**
 		 * page滚动结束
+		 * @param position  滚动结束后选中的页面
 		 */
 		@Override
 		public void onPageSelected(int position) {

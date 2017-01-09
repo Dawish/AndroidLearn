@@ -7,13 +7,11 @@ import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import danxx.library.widget.OnePlusCloudy;
 import danxx.library.widget.TabStrip;
 
 /**
@@ -42,8 +40,8 @@ public class ActivityViewPagerIndicator  extends AppCompatActivity {
      */
     private int screeHeight = 0;
 
-    private int[] drawableResIds = {R.mipmap.mm1,R.mipmap.mm2,R.mipmap.mm1,R.mipmap.mm2,R.mipmap.mm1,
-            R.mipmap.mm1,R.mipmap.mm2,R.mipmap.mm1,R.mipmap.mm2};
+    private int[] drawableResIds = {R.mipmap.mm1,R.mipmap.mm2,R.mipmap.mm3,R.mipmap.mm4,R.mipmap.mm5,
+            R.mipmap.mm6,R.mipmap.mm7,R.mipmap.mm8};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

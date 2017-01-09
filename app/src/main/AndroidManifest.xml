@@ -31,7 +31,8 @@
         </activity>
 
         <activity android:name=".ActivityTest"></activity>
-        <activity android:name=".ActivityViewPagerIndicator"></activity>
+        <activity android:name=".ActivityViewPagerIndicator"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
 
     </application>
 

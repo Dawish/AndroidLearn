@@ -210,16 +210,19 @@ public class TabStrip extends HorizontalScrollView {
 		float leftPadding = currentTab.getLeft();
 		// 当前tab的右边相对于父容器左边距
 		float rightPadding = currentTab.getRight();
-		float tempPadding = 0;
+		float tempPadding = 100;
 		// 如果出现位移
-		if (currentPositionOffset > 0f && currentPosition < tabCount - 1) {
+
+		Log.i("danxx","currentPosition--->"+currentPosition);
+
+		if (currentPositionOffset >= 0f && currentPosition < tabCount - 1) {
 			View nextTab = container.getChildAt(currentPosition + 1);
 			final float nextTabLeft = nextTab.getLeft();
 			final float nextTabRight = nextTab.getRight();
 			leftPadding = (currentPositionOffset * nextTabLeft + (1f - currentPositionOffset) * leftPadding);
 			rightPadding = (currentPositionOffset * nextTabRight + (1f - currentPositionOffset) * rightPadding);
 		}
-		tempPadding = currentTab.getMeasuredWidth()/3;
+//		tempPadding = currentTab.getMeasuredWidth()/3;
 		// 绘制
 		canvas.drawRect(leftPadding + tempPadding, height - indicatorHeight, rightPadding - tempPadding, height, paint);
 
@@ -352,12 +355,13 @@ public class TabStrip extends HorizontalScrollView {
 		 * 滚动时，只要处理指示器下方横线的滚动
 		 * @param position 当前页面
 		 * @param positionOffset  当前页面偏移的百分比
-		 * @param positionOffsetPixels 当前页面偏移的百分比
+		 * @param positionOffsetPixels 当前页面偏移的像素值
 		 */
 		@Override
 		public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 			currentPosition = position;
 			currentPositionOffset = positionOffset;
+			Log.i("danxx", "positionOffsetPixels---->"+positionOffsetPixels);
 			// 处理指示器下方横线的滚动,scrollToChild会不断调用ondraw方法，绘制在重绘下划线，这就是移动动画效果
 			scrollToChild(position, (int) (positionOffset * container.getChildAt(position).getWidth()));
 			invalidate();

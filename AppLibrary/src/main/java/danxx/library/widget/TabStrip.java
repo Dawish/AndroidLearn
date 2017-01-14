@@ -210,10 +210,12 @@ public class TabStrip extends HorizontalScrollView {
 		float leftPadding = currentTab.getLeft();
 		// 当前tab的右边相对于父容器左边距
 		float rightPadding = currentTab.getRight();
-		float tempPadding = 100;
+		float tempPadding = 20;
 		// 如果出现位移
 
-		Log.i("danxx","currentPosition--->"+currentPosition);
+		Log.i("danxx","currentPositionOffset--->"+currentPositionOffset);
+
+		float centerPosition = 0.0f;
 
 		if (currentPositionOffset >= 0f && currentPosition < tabCount - 1) {
 			View nextTab = container.getChildAt(currentPosition + 1);
@@ -222,9 +224,14 @@ public class TabStrip extends HorizontalScrollView {
 			leftPadding = (currentPositionOffset * nextTabLeft + (1f - currentPositionOffset) * leftPadding);
 			rightPadding = (currentPositionOffset * nextTabRight + (1f - currentPositionOffset) * rightPadding);
 		}
+		centerPosition = (rightPadding - leftPadding)/2 + leftPadding;
 //		tempPadding = currentTab.getMeasuredWidth()/3;
 		// 绘制
-		canvas.drawRect(leftPadding + tempPadding, height - indicatorHeight, rightPadding - tempPadding, height, paint);
+
+		float left = centerPosition - tempPadding - formatPercent(currentPositionOffset)*tempPadding;
+		float right = centerPosition + tempPadding + formatPercent(currentPositionOffset)*tempPadding;
+
+		canvas.drawRect(left, height - indicatorHeight, right, height, paint);
 
 	}
 
@@ -330,6 +337,21 @@ public class TabStrip extends HorizontalScrollView {
 	}
 
 	/**
+	 * 对偏移百分比进行格式化 保证是一个小到大 然后到小的一个驼峰过程
+	 * 这样才能保证滚动指示器是一个长度在随着滚动偏移不断变化的样子
+	 * @param percent
+	 * @return
+     */
+	private float formatPercent(float percent){
+
+		float adsP = (float) Math.abs(percent - 0.5f);
+
+		float valueP = Math.abs(0.5f - adsP);
+		Log.i("danxx", "格式化-2->"+valueP);
+		return valueP;
+	}
+
+	/**
 	 * viewPager状态改变监听
 	 *
 	 */
@@ -361,7 +383,6 @@ public class TabStrip extends HorizontalScrollView {
 		public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 			currentPosition = position;
 			currentPositionOffset = positionOffset;
-			Log.i("danxx", "positionOffsetPixels---->"+positionOffsetPixels);
 			// 处理指示器下方横线的滚动,scrollToChild会不断调用ondraw方法，绘制在重绘下划线，这就是移动动画效果
 			scrollToChild(position, (int) (positionOffset * container.getChildAt(position).getWidth()));
 			invalidate();

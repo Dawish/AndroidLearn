@@ -10,6 +10,12 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+
+        ndk{
+            moduleName "DanxxJniLibName"         //生成的so名字
+            abiFilters "armeabi", "armeabi-v7a", "x86"  //输出指定三种abi体系结构下的so库。目前可有可无。
+        }
+
     }
 
     aaptOptions {

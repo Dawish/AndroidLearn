@@ -23,17 +23,19 @@
         <activity android:name="com.java.ui.ActivityDecorator">
         </activity>
         <activity android:name=".ActivityCustomImgContainer">
+
+        </activity>
+
+        <activity android:name=".ActivityTest"></activity>
+        <activity android:name=".ActivityViewPagerIndicator"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+        <activity android:name=".NdkActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".ActivityTest"></activity>
-        <activity android:name=".ActivityViewPagerIndicator"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
-
     </application>
 
 </manifest>

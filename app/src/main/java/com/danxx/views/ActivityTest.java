@@ -3,6 +3,7 @@ package com.danxx.views;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -30,5 +31,8 @@ public class ActivityTest extends AppCompatActivity {
         onePlusCloudy.stop();
     }
 
-
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return super.onTouchEvent(event);
+    }
 }

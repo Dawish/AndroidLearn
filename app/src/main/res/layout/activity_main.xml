@@ -11,6 +11,14 @@
     tools:context="com.danxx.views.MainActivity">
 
     <Button
+        android:id="@+id/aopBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:onClick="CustomViewPagerActivity"
+        android:text= "aopBtn" />
+
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"

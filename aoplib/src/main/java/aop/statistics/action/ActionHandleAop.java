@@ -13,12 +13,13 @@ import java.lang.Object;
 
 /**
  * Created by Dawish on 2017/5/11.
+ * 屏幕操作统计
  */
 
 @Aspect  //切面注解
 public class ActionHandleAop {
 
-    private final static String TAG = "statistics";
+    private final static String TAG = "ActionHandleAop";
 
     @RequiresApi(api = Build.VERSION_CODES.DONUT)
     @Before("execution(* android.app.Activity.onTouchEvent(..))")

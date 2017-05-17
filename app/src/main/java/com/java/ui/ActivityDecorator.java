@@ -62,4 +62,8 @@ public class ActivityDecorator extends AppCompatActivity {
         price.setText("价格: "+ iFood.caculatePrice() +" 元");
     }
 
+    @Override
+    public void finish() {
+        super.finish();
+    }
 }

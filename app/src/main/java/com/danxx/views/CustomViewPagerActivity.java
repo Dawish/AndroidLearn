@@ -13,4 +13,14 @@ public class CustomViewPagerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custom_viewpager);
     }
+
+    @Override
+    public void finish() {
+        super.finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 }

@@ -24,6 +24,7 @@ public class DxImageLoader {
      * Android DiskLruCache完全解析，硬盘缓存的最佳方案 http://blog.csdn.net/guolin_blog/article/details/28863651
      * Android性能优化之使用线程池处理异步任务 http://blog.csdn.net/u010687392/article/details/49850803
      * Android开发之高效加载Bitmap http://www.cnblogs.com/absfree/p/5361167.html
+     * Android线程同步 http://blog.csdn.net/peng6662001/article/details/7277851/
      */
     /**单例*/
     private static DxImageLoader mInstance;
@@ -139,7 +140,7 @@ public class DxImageLoader {
         return 1;
     }
     /**
-     * step 1
+     * step 1（必须步骤）
      * 加载图片的url地址，返回RequestCreator对象
      * @param url
      * @return
@@ -166,6 +167,7 @@ public class DxImageLoader {
         }
 
         /**
+         * step 2(可无步骤)
          * 设置默认图片，占位图片
          * @param holderResId
          */
@@ -174,6 +176,17 @@ public class DxImageLoader {
             return this;
         }
         /**
+         * step 3(可无步骤)
+         * 发生错误加载的图篇
+         * @param errorResId
+         */
+        public RequestCreator error(int errorResId) {
+            this.errorResId = errorResId;
+            return this;
+        }
+
+        /**
+         * step 4（必须步骤）
          * 提供设置图片的核心方法
          *
          * @param imageView
@@ -183,15 +196,6 @@ public class DxImageLoader {
             this.imageView = imageView;
             //开始加载图片
         }
-        /**
-         * 发生错误加载的图篇
-         * @param errorResId
-         */
-        public RequestCreator error(int errorResId) {
-            this.errorResId = errorResId;
-            return this;
-        }
-
         @Override
         public void run() {
             //做网络请求

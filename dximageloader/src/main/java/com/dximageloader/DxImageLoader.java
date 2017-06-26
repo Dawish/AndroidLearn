@@ -129,6 +129,7 @@ public class DxImageLoader {
      */
     private void addToMemoryCache(String key, Bitmap bitmap) {
         if (loadFromMemoryCache(key) == null) {
+            Log.i("danxx","addToMemoryCache");
             mMemoryCache.put(key, bitmap);
         }
     }
@@ -439,7 +440,8 @@ public class DxImageLoader {
             try {
                 Bitmap bitmap;
                 Log.i("danxx", "开始任务");
-                bitmap = loadFromMemoryCache(url);
+                String key = getKeyFromUrl(url);
+                bitmap = loadFromMemoryCache(key);
                 if (bitmap != null) {
                     Log.i("danxx", "loadFromMemoryCache");
                     displayImage(bitmap);

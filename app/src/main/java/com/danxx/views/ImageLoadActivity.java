@@ -47,9 +47,6 @@ public class ImageLoadActivity  extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_load_image);
-        //初始化图片加载库
-        DxImageLoader.getInstance().init(ImageLoadActivity.this.getApplicationContext());
-
     }
 
     public void load(View v){

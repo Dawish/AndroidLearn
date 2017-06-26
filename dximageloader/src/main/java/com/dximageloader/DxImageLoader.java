@@ -6,19 +6,27 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
+import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.util.LruCache;
 import android.widget.ImageView;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.lang.ref.SoftReference;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -28,10 +36,25 @@ import java.util.concurrent.TimeUnit;
  */
 public class DxImageLoader {
     /**
+     * 文章导读---------------------------------------------------
      * Android DiskLruCache完全解析，硬盘缓存的最佳方案 http://blog.csdn.net/guolin_blog/article/details/28863651
      * Android性能优化之使用线程池处理异步任务 http://blog.csdn.net/u010687392/article/details/49850803
      * Android开发之高效加载Bitmap http://www.cnblogs.com/absfree/p/5361167.html
      * Android线程同步 http://blog.csdn.net/peng6662001/article/details/7277851/
+     *
+     * 方法调用顺序-----------------------------------------------
+     * load   -->  placeholder  -->  error  -->  	into
+     *
+     * 图片加载顺序---------------------------------------------
+     * loadFromMemoryCache    成功返回bitmap
+     * loadFromDisk  =》addToMemoryCache  获取成功并压缩后把bitmap添加到运行内存  返回bitmap
+     *      ↑
+     *      <----------------------------------
+     *                                         ↑
+     * loadFromNet  =》  addToDisk   =》 loadFromDisk   网络获取成功后
+     *                          调用loadFromDisk添加到文件缓存(返回压缩的bitmap 并添加到运行内存)
+     *
+     *
      */
     private final static String TAG = "DxImageLoader";
     /**单例*/
@@ -48,13 +71,15 @@ public class DxImageLoader {
     private static final long KEEP_ALIVE = 5L;
 
     /**图片加载线程池*/
-    public static final Executor threadPoolExecutor = new ThreadPoolExecutor(CORE_POOL_SIZE,
+    public static final ExecutorService threadPoolExecutor = new ThreadPoolExecutor(CORE_POOL_SIZE,
             MAX_POOL_SIZE, KEEP_ALIVE, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
 
-    /**内存缓存(软引用)*/
+    /**内存缓存*/
     private LruCache<String, Bitmap> mMemoryCache;
     /**文件缓存*/
     private DiskLruCache mDiskLruCache;
+    /**主线的handler方便在其他的线程中显示UI操作*/
+    private Handler mMainHandler = new Handler(Looper.getMainLooper());
 
     private DxImageLoader(){
     }
@@ -73,6 +98,7 @@ public class DxImageLoader {
     }
 
     public void init(Context context){
+        Log.i("danxx", TAG+" init");
         int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
         int memoryCacheSize = maxMemory / 8;
         mMemoryCache = new LruCache<String, Bitmap>(memoryCacheSize){
@@ -102,22 +128,24 @@ public class DxImageLoader {
      * @param bitmap
      */
     private void addToMemoryCache(String key, Bitmap bitmap) {
-        if (getFromMemoryCache(key) == null) {
+        if (loadFromMemoryCache(key) == null) {
             mMemoryCache.put(key, bitmap);
         }
     }
 
     /**
+     * 首选 1
      * 根据key值获取内存中的bitmap
      * @param key
      * @return
      */
-    private Bitmap getFromMemoryCache(String key) {
+    private Bitmap loadFromMemoryCache(String key) {
         return mMemoryCache.get(key);
     }
 
     /**
-     * 从文件缓存中获取图片
+     * 次选 2
+     * 从文件缓存中获取图片 (这个步骤会对返回和内存缓存的bitmap进行压缩)
      * @param url url（也是存取图片的key）
      * @param dstWidth
      * @param dstHeight
@@ -126,9 +154,8 @@ public class DxImageLoader {
      */
     private Bitmap loadFromDisk(String url, int dstWidth, int dstHeight) throws IOException {
         if (Looper.myLooper() == Looper.getMainLooper()) {
-            Log.w(TAG, "should not Bitmap in main thread");
+            Log.i(TAG, "should not Bitmap in main thread");
         }
-
         if (mDiskLruCache == null) {
             return null;
         }
@@ -146,6 +173,84 @@ public class DxImageLoader {
         return bitmap;
     }
 
+    /**
+     * 最后选 3
+     * 运行内存和文件中都没有获取到后就从网络获取
+     * 从网络获取成功后添加到 文件缓存 和 内存缓存
+     * @param url
+     * @param dstWidth
+     * @param dstHeight
+     * @return
+     * @throws IOException
+     */
+    private Bitmap loadFromNet(String url, int dstWidth, int dstHeight) throws IOException {
+        if (Looper.myLooper() == Looper.getMainLooper()) {
+            throw new RuntimeException("Do not load Bitmap in main thread.");
+        }
+        if (mDiskLruCache == null) {
+            return null;
+        }
+        String key = getKeyFromUrl(url);
+        DiskLruCache.Editor editor = mDiskLruCache.edit(key);
+        if (editor != null) {
+            OutputStream outputStream = editor.newOutputStream(0);
+            if (addToDiskFromUrl(url, outputStream)) {
+                editor.commit();
+            } else {
+                editor.abort();
+            }
+            mDiskLruCache.flush();
+        }
+        return loadFromDisk(url, dstWidth, dstHeight);
+    }
+
+    /**
+     * 根据url用http的方式获取图片 写入到DiskLruCache的输出流
+     * @param urlString
+     * @param outputStream  写到DiskLruCache的输出流
+     * @return
+     */
+    public boolean addToDiskFromUrl(String urlString, OutputStream outputStream) {
+        HttpURLConnection urlConnection = null;
+        BufferedInputStream bis = null;
+        BufferedOutputStream bos = null;
+
+        try {
+            final URL url = new URL(urlString);
+            urlConnection = (HttpURLConnection) url.openConnection();
+            bis = new BufferedInputStream(urlConnection.getInputStream());
+            bos = new BufferedOutputStream(outputStream);
+
+            int byteRead;
+            while ((byteRead = bis.read()) != -1) {
+                bos.write(byteRead);
+            }
+            return true;
+        }catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+            close(bis);
+            close(bos);
+        }
+        return false;
+    }
+
+    /**
+     * 关闭流
+     * @param stream
+     */
+    public void close(Closeable stream) {
+        if (stream != null) {
+            try {
+                stream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
     /**
      * 压缩从文件取出的bitmap
      * @param fd
@@ -256,12 +361,14 @@ public class DxImageLoader {
     /**
      * 图片创建类
      */
-    private static class RequestCreator implements Runnable{
+    public class RequestCreator implements Runnable{
 
         String      url;         //图片请求url
         int         holderResId; //默认显示的图片
         int         errorResId;  //加载失败的图片
         ImageView   imageView;   //
+        int         dstWidth;    //期望的宽
+        int         dstHeight;    //期望的高
         /**
          *
          * @param url 初始化图片的url地址
@@ -295,15 +402,94 @@ public class DxImageLoader {
          *
          * @param imageView
          */
-        public void into(ImageView imageView) {
+            public void into(ImageView imageView) {
             // 变成全局的
             this.imageView = imageView;
-            //开始加载图片
+            if(imageView!=null){
+                this.dstWidth = imageView.getWidth();
+                this.dstHeight = imageView.getHeight();
+            }
+            //显示占位图
+            this.imageView.setImageResource(holderResId);
+                Log.i("danxx", "into");
+            //向线程池中添加任务
+            threadPoolExecutor.execute(this);
+        }
+        /**
+         * step 4（必须步骤）
+         * 提供设置图片的核心方法
+         *
+         * @param imageView
+         */
+        public void into(ImageView imageView, int dstWidth, int dstHeight) {
+            // 变成全局的
+            this.imageView = imageView;
+            this.dstWidth = imageView.getWidth();
+            this.dstHeight = imageView.getHeight();
+            //显示占位图
+            if(holderResId != 0){
+                this.imageView.setImageResource(holderResId);
+            }
+            //向线程池中添加任务
+            threadPoolExecutor.execute(this);
         }
         @Override
         public void run() {
-            //做网络请求
+            //开始加载图片
+            try {
+                Bitmap bitmap;
+                Log.i("danxx", "开始任务");
+                bitmap = loadFromMemoryCache(url);
+                if (bitmap != null) {
+                    Log.i("danxx", "loadFromMemoryCache");
+                    displayImage(bitmap);
+                    return;
+                }
+                bitmap = loadFromDisk(url, dstWidth, dstHeight);
+                if (bitmap != null) {
+                    Log.i("danxx", "loadFromDisk");
+                    displayImage(bitmap);
+                    return;
+                }
+                bitmap = loadFromNet(url, dstWidth, dstHeight);
+                if (bitmap != null) {
+                    Log.i("danxx", "loadFromNet");
+                    displayImage(bitmap);
+                    return;
+                }
+                if(0 != errorResId) displayImage(errorResId);
+            } catch (IOException e) {
+                e.printStackTrace();
+                displayImage(errorResId);
+            }
+        }
+        private void displayImage(final Bitmap bitmap){
+            mMainHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                   imageView.setImageBitmap(bitmap);
+                }
+            });
+        }
+        private void displayImage(final int resId){
+            mMainHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    imageView.setImageResource(resId);
+                }
+            });
         }
     }
 
+    /**
+     * 取消所有任务
+     */
+    public void cancelAllTask(){
+        if(mMainHandler!=null){
+            mMainHandler.removeCallbacksAndMessages(null);
+        }
+        if(threadPoolExecutor!=null){
+            threadPoolExecutor.shutdownNow();
+        }
+    }
 }

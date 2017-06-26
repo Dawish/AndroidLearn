@@ -48,6 +48,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    public void ImageLoadActivity(View view){
+        Intent intent = new Intent(MainActivity.this,ImageLoadActivity.class);
+        startActivity(intent);
+    }
+
 
 
     @Override

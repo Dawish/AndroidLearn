@@ -51,4 +51,11 @@
         android:onClick="RefreshListViewActivity"
         android:text="ListView下拉刷新"/>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_margin="8dp"
+        android:layout_height="wrap_content"
+        android:onClick="ImageLoadActivity"
+        android:text="DxImageLoader测试"/>
+
 </LinearLayout>

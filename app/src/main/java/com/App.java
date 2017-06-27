@@ -9,7 +9,6 @@ import com.dximageloader.DxImageLoader;
  */
 
 public class App extends Application {
-
     @Override
     public void onCreate() {
         super.onCreate();

@@ -20,14 +20,14 @@
             android:layout_width="400dp"
             android:layout_height="600dp"
             android:layout_margin="10dp"
-            android:scaleType="fitXY"/>
+            android:scaleType="centerCrop"/>
 
         <ImageView
             android:id="@+id/image1"
             android:layout_width="400dp"
             android:layout_height="600dp"
             android:layout_margin="10dp"
-            android:scaleType="fitXY"/>
+            android:scaleType="centerCrop"/>
 
         <ImageView
             android:id="@+id/image2"
@@ -41,7 +41,7 @@
             android:layout_width="400dp"
             android:layout_height="600dp"
             android:layout_margin="10dp"
-            android:scaleType="fitXY"/>
+            android:scaleType="centerCrop"/>
 
         <ImageView
             android:id="@+id/image4"
@@ -55,7 +55,7 @@
             android:layout_width="400dp"
             android:layout_height="600dp"
             android:layout_margin="10dp"
-            android:scaleType="fitXY"/>
+            android:scaleType="centerCrop"/>
 
         <ImageView
             android:id="@+id/image6"

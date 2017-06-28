@@ -410,9 +410,6 @@ public class DxImageLoader {
                 this.dstWidth = imageView.getWidth();
                 this.dstHeight = imageView.getHeight();
             }
-            //显示占位图
-            this.imageView.setImageResource(holderResId);
-                Log.i("danxx", "into");
             //向线程池中添加任务
             threadPoolExecutor.execute(this);
         }
@@ -425,12 +422,8 @@ public class DxImageLoader {
         public void into(ImageView imageView, int dstWidth, int dstHeight) {
             // 变成全局的
             this.imageView = imageView;
-            this.dstWidth = imageView.getWidth();
-            this.dstHeight = imageView.getHeight();
-            //显示占位图
-            if(holderResId != 0){
-                this.imageView.setImageResource(holderResId);
-            }
+            this.dstWidth = dstWidth;
+            this.dstHeight = dstHeight;
             //向线程池中添加任务
             threadPoolExecutor.execute(this);
         }
@@ -438,6 +431,10 @@ public class DxImageLoader {
         public void run() {
             //开始加载图片
             try {
+                //显示占位图
+                if(holderResId!=0){
+                    displayImage(holderResId);
+                }
                 Bitmap bitmap;
                 Log.i("danxx", "开始任务");
                 String key = getKeyFromUrl(url);

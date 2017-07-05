@@ -20,12 +20,10 @@ import java.io.FileDescriptor;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.lang.ref.SoftReference;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -98,7 +96,7 @@ public class DxImageLoader {
     }
 
     public void init(Context context){
-        Log.i("danxx", TAG+" init");
+        Log.i(TAG, TAG+" init");
         int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
         int memoryCacheSize = maxMemory / 8;
         mMemoryCache = new LruCache<String, Bitmap>(memoryCacheSize){
@@ -129,7 +127,7 @@ public class DxImageLoader {
      */
     private void addToMemoryCache(String key, Bitmap bitmap) {
         if (loadFromMemoryCache(key) == null) {
-            Log.i("danxx","addToMemoryCache");
+            Log.i(TAG,"addToMemoryCache");
             mMemoryCache.put(key, bitmap);
         }
     }
@@ -436,23 +434,23 @@ public class DxImageLoader {
                     displayImage(holderResId);
                 }
                 Bitmap bitmap;
-                Log.i("danxx", "开始任务");
+                Log.i(TAG, "开始任务");
                 String key = getKeyFromUrl(url);
                 bitmap = loadFromMemoryCache(key);
                 if (bitmap != null) {
-                    Log.i("danxx", "loadFromMemoryCache");
+                    Log.i(TAG, "loadFromMemoryCache");
                     displayImage(bitmap);
                     return;
                 }
                 bitmap = loadFromDisk(url, dstWidth, dstHeight);
                 if (bitmap != null) {
-                    Log.i("danxx", "loadFromDisk");
+                    Log.i(TAG, "loadFromDisk");
                     displayImage(bitmap);
                     return;
                 }
                 bitmap = loadFromNet(url, dstWidth, dstHeight);
                 if (bitmap != null) {
-                    Log.i("danxx", "loadFromNet");
+                    Log.i(TAG, "loadFromNet");
                     displayImage(bitmap);
                     return;
                 }

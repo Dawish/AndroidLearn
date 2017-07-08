@@ -27,7 +27,7 @@ loadFromDisk  =》addToMemoryCache  获取成功并压缩后把bitmap添加到�
                                       ↑
 
 loadFromNet  =》  addToDisk   =》 loadFromDisk   网络获取成功后调用loadFromDisk添加到文件缓存(返回压缩的bitmap 并添加到运行内存)
-
+<img src="http://img.blog.csdn.net/20170709010430870?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMDA3MjcxMQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" width="90%" height="90%" />
 ## Sample：
 ``` java
     //Application中初始化

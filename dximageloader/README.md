@@ -41,6 +41,11 @@ loadFromNet  =》  addToDisk   =》 loadFromDisk   网络获取成功后调用lo
     }
 
     //activity中调用
+    /****调用示例***/
     ImageView imageView0 = (ImageView) findViewById(R.id.image0);
-    DxImageLoader.getInstance().load(imgUrls[0]).placeholder(R.drawable.default_pic_loading).error(R.drawable.app_bg).into(imageView0);
+    DxImageLoader.getInstance().
+    load(imgUrls[0]). //load图片地址
+    placeholder(R.drawable.default_pic_loading). //placeholder占位图
+    error(R.drawable.app_bg). //error错误图
+    into(imageView0);  //into显示图片的imageView
 ```

@@ -56,4 +56,4 @@ loadFromNet  =》  addToDisk   =》 loadFromDisk   网络获取成功后调用lo
 ```
 
 ## 效果图
-<img src="./img/dximageloadimg.png" width="60%" height="60%" />
+![Alt text](./img/dximageloadimg.png)

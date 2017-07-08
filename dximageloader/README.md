@@ -54,3 +54,6 @@ loadFromNet  =》  addToDisk   =》 loadFromDisk   网络获取成功后调用lo
     error(R.drawable.app_bg). //error错误图
     into(imageView0);  //into显示图片的imageView
 ```
+
+## 效果图
+<img src="http://img.blog.csdn.net/20170708211031669?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvdTAxMDA3MjcxMQ==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" width="110%" height="110%" />

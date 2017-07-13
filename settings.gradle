@@ -1,1 +1,1 @@
-include ':app', ':AppLibrary', ':aoplib', ':dximageloader'
+include ':app', ':AppLibrary', ':aoplib', ':dximageloader', ':JavaLib'

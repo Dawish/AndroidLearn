@@ -6,7 +6,10 @@ package com.danxx.javalib;
  */
 
 public class Consumer implements Runnable {
-
+    /**
+     * http://blog.csdn.net/a352193394/article/details/39381271
+     * http://xiao-hua.iteye.com/blog/852450
+     */
     private EventStorage storage;
 
     public Consumer(EventStorage storage) {

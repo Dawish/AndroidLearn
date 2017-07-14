@@ -1,38 +1,35 @@
 package com.danxx.javalib;
 
+import java.util.List;
+
 /**
  * 消费者
  * Created by dawish on 2017/7/13.
  */
 
-public class Consumer implements Runnable {
-    /**
-     * http://blog.csdn.net/a352193394/article/details/39381271
-     * http://xiao-hua.iteye.com/blog/852450
-     */
-    private EventStorage storage;
+public class Consumer extends Thread{
 
-    public Consumer(EventStorage storage) {
+    private List<String> storage;//仓库
+    public Consumer(List<String> storage) {
         this.storage = storage;
     }
-
-    @Override
-    public void run() {
-        for(int i = 0; i < 100; i++) {
-            storage.get();
+    public void run(){
+        while(true){
+            synchronized(storage){
+                //消费者去仓库拿消息的时候，如果发现仓库数据为空，则等待
+                if (storage.isEmpty()) {
+                    try {
+                        storage.wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                int size = storage.size();
+                for (int i = size - 1; i >= 0; i--) {
+                    storage.remove(i);
+                }
+                System.out.println("Thread Name:"+this.getName()+"  Consumer Data Size:"+size);
+            }
         }
     }
-
-    public static void main(String[] args) {
-        EventStorage storage = new EventStorage();
-        Producer producer = new Producer(storage);
-        Thread thread1 = new Thread(producer);
-
-        Consumer consumer = new Consumer(storage);
-        Thread thread2 = new Thread(consumer);
-
-        thread2.start();
-        thread1.start();
-    }
 }
-

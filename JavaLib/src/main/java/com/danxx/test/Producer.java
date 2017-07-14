@@ -27,7 +27,7 @@ public class Producer implements Runnable {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            Good good = new Good("GOOD-NUM" + (++goodNumber));
+            Good good = new Good("Good-Num" + (++goodNumber));
             System.out.println(name + " Producer-Good:" + good.getName());
             channel.put(good);
         }

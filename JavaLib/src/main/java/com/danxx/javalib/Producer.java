@@ -9,6 +9,8 @@ import java.util.UUID;
  */
 public class Producer extends Thread{
 
+    private final static int MAX_SIZE = 50;
+
     private List<String> storage;//生产者仓库
     public Producer(List<String> storage) {
         this.storage = storage;
@@ -26,7 +28,7 @@ public class Producer extends Thread{
                         storage.add(msg);
                     }
                     System.out.println("Thread Name:"+this.getName()+"  Producer Data Size:"+size);
-                    storage.notify();
+                    storage.notify();  //生产满了，通知消费线程消费
                 }
             }
         }

@@ -49,7 +49,7 @@ public class Storage {
         }
         storage.add(dataValue + goodNumber++);
         System.out.println(threadName + dataValue + goodNumber);
-        super.notify();
+        super.notify();  //每次添加一个数据就唤醒一个消费等待的线程来消费
     }
 
     /**
@@ -67,7 +67,7 @@ public class Storage {
             }
             return null;
         }
-        super.notify();
+        super.notify();  //当数据不为空的时候就唤醒一个生产线程来生产
         String value = storage.remove();
         return value;
     }

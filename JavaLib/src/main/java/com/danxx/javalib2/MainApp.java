@@ -16,9 +16,21 @@ package com.danxx.javalib2;
 public class MainApp {
     public static void main(String[] args) {
         Storage storage = new Storage();
-        Producer producer = new Producer(storage.getStorage());
-        Consumer consumer = new Consumer(storage.getStorage());
-        producer.start();
-        consumer.start();
+        
+        Producer producer1 = new Producer(storage, "Producer-1");
+        Producer producer2 = new Producer(storage, "Producer-2");
+        Producer producer3 = new Producer(storage, "Producer-3");
+        Producer producer4 = new Producer(storage, "Producer-4");
+        
+        Consumer consumer1 = new Consumer(storage, "Consumer-1");
+        Consumer consumer2 = new Consumer(storage, "Consumer-2");
+        
+        producer1.start();
+        producer2.start();
+        producer3.start();
+        producer4.start();
+        
+        consumer1.start();
+        consumer2.start();
     }
 }

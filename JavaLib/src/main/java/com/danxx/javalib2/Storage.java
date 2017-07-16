@@ -1,9 +1,6 @@
 package com.danxx.javalib2;
-import com.danxx.test.Good;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 
 /**
@@ -15,8 +12,10 @@ import java.util.Queue;
  * Created by dawish on 2017/7/13.
  */
 public class Storage {
-
-    private final static int MAX_SIZE = 50;
+	
+	private static volatile int goodNumber = 1;
+	
+    private final static int MAX_SIZE = 20;
     /**
      *  Queue操作解析：
      *  add       增加一个元索                 如果队列已满， 则抛出一个IIIegaISlabEepeplian异常
@@ -38,16 +37,19 @@ public class Storage {
      *
      * @param dataValue
      */
-    public synchronized void put(String dataValue){
+    public synchronized void put(String dataValue, String threadName){
         if(storage.size() >= MAX_SIZE){
             try {
-                storage.wait();  //当生产满了后让生产线程等待
+            	goodNumber = 1;
+                super.wait();  //当生产满了后让生产线程等待
+                return;
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-        storage.add(dataValue);
-        storage.notify();
+        storage.add(dataValue + goodNumber++);
+        System.out.println(threadName + dataValue + goodNumber);
+        super.notify();
     }
 
     /**
@@ -55,13 +57,19 @@ public class Storage {
      * @return
      * @throws InterruptedException
      */
-    public synchronized String get() throws InterruptedException {
+    public synchronized String get(String threadName) {
         if(storage.size() == 0){
-            storage.wait();  //当产品仓库为空的时候让消费线程等待
+            try {
+            	super.wait();  //当产品仓库为空的时候让消费线程等待
+                System.out.println(threadName + "wait");
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             return null;
         }
-        storage.notify();
-        return storage.remove();
+        super.notify();
+        String value = storage.remove();
+        return value;
     }
 
 }

@@ -21,7 +21,6 @@ public class Channel {
 
     public synchronized void put(Good good) {
         goodList.add(good);
-//        notifyAll();
         notify();
     }
 }

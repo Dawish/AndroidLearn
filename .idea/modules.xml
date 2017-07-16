@@ -3,18 +3,12 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/AppLibrary/AppLibrary.iml" filepath="$PROJECT_DIR$/AppLibrary/AppLibrary.iml" />
-      <module fileurl="file://$PROJECT_DIR$/AppLibrary/AppLibrary.iml" filepath="$PROJECT_DIR$/AppLibrary/AppLibrary.iml" />
-      <module fileurl="file://$PROJECT_DIR$/CustomViews.iml" filepath="$PROJECT_DIR$/CustomViews.iml" />
       <module fileurl="file://$PROJECT_DIR$/CustomViews.iml" filepath="$PROJECT_DIR$/CustomViews.iml" />
       <module fileurl="file://$PROJECT_DIR$/JavaLib/JavaLib.iml" filepath="$PROJECT_DIR$/JavaLib/JavaLib.iml" />
-      <module fileurl="file://$PROJECT_DIR$/JavaLib/JavaLib.iml" filepath="$PROJECT_DIR$/JavaLib/JavaLib.iml" />
-      <module fileurl="file://$PROJECT_DIR$/aoplib/aoplib.iml" filepath="$PROJECT_DIR$/aoplib/aoplib.iml" />
       <module fileurl="file://$PROJECT_DIR$/aoplib/aoplib.iml" filepath="$PROJECT_DIR$/aoplib/aoplib.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/dximageloader/dximageloader.iml" filepath="$PROJECT_DIR$/dximageloader/dximageloader.iml" />
-      <module fileurl="file://$PROJECT_DIR$/dximageloader/dximageloader.iml" filepath="$PROJECT_DIR$/dximageloader/dximageloader.iml" />
-      <module fileurl="file://F:/CustomViews/AppLibrary/widgetlibrary.iml" filepath="F:/CustomViews/AppLibrary/widgetlibrary.iml" />
+      <module fileurl="file://F:\CustomViews\AppLibrary\widgetlibrary.iml" filepath="F:\CustomViews\AppLibrary\widgetlibrary.iml" />
     </modules>
   </component>
 </project>

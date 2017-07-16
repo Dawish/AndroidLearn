@@ -1,6 +1,5 @@
 package com.danxx.javalib2;
 
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -9,11 +8,12 @@ import java.util.UUID;
  */
 public class Producer extends Thread{
 
-    private final static int MAX_SIZE = 50;
-
-    private List<String> storage;//生产者仓库
-    public Producer(List<String> storage) {
+    private Storage storage;//生产者仓库
+    private String name="";
+    
+    public Producer(Storage storage, String name) {
         this.storage = storage;
+        this.name = name;
     }
     public void run(){
         //生产者每隔1s生产1~100消息
@@ -22,13 +22,8 @@ public class Producer extends Thread{
             synchronized(storage){
                 if (System.currentTimeMillis() - oldTime >= 1000) {
                     oldTime = System.currentTimeMillis();
-                    int size = (int)(Math.random()*100) + 1;
-                    for (int i = 0; i < size; i++) {
-                        String msg = UUID.randomUUID().toString();
-                        storage.add(msg);
-                    }
-                    System.out.println("Thread Name:"+this.getName()+"  Producer Data Size:"+size);
-                    storage.notify();  //生产满了，通知消费线程消费
+                    String msg = UUID.randomUUID().toString();
+                    storage.put("-ID:" ,name);
                 }
             }
         }

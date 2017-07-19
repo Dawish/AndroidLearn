@@ -8,7 +8,7 @@
       <module fileurl="file://$PROJECT_DIR$/aoplib/aoplib.iml" filepath="$PROJECT_DIR$/aoplib/aoplib.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/dximageloader/dximageloader.iml" filepath="$PROJECT_DIR$/dximageloader/dximageloader.iml" />
-      <module fileurl="file://F:\CustomViews\AppLibrary\widgetlibrary.iml" filepath="F:\CustomViews\AppLibrary\widgetlibrary.iml" />
+      <module fileurl="file://F:/CustomViews/AppLibrary/widgetlibrary.iml" filepath="F:/CustomViews/AppLibrary/widgetlibrary.iml" />
     </modules>
   </component>
 </project>

@@ -53,7 +53,10 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-
+    public void scoket(View v){
+        Intent intent = new Intent(MainActivity.this, SocketActivity.class);
+        startActivity(intent);
+    }
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {

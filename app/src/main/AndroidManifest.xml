@@ -41,6 +41,7 @@
             <!--</intent-filter>-->
         </activity>
         <activity android:name=".ImageLoadActivity"></activity>
+        <activity android:name=".SocketActivity"></activity>
     </application>
 
 </manifest>

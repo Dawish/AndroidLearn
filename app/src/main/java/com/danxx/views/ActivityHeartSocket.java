@@ -11,6 +11,7 @@ import android.os.IBinder;
 import android.os.RemoteException;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -57,13 +58,16 @@ public class ActivityHeartSocket extends AppCompatActivity {
 
         @Override
         public void onReceive(Context context, Intent intent) {
+            Log.i("danxx", "Get a BroadcastReceiver");
             String action = intent.getAction();
             TextView tv = textView.get();
             if (action.equals(BackService.HEART_BEAT_ACTION)) {
                 if (null != tv) {
+                    Log.i("danxx", "Get a heart heat");
                     tv.setText("Get a heart heat");
                 }
             } else {
+                Log.i("danxx", "Get a message");
                 String message = intent.getStringExtra("message");
                 tv.setText(message);
             }

@@ -23,7 +23,7 @@ import android.util.Log;
  */
 
 public class BackService extends Service {
-    private static final String TAG = "BackService";
+    private static final String TAG = "danxx";
     private static final long HEART_BEAT_RATE = 3 * 1000;
 
     public static final String HOST = "192.168.123.27";// "192.168.1.21";//

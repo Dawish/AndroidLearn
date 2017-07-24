@@ -42,6 +42,8 @@
         </activity>
         <activity android:name=".ImageLoadActivity"></activity>
         <activity android:name=".SocketActivity"></activity>
+        <activity android:name=".ActivityHeartSocket"></activity>
+        <service android:name="danxx.library.socket.BackService"></service>
     </application>
 
 </manifest>

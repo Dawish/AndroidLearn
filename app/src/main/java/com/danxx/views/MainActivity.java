@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void scoket(View v){
-        Intent intent = new Intent(MainActivity.this, SocketActivity.class);
+        Intent intent = new Intent(MainActivity.this, ActivityHeartSocket.class);
         startActivity(intent);
     }
 

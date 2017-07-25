@@ -45,7 +45,7 @@ public class BackService extends Service {
         @Override
         public void run() {
             if (System.currentTimeMillis() - sendTime >= HEART_BEAT_RATE) {
-                boolean isSuccess = sendMsg("");//就发送一个\r\n过去 如果发送失败，就重新初始化一个socket
+                boolean isSuccess = sendMsg("HeartBeat");//就发送一个\r\n过去 如果发送失败，就重新初始化一个socket
                 if (!isSuccess) {
                     mHandler.removeCallbacks(heartBeatRunnable);
                     mReadThread.release();
@@ -84,10 +84,6 @@ public class BackService extends Service {
         }
         final Socket soc = mSocket.get();
             if (!soc.isClosed() && !soc.isOutputShutdown()) {
-//                OutputStream os = soc.getOutputStream();
-//                String message = msg + "\r\n";
-//                os.write(message.getBytes());
-//                os.flush();
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -191,5 +187,13 @@ public class BackService extends Service {
                 }
             }
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mHandler.removeCallbacks(heartBeatRunnable);
+        mReadThread.release();
+        releaseLastSocket(mSocket);
     }
 }

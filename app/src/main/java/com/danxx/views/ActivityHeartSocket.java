@@ -58,7 +58,6 @@ public class ActivityHeartSocket extends AppCompatActivity {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.i("danxx", "Get a BroadcastReceiver");
             String action = intent.getAction();
             TextView tv = textView.get();
             if (action.equals(BackService.HEART_BEAT_ACTION)) {
@@ -67,7 +66,7 @@ public class ActivityHeartSocket extends AppCompatActivity {
                     tv.setText("Get a heart heat");
                 }
             } else {
-                Log.i("danxx", "Get a message");
+                Log.i("danxx", "Get a heart heat");
                 String message = intent.getStringExtra("message");
                 tv.setText(message);
             }

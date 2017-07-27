@@ -24,22 +24,26 @@ import android.util.Log;
 
 public class BackService extends Service {
     private static final String TAG = "danxx";
+    /**心跳频率*/
     private static final long HEART_BEAT_RATE = 3 * 1000;
-
+    /**服务器ip地址*/
     public static final String HOST = "192.168.123.27";// "192.168.1.21";//
+    /**服务器端口号*/
     public static final int PORT = 9800;
-
-    public static final String MESSAGE_ACTION="org.feng.message_ACTION";
-    public static final String HEART_BEAT_ACTION="org.feng.heart_beat_ACTION";
-
+    /**服务器消息回复广播*/
+    public static final String MESSAGE_ACTION="message_ACTION";
+    /**服务器心跳回复广播*/
+    public static final String HEART_BEAT_ACTION="heart_beat_ACTION";
+    /**读线程*/
     private ReadThread mReadThread;
 
     private LocalBroadcastManager mLocalBroadcastManager;
-
+    /***/
     private WeakReference<Socket> mSocket;
 
     // For heart Beat
     private Handler mHandler = new Handler();
+    /**心跳任务，不断重复调用自己*/
     private Runnable heartBeatRunnable = new Runnable() {
 
         @Override
@@ -58,8 +62,17 @@ public class BackService extends Service {
     };
 
     private long sendTime = 0L;
+    /**
+     * aidl通讯回调
+     */
     private IBackService.Stub iBackService = new IBackService.Stub() {
 
+        /**
+         * 收到内容发送消息
+         * @param message 需要发送到服务器的消息
+         * @return
+         * @throws RemoteException
+         */
         @Override
         public boolean sendMessage(String message) throws RemoteException {
             return sendMsg(message);
@@ -118,6 +131,10 @@ public class BackService extends Service {
         }
     }
 
+    /**
+     * 心跳机制判断出socket已经断开后，就销毁连接方便重新创建连接
+     * @param mSocket
+     */
     private void releaseLastSocket(WeakReference<Socket> mSocket) {
         try {
             if (null != mSocket) {

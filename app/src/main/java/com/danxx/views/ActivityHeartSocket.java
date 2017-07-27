@@ -68,7 +68,7 @@ public class ActivityHeartSocket extends AppCompatActivity {
             } else {
                 Log.i("danxx", "Get a heart heat");
                 String message = intent.getStringExtra("message");
-                tv.setText(message);
+                tv.setText("服务器消息:"+message);
             }
         };
     }

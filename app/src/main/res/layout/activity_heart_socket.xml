@@ -7,7 +7,13 @@
         android:id="@+id/resule_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textColor="#0080FF"
         android:text="hello_world"
+        android:layout_marginTop="18dp"
+        android:layout_marginBottom="18dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="4dp"
         tools:context=".MainActivity" />
 
     <EditText

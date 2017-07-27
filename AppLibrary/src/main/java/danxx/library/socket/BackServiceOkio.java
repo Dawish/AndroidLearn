@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.support.v4.content.LocalBroadcastManager;
+import android.text.TextUtils;
 import android.util.Log;
 
 import java.io.IOException;
@@ -32,8 +33,8 @@ public class BackServiceOkio extends Service {
     public static final String HOST = "192.168.123.27";// "192.168.1.21";//
     public static final int PORT = 9800;
 
-    public static final String MESSAGE_ACTION="org.feng.message_ACTION";
-    public static final String HEART_BEAT_ACTION="org.feng.heart_beat_ACTION";
+    public static final String MESSAGE_ACTION="message_ACTION";
+    public static final String HEART_BEAT_ACTION="heart_beat_ACTION";
 
     private BackServiceOkio.ReadThread mReadThread;
 
@@ -178,22 +179,25 @@ public class BackServiceOkio extends Service {
         public void run() {
             super.run();
             Log.d("danxx", "run");
-            Socket socket = mWeakSocket.get();
-            if (null != socket) {
                 try {
+                    Socket socket = mWeakSocket.get();
                     Log.d("danxx", "start");
                     while (!socket.isClosed() && !socket.isInputShutdown() && isStart ) {
-                        if(mSource == null){
-                            Log.d("danxx", "mSource = Okio.buffer");
-                            mSource = Okio.buffer(Okio.source(socket));
-                        }
+                        BufferedSource dxSource = null;
+                        Log.d("danxx", "mSource = Okio.buffer");
+                            if (null != socket) {
+                                dxSource = Okio.buffer(Okio.source(socket));
+                            }else {
+                                Log.d("danxx", "=====");
+                            }
                         StringBuffer stringBuffer = new StringBuffer();
-                        for (String receiveMsg; (receiveMsg = mSource.readUtf8Line()) != null; ) {
-                            Log.d(TAG, "receiveMsg:" + receiveMsg);
-                            stringBuffer.append(receiveMsg);
+                        for (String receiveMsg; (receiveMsg = dxSource.readUtf8Line()) != null; ) {
+                                if(!TextUtils.isEmpty(receiveMsg)){
+                                    stringBuffer.append(receiveMsg);
+                                }
                         }
                         Log.d("danxx", "while----->"+stringBuffer.toString());
-                        String message = mSource.readUtf8();
+                        String message = stringBuffer.toString();
                         Log.d("danxx", "message-->");
                         Log.e(TAG, message);
                         //收到服务器过来的消息，就通过Broadcast发送出去
@@ -212,7 +216,6 @@ public class BackServiceOkio extends Service {
                 }
             }
         }
-    }
 
     @Override
     public void onDestroy() {

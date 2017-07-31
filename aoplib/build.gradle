@@ -1,24 +1,16 @@
-import org.aspectj.bridge.IMessage
-import org.aspectj.bridge.MessageHandler
-import org.aspectj.tools.ajc.Main
+apply plugin: 'com.android.library'
 
 buildscript {
     repositories {
-        mavenCentral()
     }
     dependencies {
-        classpath 'org.aspectj:aspectjtools:1.8.1'
-        classpath 'org.aspectj:aspectjweaver:1.8.1'
+
     }
 }
 
-apply plugin: 'com.android.library'
-
 android {
-//    compileSdkVersion rootProject.ext.compileSdkVersion
-//    buildToolsVersion rootProject.ext.buildToolsVersion
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
 
     buildTypes {
         release {
@@ -33,7 +25,7 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'org.aspectj:aspectjrt:1.8.1'
+    compile "org.aspectj:aspectjrt:$rootProject.ext.aspectjrtVersion"
     compile 'com.squareup.okhttp3:okhttp:3.6.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
     compile 'com.android.support:support-annotations:24.2.1'
@@ -43,42 +35,5 @@ android.libraryVariants.all { variant ->
     javaCompile.doLast {
         String bootclasspath = project.android.bootClasspath.join(File.pathSeparator)
         ajc(bootclasspath, javaCompile)
-    }
-}
-
-def ajc(String androidbootClassFiles, JavaCompile javaCompile) {
-    def log = project.logger
-    log.error "========================"
-    log.error "Aspectj切片开始编织Class!"
-    log.error "========================"
-
-    String[] args = ["-showWeaveInfo",
-                     "-1.8",
-                     "-inpath", javaCompile.destinationDir.toString(),
-                     "-aspectpath", javaCompile.classpath.asPath,
-                     "-d", javaCompile.destinationDir.toString(),
-                     "-classpath", javaCompile.classpath.asPath,
-                     "-bootclasspath", androidbootClassFiles]
-    log.error args.toString()
-
-    MessageHandler handler = new MessageHandler(true);
-    new Main().run(args, handler)
-
-    for (IMessage message : handler.getMessages(null, true)) {
-        switch (message.getKind()) {
-            case IMessage.ABORT:
-            case IMessage.ERROR:
-            case IMessage.FAIL:
-                log.error message.message, message.thrown
-                throw message.thrown
-                break;
-            case IMessage.WARNING:
-            case IMessage.INFO:
-                log.info message.message, message.thrown
-                break;
-            case IMessage.DEBUG:
-                log.debug message.message, message.thrown
-                break;
-        }
     }
 }

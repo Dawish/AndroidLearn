@@ -1,23 +1,80 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
+import org.aspectj.bridge.IMessage
+import org.aspectj.bridge.MessageHandler
+import org.aspectj.tools.ajc.Main
+
+ext {
+    compileSdkVersion = 25
+    buildToolsVersion = "25.0.2"
+    minSdkVersion = 14
+    targetSdkVersion = 25
+
+    supportVersion = "25.3.1"
+
+    aspectjrtVersion = "1.8.1"
+
+    ajc = this.&ajc
+}
 
 buildscript {
     repositories {
         jcenter()
+        mavenCentral()
     }
     dependencies {
+        classpath 'org.aspectj:aspectjtools:1.8.1'
+        classpath 'org.aspectj:aspectjweaver:1.8.1'
         classpath 'com.android.tools.build:gradle:2.3.1'
+    }
 
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
+    tasks.withType(JavaCompile) {
+        options.encoding = "UTF-8"
     }
 }
-
 allprojects {
     repositories {
         jcenter()
+        mavenCentral()
     }
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+def ajc(String androidbootClassFiles, JavaCompile javaCompile) {
+    def log = project.logger
+    log.error "========================"
+    log.error "Aspectj切片开始编织Class!"
+    log.error "========================"
+
+    String[] args = ["-showWeaveInfo",
+                     "-1.8",
+                     "-inpath", javaCompile.destinationDir.toString(),
+                     "-aspectpath", javaCompile.classpath.asPath,
+                     "-d", javaCompile.destinationDir.toString(),
+                     "-classpath", javaCompile.classpath.asPath,
+                     "-bootclasspath", androidbootClassFiles]
+    log.error args.toString()
+
+    MessageHandler handler = new MessageHandler(true);
+    new Main().run(args, handler)
+
+    for (IMessage message : handler.getMessages(null, true)) {
+        switch (message.getKind()) {
+            case IMessage.ABORT:
+            case IMessage.ERROR:
+            case IMessage.FAIL:
+                log.error message.message, message.thrown
+                throw message.thrown
+                break;
+            case IMessage.WARNING:
+            case IMessage.INFO:
+                log.info message.message, message.thrown
+                break;
+            case IMessage.DEBUG:
+                log.debug message.message, message.thrown
+                break;
+        }
+    }
 }

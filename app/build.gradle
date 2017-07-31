@@ -1,30 +1,24 @@
-import org.aspectj.bridge.IMessage
-import org.aspectj.bridge.MessageHandler
-import org.aspectj.tools.ajc.Main
+apply plugin: 'com.android.application'
 
 buildscript {
     repositories {
-        mavenCentral()
     }
     dependencies {
-        classpath 'org.aspectj:aspectjtools:1.8.1'
+
     }
     tasks.withType(JavaCompile) {
         options.encoding = "UTF-8"
     }
 }
 
-
-apply plugin: 'com.android.application'
-
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
         applicationId "com.danxx.views"
-        minSdkVersion 16
-        targetSdkVersion 25
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
 
@@ -60,48 +54,10 @@ dependencies {
     compile project(':dximageloader')
 }
 
-
 android.applicationVariants.all { variant ->
     JavaCompile javaCompile = variant.javaCompile
     javaCompile.doLast {
         String bootclasspath = project.android.bootClasspath.join(File.pathSeparator)
         ajc(bootclasspath, javaCompile)
-    }
-}
-
-def ajc(String androidbootClassFiles, JavaCompile javaCompile) {
-    def log = project.logger
-    log.error "========================"
-    log.error "Aspectj切片开始编织Class!"
-    log.error "========================"
-
-    String[] args = ["-showWeaveInfo",
-                     "-1.8",
-                     "-inpath", javaCompile.destinationDir.toString(),
-                     "-aspectpath", javaCompile.classpath.asPath,
-                     "-d", javaCompile.destinationDir.toString(),
-                     "-classpath", javaCompile.classpath.asPath,
-                     "-bootclasspath", androidbootClassFiles]
-    log.error args.toString()
-
-    MessageHandler handler = new MessageHandler(true);
-    new Main().run(args, handler)
-
-    for (IMessage message : handler.getMessages(null, true)) {
-        switch (message.getKind()) {
-            case IMessage.ABORT:
-            case IMessage.ERROR:
-            case IMessage.FAIL:
-                log.error message.message, message.thrown
-//                throw message.thrown
-                break;
-            case IMessage.WARNING:
-            case IMessage.INFO:
-                log.info message.message, message.thrown
-                break;
-            case IMessage.DEBUG:
-                log.debug message.message, message.thrown
-                break;
-        }
     }
 }

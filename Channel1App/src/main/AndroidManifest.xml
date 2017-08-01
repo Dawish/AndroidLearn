@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.danxx.views">
+    <!--需要的权限-->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:name="com.App"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".CustomViewPagerActivity" />
+        <activity android:name=".CircleImageViewActivity" />
+        <activity android:name=".ActivityVerticalTabIndicator" />
+        <activity android:name=".RefreshScrollActivity" />
+        <activity android:name=".RefreshListViewActivity"></activity>
+        <activity android:name="com.java.ui.ActivityDecorator">
+        </activity>
+        <activity android:name=".ActivityCustomImgContainer">
+
+        </activity>
+
+        <activity android:name=".ActivityTest"></activity>
+        <activity android:name=".ActivityViewPagerIndicator"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+        <activity android:name=".NdkActivity">
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
+        <activity android:name=".ImageLoadActivity"></activity>
+        <activity android:name=".SocketActivity"></activity>
+        <activity android:name=".ActivityHeartSocket"></activity>
+        <service android:name="danxx.library.socket.BackService"></service>
+        <service android:name="danxx.library.socket.BackServiceOkio"></service>
+    </application>
+
+</manifest>

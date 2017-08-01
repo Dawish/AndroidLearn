@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:danxx="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <danxx.library.widget.VerticalTabIndicator
+        android:id="@+id/tabIndicator"
+        android:layout_width="200dp"
+        android:background="#7C7C7C"
+        danxx:tabBackGroundSelectColor="#25CB73"
+        danxx:tabTextSelectColor="@android:color/black"
+        android:layout_height="match_parent"></danxx.library.widget.VerticalTabIndicator>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:text="焦点获取测试"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:onClick="setTwoSelected"
+            android:text="第二项获得焦点"/>
+    </LinearLayout>
+</LinearLayout>

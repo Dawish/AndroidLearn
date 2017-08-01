@@ -1,0 +1,24 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <danxx.library.widget.TabStrip
+        android:id="@+id/tabstrip"
+        custom:indicatorHeight="3dp"
+        custom:indicatorColor="@android:color/holo_red_light"
+        custom:indicatorMargin="20dp"
+        custom:indicatorTextSize="15sp"
+        custom:selectedIndicatorTextSize="18sp"
+        custom:indicatorTextColor="@android:color/black"
+        android:layout_width="match_parent"
+        android:layout_height="40dp" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>

@@ -8,12 +8,12 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/Aoplib" />
             <option value="$PROJECT_DIR$/AppLibrary" />
             <option value="$PROJECT_DIR$/Channel1App" />
             <option value="$PROJECT_DIR$/Channel2App" />
-            <option value="$PROJECT_DIR$/Dximageloader" />
             <option value="$PROJECT_DIR$/JavaLib" />
+            <option value="$PROJECT_DIR$/aoplib" />
+            <option value="$PROJECT_DIR$/dximageloader" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

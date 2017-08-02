@@ -9,7 +9,7 @@
       <module fileurl="file://$PROJECT_DIR$/CustomViews.iml" filepath="$PROJECT_DIR$/CustomViews.iml" />
       <module fileurl="file://$PROJECT_DIR$/Dximageloader/Dximageloader.iml" filepath="$PROJECT_DIR$/Dximageloader/Dximageloader.iml" />
       <module fileurl="file://$PROJECT_DIR$/JavaLib/JavaLib.iml" filepath="$PROJECT_DIR$/JavaLib/JavaLib.iml" />
-      <module fileurl="file://F:/CustomViews/AppLibrary/widgetlibrary.iml" filepath="F:/CustomViews/AppLibrary/widgetlibrary.iml" />
+      <module fileurl="file://F:\CustomViews\AppLibrary\widgetlibrary.iml" filepath="F:\CustomViews\AppLibrary\widgetlibrary.iml" />
     </modules>
   </component>
 </project>

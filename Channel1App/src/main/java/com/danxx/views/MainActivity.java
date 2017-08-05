@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
+import aop.statistics.log.AopLog;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -23,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @AopLog
     public void CustomViewPagerActivity(View v){
         Intent intent = new Intent(MainActivity.this,CustomViewPagerActivity.class);
         startActivity(intent);

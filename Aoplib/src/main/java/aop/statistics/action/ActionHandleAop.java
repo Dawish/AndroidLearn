@@ -14,6 +14,8 @@ import java.lang.Object;
 /**
  * Created by Dawish on 2017/5/11.
  * 屏幕操作统计
+ * http://www.jianshu.com/p/b96a68ba50db
+ * http://www.jianshu.com/p/6ccfa7b50f0e
  */
 
 @Aspect  //切面注解

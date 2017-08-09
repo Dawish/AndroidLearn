@@ -1,12 +1,15 @@
 package com.anno.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.anno.R;
 import com.anno.annotation.AnnotateUtils;
+import com.anno.annotation.OnClick;
 import com.anno.annotation.ViewInject;
 import com.anno.ui.dummy.DummyContent;
 
@@ -29,6 +32,12 @@ public class MainActivity extends AppCompatActivity implements ItemFragment.OnLi
         tv.setText("AnnoTv");
         button.setText("AnnoBtn");
 
+    }
+
+    @OnClick(R.id.btn)
+    public void click(View view){
+        Intent intent = new Intent(MainActivity.this, ActivityRecyclerWheelView.class);
+        startActivity(intent);
     }
 
     @Override

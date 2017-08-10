@@ -16,6 +16,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.ActivityRecyclerWheelView"></activity>
+        <activity android:name=".ui.ActivityDetail"></activity>
     </application>
 
 </manifest>

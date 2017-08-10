@@ -44,6 +44,7 @@ public class ClickHandleAop {
     public void onUserAction(JoinPoint joinPoint){
         Log.e(TAG, "aop statistics click");
         Object[] args = joinPoint.getArgs();
+        joinPoint.getTarget();
         if(args == null || args.length == 0){
             return;
         }

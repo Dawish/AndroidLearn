@@ -42,7 +42,12 @@ public class MainActivity extends AppCompatActivity implements ItemFragment.OnLi
 
     @Override
     public void onListFragmentInteraction(DummyContent.DummyItem item) {
-
+        toGoodDetail("101");
+    }
+    public void toGoodDetail(String id){
+        Intent intent = new Intent(MainActivity.this, ActivityDetail.class);
+        intent.putExtra("ID", id);
+        startActivity(intent);
     }
 }
 

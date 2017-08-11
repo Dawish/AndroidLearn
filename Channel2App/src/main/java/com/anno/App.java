@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Application;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.anno.ui.ActivityDetail;
 
@@ -16,6 +17,8 @@ import java.util.Stack;
  * Created by dawish on 2017/2/16.
  */
 public class App extends Application {
+    //记录Activity的总个数
+    public int count = 0;
     private static App mApp;
     public static Stack<ActivityDetail> store;
     //商品详情页最多个数,这里为了测试只写了2,大家根据自己的情况设值
@@ -69,7 +72,10 @@ public class App extends Application {
 
         @Override
         public void onActivityStarted(Activity activity) {
-
+            if (count == 0) {
+                Log.v("danxx", ">>>>>>>>>>>>>>>>>>>App切到前台");
+            }
+            count++;
         }
 
         @Override
@@ -84,7 +90,10 @@ public class App extends Application {
 
         @Override
         public void onActivityStopped(Activity activity) {
-
+            count--;
+            if (count == 0) {
+                Log.v("danxx", ">>>>>>>>>>>>>>>>>>>App切到后台");
+            }
         }
 
         @Override

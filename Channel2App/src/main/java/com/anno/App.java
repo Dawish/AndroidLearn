@@ -38,7 +38,7 @@ public class App extends Application {
      * @param id
      * @return
      */
-    public static boolean toGoodDetail(String id){
+    public static boolean toGoodsDetail(String id){
 
         if(store == null || store.empty()){
             return false;

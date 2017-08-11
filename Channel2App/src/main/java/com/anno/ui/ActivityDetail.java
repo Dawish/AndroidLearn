@@ -19,17 +19,17 @@ import com.anno.annotation.ViewInject;
 
 public class ActivityDetail extends AppCompatActivity {
 
-    @ViewInject(R.id.recGood1)
-    private Button recGood1;
+    @ViewInject(R.id.recGoods1)
+    private Button recGoods1;
 
-    @ViewInject(R.id.recGood2)
-    private Button recGood2;
+    @ViewInject(R.id.recGoods2)
+    private Button recGoods2;
 
-    @ViewInject(R.id.recGood3)
-    private Button recGood3;
+    @ViewInject(R.id.recGoods3)
+    private Button recGoods3;
 
-    @ViewInject(R.id.currentGoodId)
-    private TextView currentGoodId;
+    @ViewInject(R.id.currentGoodsId)
+    private TextView currentGoodsId;
 
     private String ID;
 
@@ -41,7 +41,7 @@ public class ActivityDetail extends AppCompatActivity {
         AnnotateUtils.inject(ActivityDetail.this);
 
         ID = getIntent().getStringExtra("ID");
-        currentGoodId.setText("当前详情页展示商品ID: "+ID);
+        currentGoodsId.setText("当前详情页展示商品ID: "+ID);
 
     }
 
@@ -49,21 +49,21 @@ public class ActivityDetail extends AppCompatActivity {
         return ID;
     }
 
-    @OnClick({R.id.recGood1, R.id.recGood2, R.id.recGood3})
+    @OnClick({R.id.recGoods1, R.id.recGoods2, R.id.recGoods3})
     public void recGoodClick(View v){
 
         int id = v.getId();
 
         switch (id){
-            case R.id.recGood1:
+            case R.id.recGoods1:
                 String goodId1 = "101";
                 toGoodDetail(goodId1);
                 break;
-            case R.id.recGood2:
+            case R.id.recGoods2:
                 String goodId2 = "102";
                 toGoodDetail(goodId2);
                 break;
-            case R.id.recGood3:
+            case R.id.recGoods3:
                 String goodId3 = "103";
                 toGoodDetail(goodId3);
                 break;
@@ -76,7 +76,7 @@ public class ActivityDetail extends AppCompatActivity {
      * @param id
      */
     public void toGoodDetail(String id){
-        App.toGoodDetail(id);
+        App.toGoodsDetail(id); //调用App中的方法去检测点击的商品详情页是否被打开，被打开就将其关闭
         Intent intent = new Intent(ActivityDetail.this, ActivityDetail.class);
         intent.putExtra("ID", id);
         startActivity(intent);

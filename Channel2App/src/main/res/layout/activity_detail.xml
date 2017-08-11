@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/currentGoodId"
+        android:id="@+id/currentGoodsId"
         android:layout_gravity="center_horizontal"
         android:layout_width="match_parent"
         android:layout_height="300dp"
@@ -25,17 +25,17 @@
         android:padding="10dp">
 
         <Button
-            android:id="@+id/recGood1"
+            android:id="@+id/recGoods1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="推荐商品ID:101"/>
         <Button
-            android:id="@+id/recGood2"
+            android:id="@+id/recGoods2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="推荐商品ID:102"/>
         <Button
-            android:id="@+id/recGood3"
+            android:id="@+id/recGoods3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="推荐商品ID:103"/>

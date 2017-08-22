@@ -8,6 +8,10 @@ import android.os.RemoteException;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.anno.service.data.ServiceData;
+
+import java.util.List;
+
 /**
  * Created by dawish on 2017/8/22.
  */
@@ -61,16 +65,14 @@ public class MyService extends Service {
      * 远程service需要使用AIDL来通讯，其实也是基于Binder，只是Google规定了写法
      */
     MyAIDLService.Stub remoteBinder = new MyAIDLService.Stub() {
+
         @Override
-        public int plus(int a, int b) throws RemoteException {
-            return a + b;
+        public void addData(ServiceData data) throws RemoteException {
+
         }
 
         @Override
-        public String toUpperCase(String str) throws RemoteException {
-            if (str != null) {
-                return str.toUpperCase();
-            }
+        public List<ServiceData> getDataList() throws RemoteException {
             return null;
         }
     };

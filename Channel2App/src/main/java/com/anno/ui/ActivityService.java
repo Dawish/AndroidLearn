@@ -41,14 +41,8 @@ public class ActivityService extends AppCompatActivity implements View.OnClickLi
 //            myBinder = (MyService.MyBinder) service; //本地service写法
 //            myBinder.startDownload();
             myAIDLService = MyAIDLService.Stub.asInterface(service); //远程service写法
-            try {
-                int result = myAIDLService.plus(3, 5);
-                String upperStr = myAIDLService.toUpperCase("hello world");
-                Log.d("danxx", "result is " + result);
-                Log.d("danxx", "upperStr is " + upperStr);
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
+            Log.d("danxx", "result is " );
+            Log.d("danxx", "upperStr is ");
         }
 
         @Override

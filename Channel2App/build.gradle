@@ -29,6 +29,7 @@ dependencies {
     })
     compile "com.android.support:support-v4:$rootProject.ext.supportVersion"
     compile "com.android.support:appcompat-v7:$rootProject.ext.supportVersion"
-    testCompile 'junit:junit:4.12'
     compile project(':AppLibrary')
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    testCompile 'junit:junit:4.12'
 }

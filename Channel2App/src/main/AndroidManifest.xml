@@ -1,22 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.anno">
 
-    <application  android:allowBackup="true"
+    <application
+        android:name=".App"
+        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:name=".App"
         android:theme="@style/AppTheme">
-
-        <activity android:name="com.anno.ui.MainActivity">
+        <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.ActivityRecyclerWheelView"></activity>
-        <activity android:name=".ui.ActivityDetail"></activity>
+        <activity android:name=".ui.ActivityRecyclerWheelView" />
+        <activity android:name=".ui.ActivityDetail" />
+        <activity android:name=".ui.ActivityService"></activity>
+
+
+        <service android:name=".service.MyService"
+            android:process=":remote">
+            <intent-filter>
+                <action android:name="com.example.servicetest.MyAIDLService"/>
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>

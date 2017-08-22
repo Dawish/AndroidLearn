@@ -40,6 +40,12 @@ public class MainActivity extends AppCompatActivity implements ItemFragment.OnLi
         startActivity(intent);
     }
 
+    @OnClick(R.id.btn2)
+    public void clickService(View view){
+        Intent intent = new Intent(MainActivity.this, ActivityService.class);
+        startActivity(intent);
+    }
+
     @Override
     public void onListFragmentInteraction(DummyContent.DummyItem item) {
         toGoodDetail("101");

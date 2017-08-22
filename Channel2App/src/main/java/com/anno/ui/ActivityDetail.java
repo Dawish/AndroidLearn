@@ -2,6 +2,7 @@ package com.anno.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +13,8 @@ import com.anno.R;
 import com.anno.annotation.AnnotateUtils;
 import com.anno.annotation.OnClick;
 import com.anno.annotation.ViewInject;
+
+import java.util.Collections;
 
 /**
  * Created by dawish on 2017/8/10.
@@ -75,7 +78,8 @@ public class ActivityDetail extends AppCompatActivity {
      * 根据推荐商品的点击打开对应的详情页
      * @param id
      */
-    public void toGoodDetail(String id){
+
+    public void toGoodDetail(@NonNull String id){
         App.toGoodsDetail(id); //调用App中的方法去检测点击的商品详情页是否被打开，被打开就将其关闭
         Intent intent = new Intent(ActivityDetail.this, ActivityDetail.class);
         intent.putExtra("ID", id);

@@ -2,6 +2,7 @@ package com.anno.service;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 /**
  * Created by dawish on 2017/8/22.
@@ -61,6 +62,7 @@ public class ServiceData implements Parcelable {
 
         @Override
         public ServiceData[] newArray(int size) {
+            Log.i("danxx", "newArray size--->"+size);
             return new ServiceData[size];
         }
     };

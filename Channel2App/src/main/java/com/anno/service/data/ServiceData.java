@@ -13,7 +13,9 @@ public class ServiceData implements Parcelable {
     public String name;
     public String price;
     public String type;
+    public ServiceData( ) {
 
+    }
     /**
      * 读数据恢复
      * @param in
@@ -47,6 +49,15 @@ public class ServiceData implements Parcelable {
     public void setType(String type) {
         this.type = type;
     }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
+    }
+
     /**
      *  读取接口，目的是要从Parcel中构造一个实现了Parcelable的类的实例处理。
      *  因为实现类在这里还是不可知的，所以需要用到模板的方式，继承类名通过模板

@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.anno.service.data.ServiceData;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -60,7 +61,8 @@ public class MyService extends Service {
             // 执行具体的下载任务
         }
     }
-
+    /***/
+    private List<ServiceData> mData = new ArrayList<>();
     /**
      * 远程service需要使用AIDL来通讯，其实也是基于Binder，只是Google规定了写法
      */
@@ -68,12 +70,12 @@ public class MyService extends Service {
 
         @Override
         public void addData(ServiceData data) throws RemoteException {
-
+            mData.add(data);
         }
 
         @Override
         public List<ServiceData> getDataList() throws RemoteException {
-            return null;
+            return mData;
         }
     };
 }

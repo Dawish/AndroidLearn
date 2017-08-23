@@ -15,6 +15,8 @@ import java.util.List;
 
 /**
  * Created by dawish on 2017/8/22.
+ * http://blog.csdn.net/u013700502/article/details/66477378
+ * http://www.cnblogs.com/punkisnotdead/p/5168857.html
  */
 
 public class MyService extends Service {

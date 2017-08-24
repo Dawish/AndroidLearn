@@ -98,12 +98,14 @@ public class ActivityAidlService extends AppCompatActivity {
                 break;
             case R.id.bind_service:
                 if (!isBound) {
-                    Intent bindIntent = new Intent(this, AidlService.class);
-                    bindService(bindIntent, serviceConnection, BIND_AUTO_CREATE);
+//                    Intent bindIntent = new Intent(this, AidlService.class);
+//                    bindService(bindIntent, serviceConnection, BIND_AUTO_CREATE);
+                    //用Intent匹配的方式绑定service
+                    Intent intent = new Intent();
+                    intent.setAction("com.danxx.aidlService");
+                    intent.setPackage("com.anno");
+                    bindService(intent, serviceConnection, BIND_AUTO_CREATE);
                 }
-                //用Intent匹配的方式绑定service
-//                Intent intent = new Intent("com.example.servicetest.MyAIDLService");
-//                bindService(intent, serviceConnection, BIND_AUTO_CREATE);
                 break;
             case R.id.unbind_service:
                 if(isBound && myAIDLService != null) {

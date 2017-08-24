@@ -28,9 +28,12 @@
 
         <service
             android:name=".service.AidlService"
-            android:process=":remote">
+            android:process=":remote"
+            android:enabled="true"
+            android:exported="true">
             <intent-filter>
-                <action android:name="com.example.servicetest.MyAIDLService" />
+                <action android:name="com.danxx.aidlService" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </service>
 

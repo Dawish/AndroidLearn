@@ -22,13 +22,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".ui.ActivityRecyclerWheelView" />
         <activity android:name=".ui.ActivityDetail" />
         <activity android:name=".ui.ActivityAidlService" />
+        <activity android:name=".ui.ActivityBinderService"></activity>
+        <activity android:name=".webview.WebViewActivity"></activity>
 
         <service
-            android:name=".service.AidlService"
-            android:process=":remote"
+            android:name=".service.aidl.AidlService"
+            android:process=":remote.aidl_service"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -37,8 +40,17 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".ui.ActivityBinderService"></activity>
-        <activity android:name=".webview.WebViewActivity"></activity>
+        <service
+            android:name=".service.binder.BinderService"
+            android:process=":remote.binder_service"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.danxx.binderService" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>

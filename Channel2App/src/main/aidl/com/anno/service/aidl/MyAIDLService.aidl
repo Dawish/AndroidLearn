@@ -1,5 +1,5 @@
 // MyAIDLService.aidl
-package com.anno.service;
+package com.anno.service.aidl;
 import com.anno.service.data.ServiceData;
 
 interface MyAIDLService {

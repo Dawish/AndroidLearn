@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements ItemFragment.OnLi
 
     @OnClick(R.id.btn2)
     public void clickService(View view){
-        Intent intent = new Intent(MainActivity.this, ActivityAidlService.class);
+        Intent intent = new Intent(MainActivity.this, ActivityBinderService.class);
         startActivity(intent);
 //        WebViewActivity.webviewEntrance(MainActivity.this, "http://blog.csdn.net/u010072711/article/details/77040159");
     }

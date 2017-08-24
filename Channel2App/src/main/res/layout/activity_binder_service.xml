@@ -13,21 +13,6 @@
         android:layout_margin="4dp"
         android:maxLines="3"/>
 
-
-    <Button
-        android:id="@+id/start_service"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAllCaps="false"
-        android:text="Start Service" />
-
-    <Button
-        android:id="@+id/stop_service"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAllCaps="false"
-        android:text="Stop Service" />
-
     <Button
         android:id="@+id/bind_service"
         android:layout_width="match_parent"
@@ -48,13 +33,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAllCaps="false"
-        android:text="add data" />
+        android:text="Add Book" />
 
     <Button
         android:id="@+id/getData"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAllCaps="false"
-        android:text="get data" />
+        android:text="Get Book" />
 
 </LinearLayout>

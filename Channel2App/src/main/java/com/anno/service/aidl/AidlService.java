@@ -1,4 +1,4 @@
-package com.anno.service;
+package com.anno.service.aidl;
 
 import android.app.Service;
 import android.content.Intent;
@@ -15,8 +15,10 @@ import java.util.List;
 
 /**
  * Created by dawish on 2017/8/22.
+ * AIDL实现进程通信
  * http://blog.csdn.net/u013700502/article/details/66477378
  * http://www.cnblogs.com/punkisnotdead/p/5168857.html
+ * http://blog.csdn.net/universus/article/details/6211589
  */
 
 public class AidlService extends Service {

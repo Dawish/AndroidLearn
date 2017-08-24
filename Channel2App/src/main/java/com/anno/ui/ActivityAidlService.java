@@ -17,8 +17,8 @@ import com.anno.R;
 import com.anno.annotation.AnnotateUtils;
 import com.anno.annotation.OnClick;
 import com.anno.annotation.ViewInject;
-import com.anno.service.MyAIDLService;
-import com.anno.service.AidlService;
+import com.anno.service.aidl.AidlService;
+import com.anno.service.aidl.MyAIDLService;
 import com.anno.service.data.ServiceData;
 
 public class ActivityAidlService extends AppCompatActivity {

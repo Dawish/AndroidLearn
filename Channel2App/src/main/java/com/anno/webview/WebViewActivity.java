@@ -51,8 +51,11 @@ public class WebViewActivity extends AppCompatActivity {
     }
     private AgentWeb mAgentWeb;
     private RelativeLayout webViewParent;
+    private  Toolbar toolbar;
     private void initViews(){
         init();
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        initToolBar(toolbar, "Dawish_大D", false);
 
         webViewParent = (RelativeLayout) findViewById(R.id.webViewParent);
 
@@ -70,10 +73,16 @@ public class WebViewActivity extends AppCompatActivity {
     ChromeClientCallbackManager.ReceivedTitleCallback callback = new ChromeClientCallbackManager.ReceivedTitleCallback() {
         @Override
         public void onReceivedTitle(WebView webView, String s) {
-
+            if(toolbar!=null){
+                toolbar.setTitle(s);
+            }
         }
     };
-
+    public void initToolBar(Toolbar toolbar, String name, boolean showHomeAsUp) {
+        toolbar.setTitle(name);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(showHomeAsUp);
+    }
     /**
      * @param str 弹出的文字
      */

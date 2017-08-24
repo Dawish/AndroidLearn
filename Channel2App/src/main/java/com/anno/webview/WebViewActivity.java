@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.webkit.WebView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -55,7 +56,7 @@ public class WebViewActivity extends AppCompatActivity {
     private void initViews(){
         init();
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        initToolBar(toolbar, "Dawish_大D", false);
+        initToolBar(toolbar, "Dawish_大D", true);
 
         webViewParent = (RelativeLayout) findViewById(R.id.webViewParent);
 
@@ -81,7 +82,11 @@ public class WebViewActivity extends AppCompatActivity {
     public void initToolBar(Toolbar toolbar, String name, boolean showHomeAsUp) {
         toolbar.setTitle(name);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(showHomeAsUp);
+        if(getSupportActionBar()!=null) {
+            getSupportActionBar().setElevation(4);
+            getSupportActionBar().setDisplayShowHomeEnabled(showHomeAsUp);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(showHomeAsUp);
+        }
     }
     /**
      * @param str 弹出的文字
@@ -95,7 +100,15 @@ public class WebViewActivity extends AppCompatActivity {
         super.onPause();
 
     }
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // TODO Auto-generated method stub
+        if(item.getItemId() == android.R.id.home){
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
     @Override
     protected void onResume() {
         mAgentWeb.getWebLifeCycle().onResume();

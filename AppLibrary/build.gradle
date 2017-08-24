@@ -9,30 +9,35 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        buildConfigField "boolean", "IS_SHOW_LOG", "false"
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField "boolean", "IS_SHOW_LOG", NOT_SHOW_LOG
+        }
+        debug {
+            minifyEnabled false
+            buildConfigField "boolean", "IS_SHOW_LOG", SHOW_LOG
         }
     }
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    testCompile 'junit:junit:4.12'
 
     compile "com.android.support:appcompat-v7:$rootProject.ext.supportVersion"
     compile "com.android.support:recyclerview-v7:$rootProject.ext.supportVersion"
     compile "com.android.support:support-v4:$rootProject.ext.supportVersion"
-    compile 'com.squareup.okio:okio:1.13.0'
 
-    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     // Because RxAndroid releases are few and far between, it is recommended you also
     // explicitly depend on RxJava's latest version for bug fixes and new features.
+    //    compile 'com.github.wangjiegulu:ShadowViewHelper:1.0.1'
+
+    compile 'com.squareup.okio:okio:1.13.0'
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
     compile 'io.reactivex.rxjava2:rxjava:2.1.0'
-
-//    compile 'com.github.wangjiegulu:ShadowViewHelper:1.0.1'
-
-
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    testCompile 'junit:junit:4.12'
 }

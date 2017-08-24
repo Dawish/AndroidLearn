@@ -19,7 +19,7 @@ import java.util.List;
  * http://www.cnblogs.com/punkisnotdead/p/5168857.html
  */
 
-public class MyService extends Service {
+public class AidlService extends Service {
 
     public static final String TAG = "MyService";
     private MyBinder mBinder = new MyBinder();

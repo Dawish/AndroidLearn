@@ -18,10 +18,10 @@ import com.anno.annotation.AnnotateUtils;
 import com.anno.annotation.OnClick;
 import com.anno.annotation.ViewInject;
 import com.anno.service.MyAIDLService;
-import com.anno.service.MyService;
+import com.anno.service.AidlService;
 import com.anno.service.data.ServiceData;
 
-public class ActivityService extends AppCompatActivity {
+public class ActivityAidlService extends AppCompatActivity {
 
     @ViewInject(R.id.start_service)
     private Button startService;
@@ -46,7 +46,7 @@ public class ActivityService extends AppCompatActivity {
     /**服务是否连接*/
     private boolean isBound;
     /**本地service使用*/
-    private MyService.MyBinder myBinder;
+    private AidlService.MyBinder myBinder;
     /**远程service使用*/
     private MyAIDLService myAIDLService;
     /**
@@ -79,7 +79,7 @@ public class ActivityService extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_service);
-        AnnotateUtils.inject(ActivityService.this);
+        AnnotateUtils.inject(ActivityAidlService.this);
 
 
     }
@@ -88,17 +88,17 @@ public class ActivityService extends AppCompatActivity {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.start_service:
-                Intent startIntent = new Intent(this, MyService.class);
+                Intent startIntent = new Intent(this, AidlService.class);
                 startService(startIntent);
                 break;
             case R.id.stop_service:
-                Intent stopIntent = new Intent(this, MyService.class);
+                Intent stopIntent = new Intent(this, AidlService.class);
                 stopService(stopIntent);
                 Log.i("danxx", "stopService");
                 break;
             case R.id.bind_service:
                 if (!isBound) {
-                    Intent bindIntent = new Intent(this, MyService.class);
+                    Intent bindIntent = new Intent(this, AidlService.class);
                     bindService(bindIntent, serviceConnection, BIND_AUTO_CREATE);
                 }
                 //用Intent匹配的方式绑定service

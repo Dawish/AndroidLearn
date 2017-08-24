@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements ItemFragment.OnLi
 
     @OnClick(R.id.btn2)
     public void clickService(View view){
-        Intent intent = new Intent(MainActivity.this, ActivityService.class);
+        Intent intent = new Intent(MainActivity.this, ActivityAidlService.class);
         startActivity(intent);
     }
 

@@ -18,16 +18,17 @@
         </activity>
         <activity android:name=".ui.ActivityRecyclerWheelView" />
         <activity android:name=".ui.ActivityDetail" />
-        <activity android:name=".ui.ActivityService"></activity>
+        <activity android:name=".ui.ActivityAidlService" />
 
-
-        <service android:name=".service.MyService"
+        <service
+            android:name=".service.AidlService"
             android:process=":remote">
             <intent-filter>
-                <action android:name="com.example.servicetest.MyAIDLService"/>
+                <action android:name="com.example.servicetest.MyAIDLService" />
             </intent-filter>
         </service>
 
+        <activity android:name=".ui.ActivityBinderService"></activity>
     </application>
 
 </manifest>

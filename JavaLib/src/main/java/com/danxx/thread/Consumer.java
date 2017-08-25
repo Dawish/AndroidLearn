@@ -1,4 +1,4 @@
-package com.danxx.javalib2;
+package com.danxx.thread;
 
 /**
  * 消费者

@@ -3,6 +3,7 @@ package com.anno.service.binder;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
 
 import danxx.library.tools.MyLog;
@@ -23,6 +24,12 @@ public class BinderService extends Service {
         //将实际的Binder对象返回给服务端
         MyLog.i("danxx", "BinderService onBind");
         return new BookManager().asBinder();
+    }
+
+    @Override
+    public int onStartCommand(Intent intent,int flags, int startId) {
+        MyLog.i("danxx", "BinderService onStartCommand");
+        return super.onStartCommand(intent, flags, startId);
     }
 
     @Override

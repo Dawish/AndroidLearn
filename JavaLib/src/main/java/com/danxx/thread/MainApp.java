@@ -1,4 +1,4 @@
-package com.danxx.javalib2;
+package com.danxx.thread;
 
 /**
  *  Java中的多线程会涉及到线程间通信，常见的线程通信方式，例如共享变量、管道流等，

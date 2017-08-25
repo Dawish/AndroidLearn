@@ -88,7 +88,7 @@ public class BookManager extends Binder implements IBookManager {
                 Book book = null;
                 if (data.readInt() != 0) {
                     book = Book.CREATOR.createFromParcel(data);
-                    this.addBook(book); //代理对象操作完成后结果反馈给实际的对象
+                    this.addBook(book); //服务端接受到代理对象操作完成后结果反馈给实际的对象
                     //说明当前操作没有出现异常。
                     reply.writeNoException();
                     return true;
@@ -99,7 +99,7 @@ public class BookManager extends Binder implements IBookManager {
             case REMOTE_GET_BOOK:
                 data.enforceInterface(DESCRIPTOR);
                 List<Book> list = null;
-                list = this.getBook(); //代理对象操作完成后结果反馈给实际的对象
+                list = this.getBook(); //服务端接受到代理对象操作完成后结果反馈给实际的对象
                 reply.writeNoException();
                 reply.writeTypedList(list);
                 return true;

@@ -5,6 +5,7 @@ import android.util.Log;
 /**
  * 真实对象HumanImpl给服务端调用
  * Created by dawish on 2017/8/25.
+ * http://www.cnblogs.com/V1haoge/p/5860749.html
  */
 public class HumanImpl extends Human {
 

@@ -31,4 +31,9 @@ public class BaseRemote implements IRemote {
     public IRemote asRemote() {
         return this;
     }
+
+    @Override
+    public String request(String data) {
+        return "";
+    }
 }

@@ -6,7 +6,7 @@ import android.os.RemoteException;
  * Created by dawish on 2017/8/25.
  * 远程功能接口
  */
-public interface IRemote {
+public interface IRemote extends IFuncation {
 
     /**用来获取与当前接口关联的Remote对象*/
     IRemote asRemote();

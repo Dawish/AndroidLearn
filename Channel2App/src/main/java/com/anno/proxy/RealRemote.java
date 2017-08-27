@@ -7,9 +7,7 @@ import android.util.Log;
  * 真实对象RealRemote给服务端调用
  * Created by dawish on 2017/8/25.
  */
-public class RealRemote extends BaseRemote implements IFuncation {
-
-    private String data = "";
+public class RealRemote extends BaseRemote {
 
     @Override
     public IRemote asRemote() {
@@ -18,13 +16,10 @@ public class RealRemote extends BaseRemote implements IFuncation {
 
     @Override
     protected void onSend(String data) throws RemoteException {
+        super.onSend(data);
         if(data != null){
-            String temp = "真实角色接收到数据并处理:"+data + " name:围城 " + "price:66元";
-            data = temp;
-            Log.i("danxx", temp);
             return;
         }
-        super.onSend(data);
     }
 
     /**
@@ -38,7 +33,9 @@ public class RealRemote extends BaseRemote implements IFuncation {
 
     @Override
     public String request(String data) {
-        return data;
+        Log.d("danxx", "远程服务真实角色接收到数据并处理");
+        String temp = data + " name:围城 " + "price:66元";
+        return temp;
     }
 
     /**
@@ -53,13 +50,12 @@ public class RealRemote extends BaseRemote implements IFuncation {
 
         @Override
         public String request(String data) {
-            String newData = "处理后的数据---"+data;
             try {
-                iRemote.send(newData);
+                iRemote.send(data);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
-            return newData;
+            return iRemote.request(data);
         }
 
     }

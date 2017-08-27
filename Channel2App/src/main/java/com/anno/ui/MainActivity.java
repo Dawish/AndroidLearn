@@ -12,12 +12,10 @@ import com.anno.R;
 import com.anno.annotation.AnnotateUtils;
 import com.anno.annotation.OnClick;
 import com.anno.annotation.ViewInject;
-import com.anno.proxy.HumanImpl;
-import com.anno.proxy.IFunction;
+import com.anno.proxy.IFuncation;
+import com.anno.proxy.RealRemote;
+import com.anno.proxy.IRemote;
 import com.anno.ui.dummy.DummyContent;
-import com.anno.webview.WebViewActivity;
-
-import danxx.library.tools.MyLog;
 
 
 public class MainActivity extends AppCompatActivity implements ItemFragment.OnListFragmentInteractionListener {
@@ -49,17 +47,11 @@ public class MainActivity extends AppCompatActivity implements ItemFragment.OnLi
 
     @OnClick(R.id.btn2)
     public void clickService(View view){
-        Log.i("danxx", "clickService");
-        IFunction iProxy = HumanImpl.asFunction( new HumanImpl());
-        iProxy.sleep(100);
-        iProxy.eat("大牛排");
-        iProxy.speak("这日子真是舒服啊");
-
-        iProxy.toGoToTheOffice();
-        iProxy.work();
-        iProxy.getOffWork();
-
-
+        IFuncation proxyFuncation = RealRemote.asProxyFuncation( new RealRemote());
+        String requestData = "id:1001101";
+        Log.i("danxx", "服务端发送数据请求："+requestData);
+        String data = proxyFuncation.request(requestData);
+        Log.i("danxx", "远程服务端返回的数据："+ data);
         Intent intent = new Intent(MainActivity.this, ActivityBinderService.class);
         startActivity(intent);
 //        WebViewActivity.webviewEntrance(MainActivity.this, "http://blog.csdn.net/u010072711/article/details/77040159");

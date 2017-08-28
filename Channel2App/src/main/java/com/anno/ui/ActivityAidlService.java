@@ -185,6 +185,8 @@ public class ActivityAidlService extends AppCompatActivity {
     //http://blog.csdn.net/liuyi1207164339/article/details/51706585
     //服务端使用死亡回调回收数据
     //http://www.cnblogs.com/punkisnotdead/p/5158016.html
+    //死亡通知原理分析
+    //http://light3moon.com/2015/01/28/Android%20Binder%20%E5%88%86%E6%9E%90%E2%80%94%E2%80%94%E6%AD%BB%E4%BA%A1%E9%80%9A%E7%9F%A5[DeathRecipient]/
     /**
      * 监听Binder是否死亡
      */
@@ -194,6 +196,7 @@ public class ActivityAidlService extends AppCompatActivity {
             if (myAIDLService == null) {
                 return;
             }
+            //死亡后解除绑定
             myAIDLService.asBinder().unlinkToDeath(mDeathRecipient, 0);
             myAIDLService = null;
             //重新绑定

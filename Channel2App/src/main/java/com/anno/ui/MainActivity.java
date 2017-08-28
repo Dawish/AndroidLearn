@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements ItemFragment.OnLi
         Log.i("danxx", "服务端发送数据请求："+requestData);
         String data = proxyFuncation.request(requestData);
         Log.i("danxx", "客户端接收到远程服务端返回的数据："+ data);
-        Intent intent = new Intent(MainActivity.this, ActivityBinderService.class);
+        Intent intent = new Intent(MainActivity.this, ActivityAidlService.class);
         startActivity(intent);
 //        WebViewActivity.webviewEntrance(MainActivity.this, "http://blog.csdn.net/u010072711/article/details/77040159");
     }

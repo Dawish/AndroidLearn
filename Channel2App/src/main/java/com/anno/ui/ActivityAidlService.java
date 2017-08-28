@@ -65,6 +65,12 @@ public class ActivityAidlService extends AppCompatActivity {
 //            myBinder = (MyService.MyBinder) service; //本地service写法
 //            myBinder.startDownload();
             myAIDLService = MyAIDLService.Stub.asInterface(service); //远程service写法
+            try {
+                //设置死亡代理
+                service.linkToDeath(mDeathRecipient, 0);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
         }
 
         @Override
@@ -80,9 +86,22 @@ public class ActivityAidlService extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_service);
         AnnotateUtils.inject(ActivityAidlService.this);
-
-
     }
+
+    /**
+     * Service 的两种启动方法和区别
+     Service的生命周期方法onCreate, onStart, onDestroy
+     有两种方式启动一个Service,他们对Service生命周期的影响是不一样的。
+     1 通过startService
+     　　Service会经历 onCreate -> onStart
+     　stopService的时候直接onDestroy
+     如果是调用者自己直接退出而没有调用stopService的话，Service会一直在后台运行。下次调用者再起来可以stopService。
+     2 通过bindService
+     　　Service只会运行onCreate， 这个时候服务的调用者和服务绑定在一起
+     调用者退出了，Srevice就会调用onUnbind->onDestroyed所谓绑定在一起就共存亡了。并且这种方式还可以使得
+     *
+     */
+
     @OnClick({R.id.start_service,R.id.stop_service,R.id.bind_service,
             R.id.unbind_service,R.id.addData,R.id.getData})
     public void onClick(View v) {
@@ -161,6 +180,33 @@ public class ActivityAidlService extends AppCompatActivity {
         }else {
             Toast.makeText(this,"服务还未连接！", Toast.LENGTH_SHORT).show();
         }
+    }
+    //客户端使用死亡代理，可以重启service
+    //http://blog.csdn.net/liuyi1207164339/article/details/51706585
+    //服务端使用死亡回调回收数据
+    //http://www.cnblogs.com/punkisnotdead/p/5158016.html
+    /**
+     * 监听Binder是否死亡
+     */
+    private IBinder.DeathRecipient mDeathRecipient = new IBinder.DeathRecipient() {
+        @Override
+        public void binderDied() {
+            if (myAIDLService == null) {
+                return;
+            }
+            myAIDLService.asBinder().unlinkToDeath(mDeathRecipient, 0);
+            myAIDLService = null;
+            //重新绑定
+            doBindService();
+            Log.i("danxx", "binderDied 重连");
+        }
+    };
+
+    private void doBindService(){
+        Intent intent = new Intent();
+        intent.setAction("com.danxx.aidlService");
+        intent.setPackage("com.anno");
+        bindService(intent, serviceConnection, BIND_AUTO_CREATE);
     }
 
 }

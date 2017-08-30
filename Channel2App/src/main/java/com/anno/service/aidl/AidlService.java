@@ -16,8 +16,14 @@ import java.util.List;
 /**
  * Created by dawish on 2017/8/22.
  * AIDL实现进程通信
+ *Android 多进程编程 15问15答！
  * http://www.cnblogs.com/punkisnotdead/p/5168857.html
+ * binder原理解析设计篇
  * http://blog.csdn.net/universus/article/details/6211589
+ * 一对多
+ * http://blog.csdn.net/qq_30379689/article/details/52312026
+ * 手动实现Binder
+ * http://www.cnblogs.com/punkisnotdead/p/5163464.html
  */
 
 public class AidlService extends Service {

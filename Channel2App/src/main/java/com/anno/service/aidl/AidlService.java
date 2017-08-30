@@ -16,7 +16,6 @@ import java.util.List;
 /**
  * Created by dawish on 2017/8/22.
  * AIDL实现进程通信
- * http://blog.csdn.net/u013700502/article/details/66477378
  * http://www.cnblogs.com/punkisnotdead/p/5168857.html
  * http://blog.csdn.net/universus/article/details/6211589
  */
@@ -24,7 +23,7 @@ import java.util.List;
 public class AidlService extends Service {
 
     public static final String TAG = "MyService";
-    private MyBinder mBinder = new MyBinder();
+//    private MyBinder mBinder = new MyBinder();
 
     @Override
     public void onCreate() {
@@ -52,19 +51,15 @@ public class AidlService extends Service {
     }
 
     /**
-     * 本地service用法 Binder就是通讯的桥；
-     * 点击Bind Service按钮就会崩溃呢？这是由于在Bind Service按钮的点击事件里面我们会让Activity和MyService建立关联，
-     * 但是目前MyService已经是一个远程Service了，Activity和Service运行在两个不同的进程当中，
-     * 这时就不能再使用传统的建立关联的方式，程序也就崩溃了。
-     * 那么如何才能让Activity与一个远程Service建立关联呢？这就要使用AIDL来进行跨进程通信了（IPC）。
+     * 本地service用法 ；
      */
-    public class MyBinder extends Binder {
-
-        public void startDownload() {
-            Log.d("TAG", "startDownload() executed");
-            // 执行具体的下载任务
-        }
-    }
+//    public class MyBinder extends Binder {
+//
+//        public void startDownload(String url) {
+//            Log.d("TAG", "startDownload() executed");
+//            // 执行具体的下载任务
+//        }
+//    }
     /***/
     private List<ServiceData> mData = new ArrayList<>();
     /**

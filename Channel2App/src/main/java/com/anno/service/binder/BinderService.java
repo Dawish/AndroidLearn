@@ -11,6 +11,7 @@ import danxx.library.tools.MyLog;
 /**
  * Created by dawish on 2017/8/24.
  * 自己实现Binder实现进程通信
+ * http://www.cnblogs.com/punkisnotdead/p/5163464.html
  */
 
 public class BinderService extends Service {

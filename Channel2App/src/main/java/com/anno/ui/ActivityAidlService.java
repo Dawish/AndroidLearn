@@ -45,8 +45,8 @@ public class ActivityAidlService extends AppCompatActivity {
     private TextView txt;
     /**服务是否连接*/
     private boolean isBound;
-    /**本地service使用*/
-    private AidlService.MyBinder myBinder;
+//    /**本地service使用*/
+//    private AidlService.MyBinder myBinder;
     /**远程service使用*/
     private MyAIDLService myAIDLService;
     /**
@@ -62,8 +62,8 @@ public class ActivityAidlService extends AppCompatActivity {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             isBound = true;
-//            myBinder = (MyService.MyBinder) service; //本地service写法
-//            myBinder.startDownload();
+//            myBinder = (AidlService.MyBinder) service; //本地service写法
+//            myBinder.startDownload("http://slide.news.sina.com.cn/iframe/download.php?img=http://k.sinaimg.cn/n/eladies/3_ori/upload/4e8441c4/20170811/eokO-fyixhyw7231373.jpg/w5000hdp.jpg");
             myAIDLService = MyAIDLService.Stub.asInterface(service); //远程service写法
             try {
                 //设置死亡代理

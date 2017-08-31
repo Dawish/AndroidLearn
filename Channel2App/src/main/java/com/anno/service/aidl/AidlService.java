@@ -24,6 +24,8 @@ import java.util.List;
  * http://blog.csdn.net/qq_30379689/article/details/52312026
  * 手动实现Binder
  * http://www.cnblogs.com/punkisnotdead/p/5163464.html
+ * Server回调Client
+ * http://blog.csdn.net/songjinshi/article/details/22918405
  */
 
 public class AidlService extends Service {

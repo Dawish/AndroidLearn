@@ -18,6 +18,7 @@ public class ServiceData implements Parcelable {
     }
     /**
      * 读数据恢复
+     * 系统自动添加，给createFromParcel里面用
      * @param in
      */
     protected ServiceData(Parcel in) {
@@ -59,11 +60,12 @@ public class ServiceData implements Parcelable {
     }
 
     /**
+     *  IDE自动生成
      *  读取接口，目的是要从Parcel中构造一个实现了Parcelable的类的实例处理。
      *  因为实现类在这里还是不可知的，所以需要用到模板的方式，继承类名通过模板
      *  参数传入。
-       为了能够实现模板参数的传入，这里定义Creator嵌入接口,内含两个接口函数
-        分别返回单个和多个继承类实例。
+     * 为了能够实现模板参数的传入，这里定义Creator嵌入接口,内含两个接口函数
+     * 分别返回单个和多个继承类实例。
      */
     public static final Creator<ServiceData> CREATOR = new Creator<ServiceData>() {
         @Override
@@ -79,14 +81,14 @@ public class ServiceData implements Parcelable {
     };
 
     /**
-     内容描述接口，基本不用管
+     * 内容描述接口，基本不用管,IDE自动生成
      */
     @Override
     public int describeContents() {
         return 0;
     }
     /**
-      写入接口函数，打包
+     * 写入接口函数，打包,IDE自动生成
      */
     @Override
     public void writeToParcel(Parcel dest, int flags) {

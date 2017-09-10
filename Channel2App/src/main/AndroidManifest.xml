@@ -42,7 +42,7 @@
 
         <service
             android:name=".service.binder.BinderService"
-            android:process=":remote.binder_service"
+            android:process="remote.binder_service"
             android:enabled="true"
             android:exported="true">
             <intent-filter>

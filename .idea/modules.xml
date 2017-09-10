@@ -2,11 +2,12 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/AndroidLearn.iml" filepath="$PROJECT_DIR$/AndroidLearn.iml" />
       <module fileurl="file://$PROJECT_DIR$/Aoplib/Aoplib.iml" filepath="$PROJECT_DIR$/Aoplib/Aoplib.iml" />
       <module fileurl="file://$PROJECT_DIR$/AppLibrary/AppLibrary.iml" filepath="$PROJECT_DIR$/AppLibrary/AppLibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/Channel1App/Channel1App.iml" filepath="$PROJECT_DIR$/Channel1App/Channel1App.iml" />
       <module fileurl="file://$PROJECT_DIR$/Channel2App/Channel2App.iml" filepath="$PROJECT_DIR$/Channel2App/Channel2App.iml" />
-      <module fileurl="file://$PROJECT_DIR$/CustomViews.iml" filepath="$PROJECT_DIR$/CustomViews.iml" />
+      <module fileurl="file://F:\CodeReservoir\AndroidLearn\CustomViews.iml" filepath="F:\CodeReservoir\AndroidLearn\CustomViews.iml" />
       <module fileurl="file://$PROJECT_DIR$/Dximageloader/Dximageloader.iml" filepath="$PROJECT_DIR$/Dximageloader/Dximageloader.iml" />
       <module fileurl="file://$PROJECT_DIR$/JavaLib/JavaLib.iml" filepath="$PROJECT_DIR$/JavaLib/JavaLib.iml" />
     </modules>
